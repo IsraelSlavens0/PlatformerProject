@@ -1,4 +1,0 @@
-repository "GroupPlatformerProject/GroupPlatformerProject@20066583163237@cloud"
-  path "/"
-    br "/main"
-    co "/main"
