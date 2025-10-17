@@ -544,6 +544,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2016068586 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4997197158750214466, guid: 59601798f4c9c884690a87ec2e767239, type: 3}
+  m_PrefabInstance: {fileID: 5450651799442265322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &49680912719329420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -592,6 +603,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5901206503494209402, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 2016068586}
     - target: {fileID: 7334253444862439879, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: manaBarFillRect
       value: 
