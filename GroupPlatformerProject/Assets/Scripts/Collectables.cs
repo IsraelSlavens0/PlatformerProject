@@ -9,7 +9,7 @@ public class Collectables : MonoBehaviour
     public int XP = 0;
     //whenever we collide with a new collectable, add to my variable
     //destroy the collected item so we can't spam collect 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log(collision.gameObject.name);
         //check to see if we hit a coin specifically
@@ -19,25 +19,11 @@ public class Collectables : MonoBehaviour
             //Destroy the coin gameobject that we hit
             Destroy(collision.gameObject);
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
         if (collision.gameObject.tag == "ExperiencePoint")
         {
             XP++;
             //destroy the experience point that we collect
             Destroy(collision.gameObject);
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
