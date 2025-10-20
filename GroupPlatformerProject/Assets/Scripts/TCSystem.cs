@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,9 +6,9 @@ public class TCSystem : MonoBehaviour
     // --- Player data class inside the shop script ---
     public class PlayerData
     {
-        public int Coins;
-        public Inventory Inventory;
-        public SkillManager SkillManager;
+        public int Coins; // Current number of coins the player has
+        public Inventory Inventory; // Player's inventory for holding items
+        public SkillManager SkillManager; // Player's skill manager
 
         public PlayerData(int startingCoins)
         {
@@ -18,6 +17,7 @@ public class TCSystem : MonoBehaviour
             SkillManager = new SkillManager();
         }
 
+        // Attempt to buy an item; deduct coins and add to inventory if successful
         public bool BuyItem(Item item)
         {
             if (Coins >= item.Price)
@@ -31,6 +31,7 @@ public class TCSystem : MonoBehaviour
             return false;
         }
 
+        // Attempt to upgrade a skill; deduct coins and upgrade skill if successful
         public bool BuySkill(SkillType skillType)
         {
             int price = SkillManager.GetSkillPrice(skillType);
@@ -49,8 +50,10 @@ public class TCSystem : MonoBehaviour
     // --- Inventory ---
     public class Inventory
     {
+        // Dictionary to store item quantities by type
         private Dictionary<ItemType, int> items = new Dictionary<ItemType, int>();
 
+        // Add item to inventory or increase quantity
         public void AddItem(ItemType itemType)
         {
             if (!items.ContainsKey(itemType))
@@ -59,11 +62,13 @@ public class TCSystem : MonoBehaviour
             Debug.Log($"Added {itemType} to inventory. Total: {items[itemType]}");
         }
 
+        // Check if item is available in inventory
         public bool HasItem(ItemType itemType)
         {
             return items.ContainsKey(itemType) && items[itemType] > 0;
         }
 
+        // Use one unit of an item if available
         public bool UseItem(ItemType itemType)
         {
             if (HasItem(itemType))
@@ -80,26 +85,31 @@ public class TCSystem : MonoBehaviour
     // --- Skill Manager ---
     public class SkillManager
     {
+        // Dictionary of player skills by type
         private Dictionary<SkillType, Skill> skills = new Dictionary<SkillType, Skill>();
 
         public SkillManager()
         {
+            // Initialize each skill with a starting price
             skills[SkillType.Combat] = new Skill(SkillType.Combat, 5);
             skills[SkillType.MagicRange] = new Skill(SkillType.MagicRange, 5);
             skills[SkillType.ManaStorage] = new Skill(SkillType.ManaStorage, 5);
             skills[SkillType.HealthAmount] = new Skill(SkillType.HealthAmount, 5);
         }
 
+        // Get the price to upgrade a specific skill
         public int GetSkillPrice(SkillType skillType)
         {
             return skills[skillType].Price;
         }
 
+        // Get current level of a specific skill
         public int GetSkillLevel(SkillType skillType)
         {
             return skills[skillType].Level;
         }
 
+        // Upgrade the skill and apply its effects
         public void UpgradeSkill(SkillType skillType)
         {
             skills[skillType].Upgrade();
@@ -107,9 +117,9 @@ public class TCSystem : MonoBehaviour
             ApplySkillEffect(skillType);
         }
 
+        // Simulate applying the skill's effect (would update actual player stats in real game)
         private void ApplySkillEffect(SkillType skillType)
         {
-            // Here you would apply real effects to player stats (e.g. damage, mana)
             switch (skillType)
             {
                 case SkillType.Combat:
@@ -129,6 +139,8 @@ public class TCSystem : MonoBehaviour
     }
 
     // --- Data Models ---
+
+    // Types of items available in the shop
     public enum ItemType
     {
         HealthPotion,
@@ -136,6 +148,7 @@ public class TCSystem : MonoBehaviour
         XPCluster
     }
 
+    // Class representing an item with a type and a price
     public class Item
     {
         public ItemType Type;
@@ -148,6 +161,7 @@ public class TCSystem : MonoBehaviour
         }
     }
 
+    // Types of skills the player can upgrade
     public enum SkillType
     {
         Combat,
@@ -156,6 +170,7 @@ public class TCSystem : MonoBehaviour
         HealthAmount
     }
 
+    // Class representing a skill with level and price
     public class Skill
     {
         public SkillType Type;
@@ -169,6 +184,7 @@ public class TCSystem : MonoBehaviour
             Price = startingPrice;
         }
 
+        // Increase skill level and raise the price for the next upgrade
         public void Upgrade()
         {
             Level++;
@@ -178,17 +194,18 @@ public class TCSystem : MonoBehaviour
 
     // --- Shop System variables ---
 
-    private PlayerData playerData;
+    private PlayerData playerData; // Holds player coins, inventory, and skills
 
+    // Define purchasable items with set prices
     private Item healthPotion = new Item(ItemType.HealthPotion, 3);
     private Item manaPotion = new Item(ItemType.ManaPotion, 4);
     private Item xpCluster = new Item(ItemType.XPCluster, 5);
 
-    private bool playerInRange = false;
+    private bool playerInRange = false; // Is player near the shop?
 
     private void Start()
     {
-        // For demo, player starts with 20 coins
+        // Initialize player with 20 coins at start
         playerData = new PlayerData(20);
     }
 
@@ -196,7 +213,7 @@ public class TCSystem : MonoBehaviour
     {
         if (playerInRange)
         {
-            // Buy items
+            // Item purchase inputs
             if (Input.GetKeyDown(KeyCode.Alpha1))
                 playerData.BuyItem(healthPotion);
             else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -204,7 +221,7 @@ public class TCSystem : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Alpha3))
                 playerData.BuyItem(xpCluster);
 
-            // Buy skills
+            // Skill upgrade inputs
             else if (Input.GetKeyDown(KeyCode.C))
                 playerData.BuySkill(SkillType.Combat);
             else if (Input.GetKeyDown(KeyCode.M))
@@ -216,7 +233,7 @@ public class TCSystem : MonoBehaviour
         }
     }
 
-    // Detect player entering the shop trigger zone
+    // Detect player entering the shop area
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -227,6 +244,7 @@ public class TCSystem : MonoBehaviour
         }
     }
 
+    // Detect player leaving the shop area
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
