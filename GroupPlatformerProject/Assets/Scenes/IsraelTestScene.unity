@@ -563,6 +563,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1818879618380221192, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
+    - target: {fileID: 1818879618380221192, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_FocalLength
+      value: 20.78461
+      objectReference: {fileID: 0}
+    - target: {fileID: 1818879618380221192, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2201239952487858071, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -602,6 +614,14 @@ PrefabInstance:
     - target: {fileID: 2201239952487858071, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2398217892306687221, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: range
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2398217892306687221, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: forwardOffset
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5901206503494209402, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: healthBar
