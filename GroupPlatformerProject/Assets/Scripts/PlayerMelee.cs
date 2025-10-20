@@ -5,15 +5,36 @@ using UnityEngine;
 public class PlayerMelee : MonoBehaviour
 {
     public int damage = 10;
-    public float range = 0.5f;          // size of hit area
-    public float forwardOffset = 0.6f;  // how far in front of player
-    void Start()
-    {
+    public float range = 0.5f;
+    public float forwardOffset = 0.6f;
 
-    }
+    private Vector2 moveDirection = Vector2.right; // Default facing right
+    private bool facingRight = true;
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) // right-click
+        // Get raw input
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector2 input = new Vector2(horizontal, vertical);
+
+        if (input != Vector2.zero)
+        {
+            // Flip player only based on horizontal input
+            if (horizontal != 0)
+            {
+                facingRight = horizontal > 0;
+                Vector3 scale = transform.localScale;
+                scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+                transform.localScale = scale;
+            }
+
+            // Set moveDirection to normalized input vector (allows diagonal)
+            moveDirection = input.normalized;
+        }
+
+        // Attack on right mouse click
+        if (Input.GetMouseButtonDown(1))
         {
             Attack();
         }
@@ -21,10 +42,8 @@ public class PlayerMelee : MonoBehaviour
 
     void Attack()
     {
-        // Position in front of the player
-        Vector2 hitPos = (Vector2)transform.position + (Vector2)transform.right * forwardOffset;
+        Vector2 hitPos = (Vector2)transform.position + moveDirection * forwardOffset;
 
-        // Check all colliders nearby
         Collider2D[] hits = Physics2D.OverlapCircleAll(hitPos, range);
 
         foreach (Collider2D hit in hits)
@@ -40,7 +59,7 @@ public class PlayerMelee : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Vector2 hitPos = (Vector2)transform.position + (Vector2)transform.right * forwardOffset;
+        Vector2 hitPos = (Vector2)transform.position + moveDirection * forwardOffset;
         Gizmos.DrawWireSphere(hitPos, range);
     }
 }
