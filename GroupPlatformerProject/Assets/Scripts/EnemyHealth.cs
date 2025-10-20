@@ -19,11 +19,4 @@ public class EnemyHealth : MonoBehaviour
         health -= dmg;
         if (health <= 0) Destroy(gameObject);
     }
-
-
-
-
-
-
-
 }
