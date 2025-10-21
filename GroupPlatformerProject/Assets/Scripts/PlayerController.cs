@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    // Movement variables
+    // -----------------------
+    // Movement Variables
+    // -----------------------
     Rigidbody2D rb;
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
@@ -14,14 +16,29 @@ public class PlayerController : MonoBehaviour
     AudioSource audioSource;
     public AudioClip jumpSound;
 
-    // Melee attack variables
+    // -----------------------
+    // Melee Attack Settings
+    // -----------------------
+    [Header("Melee Attack Settings")]
+    [Tooltip("Damage dealt by melee attacks")]
     public int meleeDamage = 10;
-    public float meleeRange = 0.5f;
-    public float meleeForwardOffset = 0.6f;
-    private Vector2 meleeMoveDirection = Vector2.right; // Default facing right
-    private bool facingRight = true;
 
-    // Ranged attack variables
+    [Tooltip("Width of the melee hitbox")]
+    public float meleeHitboxWidth = 1.0f;
+
+    [Tooltip("Height of the melee hitbox")]
+    public float meleeHitboxHeight = 1.0f;
+
+    [Tooltip("Distance from player center to FRONT EDGE of melee hitbox")]
+    public float meleeForwardOffset = 0.6f;
+
+    private bool facingRight = true;
+    private Vector2 meleeMoveDirection = Vector2.right; // updated by input
+
+    // -----------------------
+    // Ranged Attack Settings
+    // -----------------------
+    [Header("Ranged Attack Settings")]
     public GameObject projectilePrefab;
     public float shootSpeed = 10f;
     public float bulletLifetime = 2f;
@@ -36,6 +53,9 @@ public class PlayerController : MonoBehaviour
     public RectTransform manaBarFillRect;
     private float maxManaBarWidth;
 
+    // -----------------------
+    // Initialization
+    // -----------------------
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -57,7 +77,9 @@ public class PlayerController : MonoBehaviour
         RegenerateMana();
     }
 
-    // Movement logic
+    // -----------------------
+    // Movement Logic
+    // -----------------------
     void HandleMovement()
     {
         float moveX = Input.GetAxis("Horizontal");
@@ -92,7 +114,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Melee attack logic
+    // -----------------------
+    // Melee Attack Logic
+    // -----------------------
     void HandleMeleeInput()
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -101,6 +125,7 @@ public class PlayerController : MonoBehaviour
 
         if (input != Vector2.zero)
         {
+            // Flip player sprite horizontally only
             if (horizontal != 0)
             {
                 facingRight = horizontal > 0;
@@ -112,7 +137,6 @@ public class PlayerController : MonoBehaviour
             meleeMoveDirection = input.normalized;
         }
 
-        // Attack on right mouse button
         if (Input.GetMouseButtonDown(1))
         {
             MeleeAttack();
@@ -121,9 +145,22 @@ public class PlayerController : MonoBehaviour
 
     void MeleeAttack()
     {
-        Vector2 hitPos = (Vector2)transform.position + meleeMoveDirection * meleeForwardOffset;
+        Vector2 direction = meleeMoveDirection.normalized;
+        if (direction == Vector2.zero)
+            direction = facingRight ? Vector2.right : Vector2.left;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(hitPos, meleeRange);
+        // Clamp forward offset so hitbox never goes behind player
+        float halfWidth = meleeHitboxWidth / 2f;
+        float clampedOffset = Mathf.Max(meleeForwardOffset, halfWidth);
+
+        // Position the box so front edge is meleeForwardOffset in front of player
+        Vector2 hitboxCenter = (Vector2)transform.position + direction * clampedOffset;
+
+        // Calculate rotation angle in degrees for the box (so it faces the direction)
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Perform the OverlapBoxAll with size and rotation
+        Collider2D[] hits = Physics2D.OverlapBoxAll(hitboxCenter, new Vector2(meleeHitboxWidth, meleeHitboxHeight), angle);
 
         foreach (Collider2D hit in hits)
         {
@@ -138,11 +175,34 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Vector2 hitPos = (Vector2)transform.position + meleeMoveDirection * meleeForwardOffset;
-        Gizmos.DrawWireSphere(hitPos, meleeRange);
+
+        if (!Application.isPlaying)
+        {
+            facingRight = transform.localScale.x >= 0;
+            meleeMoveDirection = facingRight ? Vector2.right : Vector2.left;
+        }
+
+        Vector2 direction = meleeMoveDirection.normalized;
+        if (direction == Vector2.zero)
+            direction = facingRight ? Vector2.right : Vector2.left;
+
+        float halfWidth = meleeHitboxWidth / 2f;
+        float clampedOffset = Mathf.Max(meleeForwardOffset, halfWidth);
+
+        Vector2 hitboxCenter = (Vector2)transform.position + direction * clampedOffset;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        Matrix4x4 rotationMatrix = Matrix4x4.TRS(hitboxCenter, Quaternion.Euler(0, 0, angle), Vector3.one);
+        Gizmos.matrix = rotationMatrix;
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(meleeHitboxWidth, meleeHitboxHeight, 0));
+
+        // Reset matrix so gizmos don't affect other drawing
+        Gizmos.matrix = Matrix4x4.identity;
     }
 
-    // Ranged attack logic
+    // -----------------------
+    // Ranged Attack Logic
+    // -----------------------
     void HandleRangedInput()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -163,7 +223,9 @@ public class PlayerController : MonoBehaviour
     void Shoot()
     {
         Vector3 mousePos = Input.mousePosition;
+        mousePos.z = -Camera.main.transform.position.z;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        Debug.Log(mousePos);  // Added from PlayerShoot
         mousePos.z = 0;
 
         GameObject bullet = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
@@ -180,6 +242,10 @@ public class PlayerController : MonoBehaviour
         Destroy(bullet, bulletLifetime);
     }
 
+
+    // -----------------------
+    // Mana System
+    // -----------------------
     void RegenerateMana()
     {
         if (currentMana < maxMana)
@@ -190,13 +256,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void SpendMana(float amount)
+   public void SpendMana(float amount)
     {
         currentMana -= amount;
         currentMana = Mathf.Clamp(currentMana, 0, maxMana);
     }
 
-    void UpdateManaUI()
+    public void UpdateManaUI()
     {
         if (manaBarFillRect != null)
         {
