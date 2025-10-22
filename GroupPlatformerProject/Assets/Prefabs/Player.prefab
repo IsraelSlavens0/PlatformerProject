@@ -256,7 +256,7 @@ MonoBehaviour:
   spinDuration: 1.5
   damageInterval: 0.5
   attackRadius: 1.5
-  damage: 10
+  damage: 5
   manaCost: 50
 --- !u!1 &4394001576858946464
 GameObject:
