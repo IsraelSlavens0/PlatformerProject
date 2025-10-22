@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - Enemy
   - MysteriousFragment
+  - Coin
+  - coin
   layers:
   - Default
   - TransparentFX
