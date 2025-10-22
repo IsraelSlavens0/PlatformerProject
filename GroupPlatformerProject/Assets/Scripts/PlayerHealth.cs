@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
     //if we collide with something tagged as enemy, take damage
     //if health gets too low, we die (reload the level)
     //if we collide with something tagged as health pack, increase health
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
         {
