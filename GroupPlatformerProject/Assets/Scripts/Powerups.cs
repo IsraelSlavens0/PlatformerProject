@@ -7,7 +7,7 @@ public class Powerups : MonoBehaviour
     // Duration of invincibility in seconds (editable in Inspector)
     public float invincibilityDuration = 10f;
     // Tracks whether the player is currently invincible
-    private bool isInvincible = false;
+    public bool isInvincible = false;
     // Timer counting down remaining invincibility time
     private float invincibilityTimer = 0f;
     private void OnTriggerEnter2D(Collider2D collision)
