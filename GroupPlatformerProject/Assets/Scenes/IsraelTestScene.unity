@@ -476,31 +476,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!1 &1998313830 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-  m_PrefabInstance: {fileID: 2202129290891905777}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1998313838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1998313830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a080ae3bf859d244ba1640269cfb726a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lungeDistance: 5
-  lungeSpeed: 250
-  lungeDamage: 30
-  lungeManaCost: 30
-  lungeHitboxWidth: 1.2
-  lungeHitboxHeight: 1
-  lungeCooldown: 2
-  damageInterval: 1
 --- !u!114 &2016068586 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4997197158750214466, guid: 59601798f4c9c884690a87ec2e767239, type: 3}
@@ -521,21 +496,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1413308538017429399, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1413308538017429399, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: manaBarFillRect
       value: 
       objectReference: {fileID: 236455779}
-    - target: {fileID: 1413308538017429399, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-      propertyPath: manaCostPerShot
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1413308538017429399, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-      propertyPath: meleeForwardOffset
-      value: 1.25
-      objectReference: {fileID: 0}
     - target: {fileID: 1969657684352122723, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -587,10 +550,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1998313838}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
 --- !u!1001 &5450651799442265322
 PrefabInstance:
