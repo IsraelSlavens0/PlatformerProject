@@ -6,14 +6,14 @@ public class PlayerHealth : MonoBehaviour
 {
     //store the players health
     public float health = 10;
-    float maxHealth;
+    public float maxHealth;
     public Image healthBar;
     //if we collide with something tagged as enemy, take damage
     //if health gets too low, we die (reload the level)
     //if we collide with something tagged as health pack, increase health
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
         {
             health--;
             healthBar.fillAmount = health / maxHealth;
@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 //if health is too low, reload the level
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
             }
         }
         //if we collide with the health pack collectable

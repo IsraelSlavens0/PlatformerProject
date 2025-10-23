@@ -7,7 +7,7 @@ public class Powerups : MonoBehaviour
     // Duration of invincibility in seconds (editable in Inspector)
     public float invincibilityDuration = 10f;
     // Tracks whether the player is currently invincible
-    private bool isInvincible = false;
+    public bool isInvincible = false;
     // Timer counting down remaining invincibility time
     private float invincibilityTimer = 0f;
     private void OnTriggerEnter2D(Collider2D collision)
@@ -50,6 +50,21 @@ public class Powerups : MonoBehaviour
             Destroy(collision.gameObject);             // Destroy the enemy on contact
             Debug.Log("Enemy destroyed by invincible player.");
             // TODO: Add enemy death effects here
+        }
+        else if (!isInvincible && collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Player hit by enemy.");
+            // TODO: Add player damage or knockback logic here
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (isInvincible && collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(collision.gameObject);             // Destroy the enemy on contact
+            Debug.Log("Enemy destroyed by invincible player.");
+            // TODO: Add enemy death effects here
+            
         }
         else if (!isInvincible && collision.gameObject.CompareTag("Enemy"))
         {

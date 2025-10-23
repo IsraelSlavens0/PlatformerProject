@@ -9,7 +9,7 @@ public class Collectables : MonoBehaviour
     public int XP = 0;
     //whenever we collide with a new collectable, add to my variable
     //destroy the collected item so we can't spam collect 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(collision.gameObject.name);
         //check to see if we hit a coin specifically
