@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeAI : MonoBehaviour
+public class UndeadAI : MonoBehaviour
 {
     GameObject player;
     public float chaseSpeed = 5.0f;
@@ -14,32 +14,28 @@ public class SlimeAI : MonoBehaviour
     public Vector3 patrolDirection = Vector3.right;  // default to right patrol
     public float patrolDistance = 3f;
 
-    [Header("Jump Settings")]
-    public float jumpForce = 5f;
-    public float jumpInterval = 2f;
-
     Rigidbody2D rb;
-    float jumpTimer;
-    bool isGrounded = false;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         home = transform.position;
         rb = GetComponent<Rigidbody2D>();
-        jumpTimer = jumpInterval;
     }
 
     void Update()
     {
         Vector3 chaseDir = player.transform.position - transform.position;
 
+        // --- Chase Player ---
         if (chaseDir.magnitude < chaseTriggerDistance)
         {
             chaseDir.Normalize();
             rb.velocity = new Vector2(chaseDir.x * chaseSpeed, rb.velocity.y);
             isHome = false;
         }
+
+        // --- Return Home ---
         else if (returnHome && !isHome)
         {
             Vector3 homeDir = home - transform.position;
@@ -54,6 +50,8 @@ public class SlimeAI : MonoBehaviour
                 isHome = true;
             }
         }
+
+        // --- Patrol ---
         else if (patrol)
         {
             Vector3 displacement = transform.position - home;
@@ -63,40 +61,16 @@ public class SlimeAI : MonoBehaviour
             }
             patrolDirection.Normalize();
             rb.velocity = new Vector2(patrolDirection.x * chaseSpeed, rb.velocity.y);
-            HandleJumping();
         }
+
+        // --- Idle ---
         else
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
-    void HandleJumping()
-    {
-        jumpTimer -= Time.deltaTime;
-        if (jumpTimer <= 0 && isGrounded)
-        {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            jumpTimer = jumpInterval;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
-    }
-
+    // --- Show the chase trigger radius distance ---
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
