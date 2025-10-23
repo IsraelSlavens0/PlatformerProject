@@ -5,29 +5,26 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     public int health = 30;
+
+    private ThiefAI thiefAI;
+
     void Start()
     {
-
+        thiefAI = GetComponent<ThiefAI>();
     }
 
     void Update()
     {
 
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //when I am hit by a player bullet
+        // When hit by a player bullet
         if (collision.gameObject.tag == "PlayerBullet")
         {
-            //destroy the bullet
             Destroy(collision.gameObject);
-            //reduce my hp
-            health--;
-            //destroy myself if I get too low in health
-            if (health <= 0)
-            {
-                Destroy(gameObject);
-            }
+            TakeDamage(1);
         }
     }
 
@@ -42,6 +39,12 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        // If this enemy is a thief, drop stolen coins
+        if (thiefAI != null)
+        {
+            thiefAI.DropStolenCoins();
+        }
+
         Destroy(gameObject);
     }
 }

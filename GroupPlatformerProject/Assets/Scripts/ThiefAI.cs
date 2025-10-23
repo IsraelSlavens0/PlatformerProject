@@ -1,243 +1,156 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class ThiefEnemy : MonoBehaviour
+public class ThiefAI : MonoBehaviour
 {
-    public enum AIState
+    [Header("Movement Settings")]
+    public float chaseSpeed = 3f;
+    public float chaseTriggerDistance = 5f;
+    public bool returnHome = true;
+
+    [Header("Patrol Settings")]
+    public bool patrol = true;
+    public Vector3 patrolDirection = Vector3.right;
+    public float patrolDistance = 3f;
+
+    [Header("Stealing Settings")]
+    public int coinsToSteal = 2;
+    public float damageToPlayer = 1f;
+    public float stealDistance = 1.5f;
+    public float stealCooldown = 5f;
+
+    [Header("Coin Drop Settings")]
+    public GameObject coinPrefab; // Assign your coin prefab here
+    public float coinDropSpread = 0.5f;
+
+    private GameObject player;
+    private Rigidbody2D rb;
+    private Vector3 home;
+    private bool isHome = true;
+    private bool hasStolen = false;
+    private float lastStealTime = -Mathf.Infinity;
+
+    private int stolenCoins = 0;
+
+    void Start()
     {
-        Patrolling,
-        ChasingPlayer,
-        SeekingDroppedCoins
-    }
-
-    [Header("Movement")]
-    public float moveSpeed = 3f;
-    public float chaseSpeed = 4.5f;
-    public Transform[] patrolPoints;
-    int patrolIndex = 0;
-
-    [Header("Detection")]
-    public float detectionRadius = 6f;
-
-    [Header("Attack / Steal")]
-    public float attackCooldown = 1.2f;
-    float attackTimer = 0f;
-    public int stealAmount = 3;
-
-    Rigidbody2D rb;
-    Transform player;
-
-    public int thiefCoins = 0;
-
-    public float droppedCoinsSeekDelay = 0.5f;
-    float droppedCoinsSeekTimer = 0f;
-
-    public GameObject coinPrefab;
-
-    AIState currentState = AIState.Patrolling;
-
-    void Awake()
-    {
+        player = GameObject.FindGameObjectWithTag("Player");
         rb = GetComponent<Rigidbody2D>();
+        home = transform.position;
     }
 
     void Update()
     {
-        attackTimer -= Time.deltaTime;
-
         if (player == null)
         {
-            GameObject p = GameObject.FindGameObjectWithTag("Player");
-            if (p != null) player = p.transform;
+            rb.velocity = Vector2.zero;
+            return;
         }
 
-        // State transitions based on detection and timers
-        switch (currentState)
+        Vector3 toPlayer = player.transform.position - transform.position;
+        float distanceToPlayer = toPlayer.magnitude;
+
+        // Attempt steal if close enough and cooldown passed
+        if (!hasStolen && distanceToPlayer <= stealDistance && Time.time >= lastStealTime + stealCooldown)
         {
-            case AIState.SeekingDroppedCoins:
-                droppedCoinsSeekTimer -= Time.deltaTime;
-                if (droppedCoinsSeekTimer <= 0f)
-                {
-                    if (FindClosestCoin() == null)
-                    {
-                        // No coins to seek, switch to chasing player
-                        currentState = AIState.ChasingPlayer;
-                    }
-                }
-                break;
-
-            case AIState.ChasingPlayer:
-                if (player == null)
-                {
-                    currentState = AIState.Patrolling;
-                }
-                else
-                {
-                    float dist = Vector2.Distance(transform.position, player.position);
-                    if (dist > detectionRadius)
-                    {
-                        currentState = AIState.Patrolling;
-                    }
-                }
-                break;
-
-            case AIState.Patrolling:
-                if (player != null)
-                {
-                    float dist = Vector2.Distance(transform.position, player.position);
-                    if (dist <= detectionRadius)
-                    {
-                        currentState = AIState.ChasingPlayer;
-                    }
-                }
-                break;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        Vector2 pos = rb.position;
-        Vector2 velocity = Vector2.zero;  // Default velocity
-
-        switch (currentState)
-        {
-            case AIState.SeekingDroppedCoins:
-                if (droppedCoinsSeekTimer <= 0f)
-                {
-                    GameObject closestCoin = FindClosestCoin();
-                    if (closestCoin != null)
-                    {
-                        Vector2 dir = ((Vector2)closestCoin.transform.position - pos).normalized;
-                        velocity = dir * chaseSpeed;
-                    }
-                    else
-                    {
-                        // No coins found, switch to chasing player
-                        currentState = AIState.ChasingPlayer;
-                    }
-                }
-                else
-                {
-                    // During delay, don’t stand still — keep moving slowly forward or patrol to avoid stuck
-                    velocity = Vector2.zero; // you can set a small patrol velocity here if you want
-                }
-                break;
-
-            case AIState.ChasingPlayer:
-                if (player != null)
-                {
-                    Vector2 dir = ((Vector2)player.position - pos).normalized;
-                    velocity = dir * chaseSpeed;
-                }
-                else
-                {
-                    currentState = AIState.Patrolling;
-                    velocity = Vector2.zero;
-                }
-                break;
-
-            case AIState.Patrolling:
-                if (patrolPoints != null && patrolPoints.Length > 0)
-                {
-                    Vector2 targetPos = patrolPoints[patrolIndex].position;
-                    Vector2 dir = targetPos - pos;
-                    if (dir.magnitude < 0.2f)
-                    {
-                        patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
-                    }
-                    velocity = dir.normalized * moveSpeed;
-                }
-                else
-                {
-                    velocity = Vector2.zero;
-                }
-                break;
+            StealAndRun();
+            rb.velocity = Vector2.zero;
+            return;
         }
 
-        // Always set velocity in FixedUpdate!
-        rb.velocity = velocity;
-    }
-
-    GameObject FindClosestCoin()
-    {
-        GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
-        GameObject closest = null;
-        float bestDist = Mathf.Infinity;
-        Vector2 pos = transform.position;
-
-        foreach (var coin in coins)
+        if (!hasStolen)
         {
-            float dist = Vector2.SqrMagnitude((Vector2)coin.transform.position - pos);
-            if (dist < bestDist && dist <= detectionRadius * detectionRadius)
+            // Normal movement: chase, return home, patrol
+            if (distanceToPlayer < chaseTriggerDistance)
             {
-                bestDist = dist;
-                closest = coin;
+                // Chase player
+                Vector3 chaseDir = toPlayer.normalized;
+                rb.velocity = chaseDir * chaseSpeed;
+                isHome = false;
             }
-        }
-        return closest;
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.CompareTag("Player"))
-        {
-            TrySteal(collision.collider.gameObject);
-        }
-        else if (collision.collider.CompareTag("Coin"))
-        {
-            TryPickupCoin(collision.collider.gameObject);
-        }
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Coin"))
-        {
-            TryPickupCoin(other.gameObject);
-        }
-    }
-
-    void TrySteal(GameObject playerObj)
-    {
-        if (attackTimer > 0f) return;
-        attackTimer = attackCooldown;
-
-        Collectables playerCollectables = playerObj.GetComponent<Collectables>();
-        if (playerCollectables == null) return;
-
-        int coinsToSteal = Mathf.Min(stealAmount, playerCollectables.coins);
-        if (coinsToSteal <= 0) return;
-
-        playerCollectables.coins -= coinsToSteal;
-
-        for (int i = 0; i < coinsToSteal; i++)
-        {
-            Vector2 spawnPos = (Vector2)playerObj.transform.position + Random.insideUnitCircle * 0.5f;
-            SpawnDroppedCoin(spawnPos);
-        }
-
-        // Switch to seeking dropped coins with delay
-        currentState = AIState.SeekingDroppedCoins;
-        droppedCoinsSeekTimer = droppedCoinsSeekDelay;
-    }
-
-    void SpawnDroppedCoin(Vector2 position)
-    {
-        if (coinPrefab != null)
-        {
-            Instantiate(coinPrefab, position, Quaternion.identity);
+            else if (returnHome && !isHome)
+            {
+                // Return home
+                Vector3 homeDir = home - transform.position;
+                if (homeDir.magnitude > 0.2f)
+                {
+                    rb.velocity = homeDir.normalized * chaseSpeed;
+                }
+                else
+                {
+                    rb.velocity = Vector2.zero;
+                    isHome = true;
+                }
+            }
+            else if (patrol)
+            {
+                // Patrol behavior
+                Vector3 displacement = transform.position - home;
+                if (displacement.magnitude > patrolDistance)
+                {
+                    patrolDirection = -displacement;
+                }
+                patrolDirection.Normalize();
+                rb.velocity = patrolDirection * chaseSpeed;
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
         else
         {
-            Debug.LogWarning("Coin Prefab is not assigned on ThiefEnemy!");
+            // Run away after stealing
+            Vector3 runDir = (transform.position - player.transform.position).normalized;
+            rb.velocity = runDir * chaseSpeed * 1.5f;
+
+            // Reset steal state if far enough away
+            if (Vector3.Distance(transform.position, player.transform.position) > chaseTriggerDistance * 2)
+            {
+                hasStolen = false;
+                rb.velocity = Vector2.zero;
+            }
         }
     }
 
-    void TryPickupCoin(GameObject coin)
+    void StealAndRun()
     {
-        thiefCoins++;
-        Destroy(coin);
+        hasStolen = true;
+        lastStealTime = Time.time;
+
+        // Steal coins
+        Collectables playerCollect = player.GetComponent<Collectables>();
+        if (playerCollect != null && playerCollect.coins > 0)
+        {
+            int stolenAmount = Mathf.Min(coinsToSteal, playerCollect.coins);
+            playerCollect.coins -= stolenAmount;
+            stolenCoins += stolenAmount;
+            Debug.Log($"Thief stole {stolenAmount} coins!");
+        }
+
+        // Damage player
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.health -= damageToPlayer;
+            playerHealth.healthBar.fillAmount = playerHealth.health / playerHealth.maxHealth;
+            Debug.Log($"Thief damaged player for {damageToPlayer} health!");
+        }
+    }
+
+    // Call this when the thief dies to drop stolen coins
+
+    public void DropStolenCoins()
+    {
+        if (stolenCoins <= 0) return;
+
+        for (int i = 0; i < stolenCoins; i++)
+        {
+            Vector2 dropPos = (Vector2)transform.position + Random.insideUnitCircle * coinDropSpread;
+            Instantiate(coinPrefab, dropPos, Quaternion.identity);
+        }
+
+        Debug.Log($"Thief dropped {stolenCoins} coins!");
+        stolenCoins = 0;
     }
 
 }

@@ -6,7 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     //store the players health
     public float health = 10;
-    float maxHealth;
+    public float maxHealth;
     public Image healthBar;
     //if we collide with something tagged as enemy, take damage
     //if health gets too low, we die (reload the level)
