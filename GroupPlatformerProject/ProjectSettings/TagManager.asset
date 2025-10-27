@@ -12,6 +12,7 @@ TagManager:
   - HealthPack
   - Wall
   - BossI
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
