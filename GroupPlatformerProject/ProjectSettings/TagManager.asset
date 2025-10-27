@@ -9,7 +9,7 @@ TagManager:
   - Enemy
   - MysteriousFragment
   - Coin
-  - coin
+  - HealthPack
   layers:
   - Default
   - TransparentFX
@@ -46,7 +46,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: main
-    uniqueID: 1686006293
     locked: 0
