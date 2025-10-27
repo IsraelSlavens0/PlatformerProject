@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class MercenaryAI2D : MonoBehaviour
+public class MercenaryAI : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 4f;
