@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
@@ -11,6 +12,19 @@ public class PlayerHealth : MonoBehaviour
     //if we collide with something tagged as enemy, take damage
     //if health gets too low, we die (reload the level)
     //if we collide with something tagged as health pack, increase health
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "BossI" && !GetComponent<Powerups>().isInvincible)
+        {
+            health --;
+            healthBar.fillAmount = health / maxHealth;
+            if (health < -0)
+            {
+                //if health is too low reload the level
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)

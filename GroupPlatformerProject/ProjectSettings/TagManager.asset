@@ -10,6 +10,8 @@ TagManager:
   - MysteriousFragment
   - Coin
   - HealthPack
+  - Wall
+  - BossI
   layers:
   - Default
   - TransparentFX
