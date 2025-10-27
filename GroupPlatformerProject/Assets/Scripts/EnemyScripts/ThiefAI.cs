@@ -13,6 +13,7 @@ public class ThiefAI : MonoBehaviour
     public bool patrol = true;
     public Vector3 patrolDirection = Vector3.right;
     public float patrolDistance = 3f;
+    public float groundCheckDistance = 0.5f; // How far ahead to check for ground
 
     [Header("Stealing Settings")]
     public int coinsToSteal = 2;
@@ -43,16 +44,16 @@ public class ThiefAI : MonoBehaviour
         home = transform.position;
 
         rb.freezeRotation = true;
-        rb.gravityScale = 0f;
+        rb.gravityScale = 1f; // Enable gravity
 
-        patrolDirection.Normalize(); // Normalize once on start
+        patrolDirection.Normalize();
     }
 
     void Update()
     {
         if (player == null)
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
 
@@ -84,13 +85,11 @@ public class ThiefAI : MonoBehaviour
         // Chase player if close enough but not stealing
         if (distanceToPlayer < chaseTriggerDistance)
         {
-            rb.velocity = toPlayer.normalized * chaseSpeed;
-            isHome = false;
-            isReturningHome = false;
+            ChasePlayer(toPlayer);
         }
         else if (returnHome && !isHome)
         {
-            ReturnHomeSmoothly();
+            ReturnHome();
         }
         else if (patrol && isHome)
         {
@@ -98,7 +97,7 @@ public class ThiefAI : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
@@ -124,7 +123,7 @@ public class ThiefAI : MonoBehaviour
 
         hasStolen = true;
         lastStealTime = Time.time;
-        rb.velocity = Vector2.zero;
+        rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
     void FindClosestCoin()
@@ -152,7 +151,7 @@ public class ThiefAI : MonoBehaviour
     {
         if (targetCoin == null)
         {
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
 
@@ -162,12 +161,17 @@ public class ThiefAI : MonoBehaviour
         if (distToCoin <= stealDistance)
         {
             PickUpCoin();
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
         else
         {
-            rb.velocity = toCoin.normalized * chaseSpeed;
+            // Only move if there's ground ahead
+            if (IsGroundAhead(toCoin.normalized.x))
+                rb.velocity = new Vector2(toCoin.normalized.x * chaseSpeed, rb.velocity.y);
+            else
+                rb.velocity = new Vector2(0, rb.velocity.y);
+
             isHome = false;
             isReturningHome = false;
         }
@@ -193,16 +197,31 @@ public class ThiefAI : MonoBehaviour
     void RunAwayFromPlayer()
     {
         Vector3 runDir = (transform.position - player.transform.position).normalized;
-        rb.velocity = runDir * chaseSpeed * 1.5f;
+
+        if (IsGroundAhead(runDir.x))
+            rb.velocity = new Vector2(runDir.x * chaseSpeed * 1.5f, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(0, rb.velocity.y);
 
         if (Vector3.Distance(transform.position, player.transform.position) > chaseTriggerDistance * 2)
         {
             hasStolen = false;
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
-    void ReturnHomeSmoothly()
+    void ChasePlayer(Vector3 toPlayer)
+    {
+        if (IsGroundAhead(toPlayer.normalized.x))
+            rb.velocity = new Vector2(toPlayer.normalized.x * chaseSpeed, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(0, rb.velocity.y);
+
+        isHome = false;
+        isReturningHome = false;
+    }
+
+    void ReturnHome()
     {
         Vector3 homeDir = home - transform.position;
         float distToHome = homeDir.magnitude;
@@ -210,24 +229,23 @@ public class ThiefAI : MonoBehaviour
 
         if (distToHome > stopThreshold)
         {
-            // Slow down when very close to home to avoid jitter
             float speed = chaseSpeed;
             if (distToHome < 1f)
-            {
                 speed = Mathf.Lerp(0, chaseSpeed, distToHome / 1f);
-            }
-            rb.velocity = homeDir.normalized * speed;
+
+            if (IsGroundAhead(homeDir.normalized.x))
+                rb.velocity = new Vector2(homeDir.normalized.x * speed, rb.velocity.y);
+            else
+                rb.velocity = new Vector2(0, rb.velocity.y);
+
             isReturningHome = true;
             isHome = false;
         }
         else
         {
-            // Snap velocity to zero and mark home reached only once inside threshold
-            rb.velocity = Vector2.zero;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             isHome = true;
             isReturningHome = false;
-
-            // Correct position precisely at home to prevent jitter
             transform.position = home;
         }
     }
@@ -238,10 +256,8 @@ public class ThiefAI : MonoBehaviour
         float distance = displacement.magnitude;
         float buffer = 0.2f;
 
-        // Flip direction only if beyond patrolDistance + buffer
         if (distance > patrolDistance + buffer)
         {
-            // Clamp position to patrol boundary to avoid overshoot jitter
             Vector3 clampedPos = home + displacement.normalized * patrolDistance;
             transform.position = clampedPos;
 
@@ -249,10 +265,26 @@ public class ThiefAI : MonoBehaviour
             patrolDirection.Normalize();
         }
 
-        rb.velocity = patrolDirection * chaseSpeed;
+        if (IsGroundAhead(patrolDirection.x))
+            rb.velocity = new Vector2(patrolDirection.x * chaseSpeed, rb.velocity.y);
+        else
+            rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
-    // Called by EnemyHealth when enemy dies to drop stolen coins
+    // Check if there's ground ahead
+    bool IsGroundAhead(float dir)
+    {
+        Vector2 origin = (Vector2)transform.position + Vector2.down * 0.1f;
+        Vector2 direction = Vector2.right * Mathf.Sign(dir);
+
+        RaycastHit2D hit = Physics2D.Raycast(origin + direction * 0.3f, Vector2.down, groundCheckDistance);
+
+        // Uncomment to debug raycast
+        // Debug.DrawRay(origin + direction * 0.3f, Vector2.down * groundCheckDistance, Color.red);
+
+        return hit.collider != null;
+    }
+
     public void DropStolenCoins()
     {
         if (stolenCoins <= 0) return;
