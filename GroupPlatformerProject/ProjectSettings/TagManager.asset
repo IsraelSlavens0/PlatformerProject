@@ -10,6 +10,7 @@ TagManager:
   - MysteriousFragment
   - Coin
   - HealthPack
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

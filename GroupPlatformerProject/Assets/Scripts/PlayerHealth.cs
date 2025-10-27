@@ -13,6 +13,8 @@ public class PlayerHealth : MonoBehaviour
     //if we collide with something tagged as health pack, increase health
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
+
         if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
         {
             health--;
@@ -39,6 +41,19 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
+   private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "EnemyBullet")
+        {
+            health--;
+            healthBar.fillAmount = health / maxHealth;
+            if (health <= 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
