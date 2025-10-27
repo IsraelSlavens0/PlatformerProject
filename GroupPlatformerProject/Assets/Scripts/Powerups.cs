@@ -10,22 +10,6 @@ public class Powerups : MonoBehaviour
     public bool isInvincible = false;
     // Timer counting down remaining invincibility time
     private float invincibilityTimer = 0f;
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.tag == "MysteriousFragment")
-        {
-            //make the player invincible for [duration]
-            StartInvincibility(invincibilityDuration); // Activate invincibility
-            Destroy(collision.gameObject);             // Remove the pickup from the scene
-        }
-        else if (isInvincible && collision.CompareTag("Enemy"))
-        {
-            Destroy(collision.gameObject);             // Destroy the enemy
-            Debug.Log("Enemy destroyed by invincible player.");
-            // TODO: Add enemy death effects (particles, sounds) here
-        }
-    }
     void Update()
     {
         // If player is invincible, reduce the timer by elapsed time
@@ -45,6 +29,19 @@ public class Powerups : MonoBehaviour
     // Detect when player collides physically with something (used for enemies with solid colliders)
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject.tag == "MysteriousFragment")
+        {
+            //make the player invincible for [duration]
+            StartInvincibility(invincibilityDuration); // Activate invincibility
+            Destroy(collision.gameObject);             // Remove the pickup from the scene
+        }
+        else if (isInvincible && collision.gameObject.tag == "Enemy")
+        {
+            Destroy(collision.gameObject);             // Destroy the enemy
+            Debug.Log("Enemy destroyed by invincible player.");
+            // TODO: Add enemy death effects (particles, sounds) here
+        }
         if (isInvincible && collision.gameObject.CompareTag("Enemy"))
         {
             Destroy(collision.gameObject);             // Destroy the enemy on contact
