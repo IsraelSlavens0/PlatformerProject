@@ -24,6 +24,15 @@ public class PlayerHealth : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
+        if (collision.gameObject.tag == "EnemyBullet")
+        {
+            health--;
+            healthBar.fillAmount = health / maxHealth;
+            if (health <= 0)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -52,18 +61,6 @@ public class PlayerHealth : MonoBehaviour
             {
                 //cap our health at max health
                 health = maxHealth;
-            }
-        }
-    }
-   private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "EnemyBullet")
-        {
-            health--;
-            healthBar.fillAmount = health / maxHealth;
-            if (health <= 0)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }
