@@ -679,22 +679,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1194190185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 451efda73b62f1e4184ce4b6f518573b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8c1580dfd40f048488ee1bf4454923c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 3
-  chaseTriggerDistance: 5
-  returnHome: 1
+  moveSpeed: 4
+  detectionRange: 5
   patrol: 1
   patrolDirection: {x: 1, y: 0, z: 0}
   patrolDistance: 3
+  returnHome: 1
+  attackRange: 1.5
+  attackDamage: 3
+  attackCooldown: 1
   groundCheckDistance: 1
-  coinsToSteal: 2
-  damageToPlayer: 1
-  stealDistance: 1.5
-  stealCooldown: 5
-  coinPrefab: {fileID: 8883093640648098055, guid: dbe2e1e5e09e6c84f9d860a4502e08d8, type: 3}
-  coinDropSpread: 0.5
 --- !u!1 &1512070068
 GameObject:
   m_ObjectHideFlags: 0
