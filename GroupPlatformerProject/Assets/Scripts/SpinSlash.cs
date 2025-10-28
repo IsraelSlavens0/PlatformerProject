@@ -116,12 +116,4 @@ public class SpinSlash : MonoBehaviour
             Debug.LogWarning($"EnemyHealth component missing on {enemyCollider.name}");
         }
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        // Draw small spheres to visualize left/right hit areas (optional)
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position + Vector3.left * attackRadius * 0.5f, attackRadius * 0.5f);
-        Gizmos.DrawWireSphere(transform.position + Vector3.right * attackRadius * 0.5f, attackRadius * 0.5f);
-    }
 }

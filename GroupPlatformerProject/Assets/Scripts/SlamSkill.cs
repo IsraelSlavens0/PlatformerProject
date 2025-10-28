@@ -77,10 +77,4 @@ public class SlamSkill : MonoBehaviour
         // Optional: add visual effects, sounds, etc.
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(1, 0, 0, 0.3f);
-        Vector2 slamCenter = (Vector2)transform.position + Vector2.down * 1f;
-        Gizmos.DrawSphere(slamCenter, slamRadius);
-    }
 }

@@ -592,8 +592,8 @@ Transform:
   m_GameObject: {fileID: 1194190185}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.76, y: -3.45, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 6.57, y: -2.9757, z: 0}
+  m_LocalScale: {x: 1, y: 1.9486, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -916,10 +916,6 @@ PrefabInstance:
     - target: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6504313993965449459, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
-      propertyPath: m_Mass
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6573169492480333156, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: healthBar

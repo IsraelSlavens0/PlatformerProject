@@ -117,10 +117,11 @@ MonoBehaviour:
   projectilePrefab: {fileID: 9032678245791341020, guid: ab87efddf6cf75b449149ddc8d6303b5, type: 3}
   shootSpeed: 10
   bulletLifetime: 2
-  maxMana: 100
-  currentMana: 100
-  manaRegenRate: 10
-  manaCostPerShot: 10
+  shootDelay: 1
+  maxMana: 250
+  currentMana: 250
+  manaRegenRate: 5
+  manaCostPerShot: 25
   manaBarFillRect: {fileID: 0}
 --- !u!114 &6573169492480333156
 MonoBehaviour:
