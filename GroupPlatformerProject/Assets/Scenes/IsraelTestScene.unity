@@ -679,19 +679,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1194190185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c1580dfd40f048488ee1bf4454923c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e4518a95e3dc004d91f3be418b41d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
-  detectionRange: 5
-  patrol: 1
-  patrolDirection: {x: 1, y: 0, z: 0}
-  patrolDistance: 3
-  returnHome: 1
-  attackRange: 1.5
-  attackDamage: 3
-  attackCooldown: 1
-  groundCheckDistance: 1
+  chaseSpeed: 5
+  runAwaySpeed: 5
+  attackRange: 4
+  detectionRange: 10
+  abilityCooldown: 5
+  basicAttackCooldown: 2
 --- !u!1 &1512070068
 GameObject:
   m_ObjectHideFlags: 0
