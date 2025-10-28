@@ -142,11 +142,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6881360429541392839, guid: dbe2e1e5e09e6c84f9d860a4502e08d8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.27
+      value: -17.22
       objectReference: {fileID: 0}
     - target: {fileID: 6881360429541392839, guid: dbe2e1e5e09e6c84f9d860a4502e08d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.59
+      value: -2.58
       objectReference: {fileID: 0}
     - target: {fileID: 6881360429541392839, guid: dbe2e1e5e09e6c84f9d860a4502e08d8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -491,8 +491,8 @@ Transform:
   m_GameObject: {fileID: 1135422897}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.24, y: -4.47, z: 0}
-  m_LocalScale: {x: 27.1147, y: 1, z: 1}
+  m_LocalPosition: {x: 49.2598, y: -4.47, z: 0}
+  m_LocalScale: {x: 126.11319, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -531,6 +531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 2
+  dropPrefab: {fileID: 0}
+  dropOffset: {x: 0, y: 0, z: 0}
 --- !u!212 &1194190188
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -688,6 +690,30 @@ MonoBehaviour:
   detectionRange: 10
   abilityCooldown: 5
   basicAttackCooldown: 2
+  basicAttack:
+    name: Basic
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 10
+  lungeAttack:
+    name: Lunge
+    duration: 1
+    horizontalForce: 15
+    verticalForce: 0
+    damage: 20
+  chargeAttack:
+    name: Charge
+    duration: 1.5
+    horizontalForce: 10
+    verticalForce: 0
+    damage: 30
+  slamAttack:
+    name: Slam
+    duration: 1.5
+    horizontalForce: 5
+    verticalForce: 10
+    damage: 25
 --- !u!1 &1512070068
 GameObject:
   m_ObjectHideFlags: 0

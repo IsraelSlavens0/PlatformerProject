@@ -11,9 +11,24 @@ public class KnightBossAI : MonoBehaviour
     public float attackRange = 2f;
     public float detectionRange = 10f;
 
+    [System.Serializable]
+    public class Attack
+    {
+        public string name = "Attack";
+        public float duration = 1f;
+        public float horizontalForce = 5f;
+        public float verticalForce = 0f;
+        public float damage = 10f;
+    }
+
     [Header("Attack Settings")]
-    public float abilityCooldown = 5f;
+    public float abilityCooldown = 5f; // combined cooldown for abilities
     public float basicAttackCooldown = 2f;
+
+    public Attack basicAttack = new Attack { name = "Basic", duration = 0.8f, damage = 10f };
+    public Attack lungeAttack = new Attack { name = "Lunge", duration = 1f, horizontalForce = 15f, damage = 20f };
+    public Attack chargeAttack = new Attack { name = "Charge", duration = 1f, horizontalForce = 20f, damage = 30f }; // faster charge
+    public Attack slamAttack = new Attack { name = "Slam", duration = 1.5f, horizontalForce = 5f, verticalForce = 12f, damage = 25f };
 
     private Rigidbody2D rb;
     private Transform player;
@@ -29,11 +44,12 @@ public class KnightBossAI : MonoBehaviour
     private float basicAttackTimer = 0f;
     private float runAwayTimer = 0f;
 
+    // Slam state
+    private bool slamJumping = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        // Find player automatically
         GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
         if (foundPlayer != null)
             player = foundPlayer.transform;
@@ -71,34 +87,29 @@ public class KnightBossAI : MonoBehaviour
 
         if (distance < detectionRange)
         {
-            // Chase continuously
             if (!isAttacking && !isRunningAway)
             {
                 float verticalVel = rb.velocity.y;
                 Vector2 moveDir = direction.normalized;
                 rb.velocity = new Vector2(moveDir.x * chaseSpeed, verticalVel);
 
-                // Flip sprite
                 if (moveDir.x > 0) transform.localScale = new Vector3(1, 1, 1);
                 else if (moveDir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
             }
 
-            // Decide attack or run-away if close
             if (distance <= attackRange)
             {
-                // Stop horizontal movement but keep vertical (gravity)
                 rb.velocity = new Vector2(0, rb.velocity.y);
 
                 int decision = Random.Range(0, 10);
                 if (decision >= 8)
                     StartRunningAway();
                 else
-                    TryAttack();
+                    TryRandomAttack();
             }
         }
         else
         {
-            // Outside detection range: stop horizontal but keep vertical
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
@@ -121,83 +132,78 @@ public class KnightBossAI : MonoBehaviour
         Vector2 direction = (transform.position - player.position).normalized;
         rb.velocity = new Vector2(direction.x * runAwaySpeed, rb.velocity.y);
 
-        // Flip sprite
         if (direction.x > 0) transform.localScale = new Vector3(1, 1, 1);
         else if (direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
     }
 
-    private void TryAttack()
+    private void TryRandomAttack()
     {
         if (abilityTimer <= 0)
         {
-            int roll = Random.Range(0, 4); // 0–2 = ability, 3 = basic
-
-            if (roll == 0) StartAttack("Lunge", 1f);
-            else if (roll == 1) StartAttack("Slam", 1.2f);
-            else if (roll == 2) StartAttack("Charge", 1.5f);
-            else if (basicAttackTimer <= 0) StartAttack("Basic", 0.8f);
+            Attack[] abilities = { lungeAttack, slamAttack, chargeAttack, basicAttack };
+            int roll = Random.Range(0, abilities.Length);
+            StartAttack(abilities[roll]);
 
             abilityTimer = abilityCooldown;
             basicAttackTimer = basicAttackCooldown;
         }
         else if (basicAttackTimer <= 0)
         {
-            StartAttack("Basic", 0.8f);
+            StartAttack(basicAttack);
             basicAttackTimer = basicAttackCooldown;
         }
     }
 
-    private void StartAttack(string type, float duration)
+    private void StartAttack(Attack attack)
     {
         isAttacking = true;
-        currentAttack = type;
-        attackTimer = duration;
+        currentAttack = attack.name;
+        attackTimer = attack.duration;
 
-        rb.velocity = new Vector2(0, rb.velocity.y); // horizontal stops, vertical keeps gravity
-        Debug.Log($"Knight uses {type}!");
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        Debug.Log($"Knight uses {attack.name}!");
 
         Vector2 dir = (player.position - transform.position).normalized;
 
-        if (type == "Lunge")
+        if (attack.name == "Lunge")
         {
-            rb.AddForce(new Vector2(dir.x * 15f, 0), ForceMode2D.Impulse); // horizontal lunge
+            rb.AddForce(new Vector2(attack.horizontalForce * dir.x, 0), ForceMode2D.Impulse);
         }
-        else if (type == "Charge")
+        else if (attack.name == "Charge")
         {
-            rb.velocity = new Vector2(dir.x * 10f, rb.velocity.y);
+            // Make Charge fast and pierce through player
+            rb.velocity = new Vector2(attack.horizontalForce * Mathf.Sign(dir.x), 0);
         }
-        else if (type == "Slam")
+        else if (attack.name == "Slam")
         {
-            // Jump upward with a horizontal push toward player
-            float jumpForce = 12f; // vertical
-            float horizontalPush = dir.x * 5f; // small horizontal movement
-            rb.velocity = new Vector2(horizontalPush, jumpForce);
+            slamJumping = true;
+            rb.velocity = new Vector2(attack.horizontalForce * dir.x, attack.verticalForce);
         }
     }
 
     private void HandleAttack()
     {
-        if (attackTimer > 0)
-        {
-            Vector2 dir = player.position - transform.position;
-            if (dir.x > 0) transform.localScale = new Vector3(1, 1, 1);
-            else if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
+        Vector2 dir = player.position - transform.position;
+        if (dir.x > 0) transform.localScale = new Vector3(1, 1, 1);
+        else if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
 
-            if (currentAttack == "Charge")
+        if (currentAttack == "Charge")
+        {
+            // Continue moving fast through the player without stopping
+            Vector2 forward = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+            rb.MovePosition(rb.position + forward * chargeAttack.horizontalForce * Time.deltaTime);
+        }
+        else if (currentAttack == "Slam" && slamJumping)
+        {
+            if (rb.velocity.y <= 0)
             {
-                Vector2 forward = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-                rb.MovePosition(rb.position + new Vector2(forward.x * 10f * Time.deltaTime, rb.velocity.y * Time.deltaTime));
-            }
-            else if (currentAttack == "Slam")
-            {
-                // Wait until enemy is falling near the ground to land Slam
-                if (rb.velocity.y <= 0)
-                {
-                    attackTimer = 0; // trigger landing
-                }
+                float horizontalDir = dir.x;
+                rb.velocity = new Vector2(horizontalDir * slamAttack.horizontalForce, -20f);
+                slamJumping = false;
             }
         }
-        else
+
+        if (attackTimer <= 0)
         {
             FinishAttack();
         }
@@ -207,17 +213,22 @@ public class KnightBossAI : MonoBehaviour
     {
         rb.velocity = new Vector2(0, rb.velocity.y);
         isAttacking = false;
+        slamJumping = false;
 
         float distance = Vector2.Distance(transform.position, player.position);
         if (distance < attackRange + 0.3f)
         {
+            Attack current = null;
             switch (currentAttack)
             {
-                case "Basic": Debug.Log("Player hit by Basic Attack! (10 dmg)"); break;
-                case "Lunge": Debug.Log("Player hit by Lunge! (20 dmg)"); break;
-                case "Slam": Debug.Log("Player hit by Slam! (25 dmg)"); break;
-                case "Charge": Debug.Log("Player hit by Charge! (30 dmg)"); break;
+                case "Basic": current = basicAttack; break;
+                case "Lunge": current = lungeAttack; break;
+                case "Slam": current = slamAttack; break;
+                case "Charge": current = chargeAttack; break;
             }
+
+            if (current != null)
+                Debug.Log($"Player hit by {current.name}! ({current.damage} dmg)");
         }
 
         currentAttack = "";
