@@ -42,8 +42,8 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public float shootSpeed = 10f;
     public float bulletLifetime = 2f;
-    private float nextShootTime = 0f;  
-    public float shootDelay = 0.5f;   
+    private float nextShootTime = 0f;
+    public float shootDelay = 0.5f;
 
 
     [Header("Mana Settings")]
@@ -233,7 +233,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   public void SpendMana(float amount)
+    public void SpendMana(float amount)
     {
         currentMana -= amount;
         currentMana = Mathf.Clamp(currentMana, 0, maxMana);
@@ -245,6 +245,19 @@ public class PlayerController : MonoBehaviour
         {
             float newWidth = (currentMana / maxMana) * maxManaBarWidth;
             manaBarFillRect.sizeDelta = new Vector2(newWidth, manaBarFillRect.sizeDelta.y);
+        }
+    }
+
+    // -----------------------------------------------------------
+    // ADDITION: Infinite Mana if Powerups.isInvincible == true
+    // -----------------------------------------------------------
+    void LateUpdate()
+    {
+        Powerups powerupScript = FindObjectOfType<Powerups>();
+        if (powerupScript != null && powerupScript.isActiveAndEnabled && powerupScript.isInvincible)
+        {
+            currentMana = maxMana;
+            UpdateManaUI();
         }
     }
 }
