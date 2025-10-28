@@ -531,6 +531,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 2
+  dropPrefab: {fileID: 0}
+  dropOffset: {x: 0, y: 0, z: 0}
 --- !u!212 &1194190188
 SpriteRenderer:
   m_ObjectHideFlags: 0
