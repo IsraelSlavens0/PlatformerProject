@@ -76,9 +76,6 @@ public class MercenaryAI : MonoBehaviour
         else
             rb.velocity = new Vector2(0, rb.velocity.y);
 
-        if (direction != 0)
-            transform.localScale = new Vector3(direction, 1, 1);
-
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         if (distanceToPlayer <= attackRange && Time.time >= lastAttackTime + attackCooldown)
         {
@@ -108,9 +105,6 @@ public class MercenaryAI : MonoBehaviour
             rb.velocity = new Vector2(patrolDirection.x * moveSpeed, rb.velocity.y);
         else
             rb.velocity = new Vector2(0, rb.velocity.y);
-
-        if (patrolDirection.x != 0)
-            transform.localScale = new Vector3(Mathf.Sign(patrolDirection.x), 1, 1);
     }
 
     void ReturnHomeSmoothly()
@@ -134,9 +128,6 @@ public class MercenaryAI : MonoBehaviour
 
             isReturningHome = true;
             isHome = false;
-
-            if (moveDir.x != 0)
-                transform.localScale = new Vector3(Mathf.Sign(moveDir.x), 1, 1);
         }
         else
         {
