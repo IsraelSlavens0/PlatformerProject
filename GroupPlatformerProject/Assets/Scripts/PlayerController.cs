@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
     public float meleeForwardOffset = 0.6f;
 
     private bool facingRight = true;
-    private Vector2 meleeMoveDirection = Vector2.right; // updated by input
+    private Vector2 meleeMoveDirection = Vector2.right;
 
     // -----------------------
     // Ranged Attack Settings
@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public float shootSpeed = 10f;
     public float bulletLifetime = 2f;
+    private float nextShootTime = 0f;  
+    public float shootDelay = 0.5f;   
+
 
     [Header("Mana Settings")]
     public float maxMana = 100f;
@@ -149,7 +152,6 @@ public class PlayerController : MonoBehaviour
         if (direction == Vector2.zero)
             direction = facingRight ? Vector2.right : Vector2.left;
 
-        // Clamp forward offset so hitbox never goes behind player
         float halfWidth = meleeHitboxWidth / 2f;
         float clampedOffset = Mathf.Max(meleeForwardOffset, halfWidth);
 
@@ -159,7 +161,6 @@ public class PlayerController : MonoBehaviour
         // Calculate rotation angle in degrees for the box (so it faces the direction)
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Perform the OverlapBoxAll with size and rotation
         Collider2D[] hits = Physics2D.OverlapBoxAll(hitboxCenter, new Vector2(meleeHitboxWidth, meleeHitboxHeight), angle);
 
         foreach (Collider2D hit in hits)
@@ -172,46 +173,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-
-        if (!Application.isPlaying)
-        {
-            facingRight = transform.localScale.x >= 0;
-            meleeMoveDirection = facingRight ? Vector2.right : Vector2.left;
-        }
-
-        Vector2 direction = meleeMoveDirection.normalized;
-        if (direction == Vector2.zero)
-            direction = facingRight ? Vector2.right : Vector2.left;
-
-        float halfWidth = meleeHitboxWidth / 2f;
-        float clampedOffset = Mathf.Max(meleeForwardOffset, halfWidth);
-
-        Vector2 hitboxCenter = (Vector2)transform.position + direction * clampedOffset;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        Matrix4x4 rotationMatrix = Matrix4x4.TRS(hitboxCenter, Quaternion.Euler(0, 0, angle), Vector3.one);
-        Gizmos.matrix = rotationMatrix;
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(meleeHitboxWidth, meleeHitboxHeight, 0));
-
-        // Reset matrix so gizmos don't affect other drawing
-        Gizmos.matrix = Matrix4x4.identity;
-    }
-
     // -----------------------
     // Ranged Attack Logic
     // -----------------------
     void HandleRangedInput()
     {
-        if (Input.GetButtonDown("Fire1"))
+        // Only shoot if enough time has passed since last shot
+        if (Input.GetButtonDown("Fire1") && Time.time >= nextShootTime)
         {
             if (currentMana >= manaCostPerShot)
             {
                 Shoot();
                 SpendMana(manaCostPerShot);
                 UpdateManaUI();
+
+                // set the next allowed shoot time
+                nextShootTime = Time.time + shootDelay;
             }
             else
             {
