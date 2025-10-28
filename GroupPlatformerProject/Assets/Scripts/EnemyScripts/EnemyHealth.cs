@@ -8,6 +8,12 @@ public class EnemyHealth : MonoBehaviour
 
     private ThiefAI thiefAI;
 
+    //Added: public prefab to drop when enemy dies
+    public GameObject dropPrefab;
+
+    //Added: optional drop position offset
+    public Vector3 dropOffset = Vector3.zero;
+
     void Start()
     {
         thiefAI = GetComponent<ThiefAI>();
@@ -43,6 +49,12 @@ public class EnemyHealth : MonoBehaviour
         if (thiefAI != null)
         {
             thiefAI.DropStolenCoins();
+        }
+
+        //Added: drop prefab if assigned
+        if (dropPrefab != null)
+        {
+            Instantiate(dropPrefab, transform.position + dropOffset, Quaternion.identity);
         }
 
         Destroy(gameObject);
