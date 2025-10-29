@@ -14,7 +14,7 @@ public class PlayerHealth : MonoBehaviour
     //if we collide with something tagged as health pack, increase health
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "BossI" && !GetComponent<Powerups>().isInvincible)
+        if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
         {
             health --;
             healthBar.fillAmount = health / maxHealth;
