@@ -519,6 +519,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4518a95e3dc004d91f3be418b41d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chaseSpeed: 5
+  runAwaySpeed: 5
+  attackRange: 4
+  detectionRange: 10
+  abilityCooldown: 5
+  basicAttackCooldown: 2
+  basicAttack:
+    name: Basic
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 10
+  lungeAttack:
+    name: Lunge
+    duration: 1
+    horizontalForce: 15
+    verticalForce: 0
+    damage: 20
+  chargeAttack:
+    name: Charge
+    duration: 1.5
+    horizontalForce: 10
+    verticalForce: 0
+    damage: 30
+  slamAttack:
+    name: Slam
+    duration: 1.5
+    horizontalForce: 5
+    verticalForce: 10
+    damage: 25
+--- !u!1 &1262743940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+  m_PrefabInstance: {fileID: 2202129290891905777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1262743941
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262743940}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 37fc13a010e7b4644a2fb1e90ddfee7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1262743953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262743940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f92bd88be40ef49a83b5f74d60aac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1512070068
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,9 +890,49 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2377233052154146133, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377233052154146133, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2377233052154146133, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1310207439, guid: a962f75eed7de184c84354dc136ed762, type: 3}
+    - target: {fileID: 2377233052154146133, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Size.x
+      value: 0.59961534
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Size.y
+      value: 1.8119272
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.07629222
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659687307619574435, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6573169492480333156, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
       propertyPath: healthBar
@@ -833,7 +941,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1262743941}
+    - targetCorrespondingSourceObject: {fileID: 3886367257231597057, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1262743953}
   m_SourcePrefab: {fileID: 100100000, guid: 0e811721c2b2ff144aaed4f17870cac3, type: 3}
 --- !u!1001 &5450651799442265322
 PrefabInstance:
