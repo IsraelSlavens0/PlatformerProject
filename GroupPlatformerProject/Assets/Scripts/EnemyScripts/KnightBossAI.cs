@@ -1,8 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class KnightBossAI : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -22,79 +22,71 @@ public class KnightBossAI : MonoBehaviour
     }
 
     [Header("Attack Settings")]
-    public float abilityCooldown = 5f; // combined cooldown for abilities
+    public float abilityCooldown = 5f;
     public float basicAttackCooldown = 2f;
 
     public Attack basicAttack = new Attack { name = "Basic", duration = 0.8f, damage = 10f };
     public Attack lungeAttack = new Attack { name = "Lunge", duration = 1f, horizontalForce = 15f, damage = 20f };
-    public Attack chargeAttack = new Attack { name = "Charge", duration = 1f, horizontalForce = 20f, damage = 30f }; // faster charge
     public Attack slamAttack = new Attack { name = "Slam", duration = 1.5f, horizontalForce = 5f, verticalForce = 12f, damage = 25f };
+    public Attack powerBoostAttack = new Attack { name = "PowerBoost", duration = 0.8f, damage = 0f };
+
+    [Header("References")]
+    public KnightBossHitbox lungeHitbox; // assign child hitbox in inspector
 
     private Rigidbody2D rb;
-    private Transform player;
+    private Collider2D bossCollider;
 
     // State
     private bool isAttacking = false;
     private bool isRunningAway = false;
     private string currentAttack = "";
     private float attackTimer = 0f;
+    private bool slamJumping = false;
+    private bool powerBoostActive = false;
 
     // Timers
     private float abilityTimer = 0f;
     private float basicAttackTimer = 0f;
     private float runAwayTimer = 0f;
 
-    // Slam state
-    private bool slamJumping = false;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
-        if (foundPlayer != null)
-            player = foundPlayer.transform;
-        else
-            Debug.LogWarning("KnightEnemy2D: No player found with tag 'Player'!");
+        bossCollider = GetComponent<Collider2D>();
+
+        if (lungeHitbox != null)
+            lungeHitbox.boss = this;
     }
 
     private void Update()
     {
-        if (player == null) return;
-
         abilityTimer -= Time.deltaTime;
         basicAttackTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
         runAwayTimer -= Time.deltaTime;
 
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj == null) return;
+        Transform playerTransform = playerObj.transform;
+
         if (isAttacking)
-        {
             HandleAttack();
-        }
         else if (isRunningAway)
-        {
-            RunAway();
-        }
+            RunAway(playerTransform);
         else
-        {
-            HandleChaseAndDecision();
-        }
+            HandleChaseAndDecision(playerTransform);
     }
 
-    private void HandleChaseAndDecision()
+    private void HandleChaseAndDecision(Transform playerTransform)
     {
-        Vector2 direction = (player.position - transform.position);
+        Vector2 direction = (playerTransform.position - transform.position);
         float distance = direction.magnitude;
 
         if (distance < detectionRange)
         {
             if (!isAttacking && !isRunningAway)
             {
-                float verticalVel = rb.velocity.y;
-                Vector2 moveDir = direction.normalized;
-                rb.velocity = new Vector2(moveDir.x * chaseSpeed, verticalVel);
-
-                if (moveDir.x > 0) transform.localScale = new Vector3(1, 1, 1);
-                else if (moveDir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
+                rb.velocity = new Vector2(direction.normalized.x * chaseSpeed, rb.velocity.y);
             }
 
             if (distance <= attackRange)
@@ -105,7 +97,7 @@ public class KnightBossAI : MonoBehaviour
                 if (decision >= 8)
                     StartRunningAway();
                 else
-                    TryRandomAttack();
+                    TryRandomAttack(playerTransform);
             }
         }
         else
@@ -121,7 +113,7 @@ public class KnightBossAI : MonoBehaviour
         Debug.Log("Knight is running away!");
     }
 
-    private void RunAway()
+    private void RunAway(Transform playerTransform)
     {
         if (runAwayTimer <= 0)
         {
@@ -129,110 +121,108 @@ public class KnightBossAI : MonoBehaviour
             return;
         }
 
-        Vector2 direction = (transform.position - player.position).normalized;
+        Vector2 direction = (transform.position - playerTransform.position).normalized;
         rb.velocity = new Vector2(direction.x * runAwaySpeed, rb.velocity.y);
-
-        if (direction.x > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
     }
 
-    private void TryRandomAttack()
+    private void TryRandomAttack(Transform playerTransform)
     {
         if (abilityTimer <= 0)
         {
-            Attack[] abilities = { lungeAttack, slamAttack, chargeAttack, basicAttack };
+            Attack[] abilities = { lungeAttack, slamAttack, powerBoostAttack, basicAttack };
             int roll = Random.Range(0, abilities.Length);
-            StartAttack(abilities[roll]);
+            StartAttack(abilities[roll], playerTransform);
 
             abilityTimer = abilityCooldown;
             basicAttackTimer = basicAttackCooldown;
         }
         else if (basicAttackTimer <= 0)
         {
-            StartAttack(basicAttack);
+            StartAttack(basicAttack, playerTransform);
             basicAttackTimer = basicAttackCooldown;
         }
     }
 
-    private void StartAttack(Attack attack)
+    private void StartAttack(Attack attack, Transform playerTransform)
     {
         isAttacking = true;
         currentAttack = attack.name;
         attackTimer = attack.duration;
 
-        rb.velocity = new Vector2(0, rb.velocity.y);
         Debug.Log($"Knight uses {attack.name}!");
 
-        Vector2 dir = (player.position - transform.position).normalized;
+        Vector2 dir = (playerTransform.position - transform.position).normalized;
 
         if (attack.name == "Lunge")
         {
+            Collider2D playerCollider = playerTransform.GetComponent<Collider2D>();
+            if (playerCollider != null)
+                Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
+
+            rb.velocity = Vector2.zero;
             rb.AddForce(new Vector2(attack.horizontalForce * dir.x, 0), ForceMode2D.Impulse);
-        }
-        else if (attack.name == "Charge")
-        {
-            // Make Charge fast and pierce through player
-            rb.velocity = new Vector2(attack.horizontalForce * Mathf.Sign(dir.x), 0);
+
+            if (lungeHitbox != null)
+            {
+                lungeHitbox.damage = attack.damage;
+                lungeHitbox.Activate();
+            }
         }
         else if (attack.name == "Slam")
         {
             slamJumping = true;
             rb.velocity = new Vector2(attack.horizontalForce * dir.x, attack.verticalForce);
         }
+        else if (attack.name == "PowerBoost")
+        {
+            powerBoostActive = true;
+        }
+        else if (attack.name == "Basic")
+        {
+            rb.velocity = new Vector2(attack.horizontalForce * dir.x, rb.velocity.y);
+        }
     }
 
     private void HandleAttack()
     {
-        Vector2 dir = player.position - transform.position;
-        if (dir.x > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
-
-        if (currentAttack == "Charge")
-        {
-            // Continue moving fast through the player without stopping
-            Vector2 forward = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
-            rb.MovePosition(rb.position + forward * chargeAttack.horizontalForce * Time.deltaTime);
-        }
-        else if (currentAttack == "Slam" && slamJumping)
+        if (currentAttack == "Slam" && slamJumping)
         {
             if (rb.velocity.y <= 0)
             {
-                float horizontalDir = dir.x;
-                rb.velocity = new Vector2(horizontalDir * slamAttack.horizontalForce, -20f);
+                // Propel down only at peak
+                rb.velocity = new Vector2(rb.velocity.x, -20f);
                 slamJumping = false;
             }
         }
 
+        attackTimer -= Time.deltaTime;
+
         if (attackTimer <= 0)
-        {
             FinishAttack();
-        }
     }
 
     private void FinishAttack()
     {
+        if (currentAttack == "Lunge")
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                Collider2D playerCollider = playerObj.GetComponent<Collider2D>();
+                if (playerCollider != null)
+                    Physics2D.IgnoreCollision(bossCollider, playerCollider, false);
+            }
+        }
+
         rb.velocity = new Vector2(0, rb.velocity.y);
         isAttacking = false;
         slamJumping = false;
-
-        float distance = Vector2.Distance(transform.position, player.position);
-        if (distance < attackRange + 0.3f)
-        {
-            Attack current = null;
-            switch (currentAttack)
-            {
-                case "Basic": current = basicAttack; break;
-                case "Lunge": current = lungeAttack; break;
-                case "Slam": current = slamAttack; break;
-                case "Charge": current = chargeAttack; break;
-            }
-
-            if (current != null)
-                Debug.Log($"Player hit by {current.name}! ({current.damage} dmg)");
-        }
-
         currentAttack = "";
     }
+
+    public bool IsPowerBoosted() => powerBoostActive;
+    public void ConsumePowerBoost() => powerBoostActive = false;
+    public string GetCurrentAttackName() => currentAttack;
 
     private void OnDrawGizmosSelected()
     {
