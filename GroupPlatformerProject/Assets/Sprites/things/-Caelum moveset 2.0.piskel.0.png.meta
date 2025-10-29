@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3c58bee946b80304e8ca6b8bb7e62c58
+guid: a962f75eed7de184c84354dc136ed762
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 24
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: -Caelum moveset_0
+      name: -Caelum moveset 2.0.piskel.0_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c5d5b952c63281a47a7ba5a5d0d8f6e4
-      internalID: 1479847094
+      spriteID: fca44bcab004011468e8665f7289fb9d
+      internalID: -1310207439
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_1
+      name: -Caelum moveset 2.0.piskel.0_1
       rect:
         serializedVersion: 2
         x: 48
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a362fd00fd4339d41937fc3bb0b9a489
-      internalID: 122531955
+      spriteID: e7ece203caba9134bbfbedc570e5c002
+      internalID: -1488408542
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_2
+      name: -Caelum moveset 2.0.piskel.0_2
       rect:
         serializedVersion: 2
         x: 96
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 229644e4a9f6d2e4bacc1271af22c128
-      internalID: -1937954059
+      spriteID: 52e5f43615389f14283dbb0365c4d497
+      internalID: 1274754076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_3
+      name: -Caelum moveset 2.0.piskel.0_3
       rect:
         serializedVersion: 2
         x: 144
@@ -174,14 +174,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1638f4719890b724db9326b282b95875
-      internalID: 1213681853
+      spriteID: bd904a7787825ed41b7d2e8f5677e173
+      internalID: -340671385
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_4
+      name: -Caelum moveset 2.0.piskel.0_4
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 192
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 915c3774662a15641942c88d4ea5f168
+      internalID: -463105862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: -Caelum moveset 2.0.piskel.0_5
       rect:
         serializedVersion: 2
         x: 0
@@ -195,14 +216,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f96665f3c6dbed47a2f7e752cad0273
-      internalID: 490361704
+      spriteID: e2c90cc7e4bead84b85ec737a01c6d5b
+      internalID: -651793251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_5
+      name: -Caelum moveset 2.0.piskel.0_6
       rect:
         serializedVersion: 2
         x: 48
@@ -216,14 +237,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32e9cc4a30594e64097957f6eeb117e2
-      internalID: -1288327814
+      spriteID: 2d672fae4c9952246a593f514fe7e5df
+      internalID: -1120165500
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_6
+      name: -Caelum moveset 2.0.piskel.0_7
       rect:
         serializedVersion: 2
         x: 96
@@ -237,14 +258,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 85d745dd8a1bee841997e3046603fc6f
-      internalID: -1963654933
+      spriteID: 1b966cf0d7b245747900821be0b1cc7e
+      internalID: -1580430043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_7
+      name: -Caelum moveset 2.0.piskel.0_8
       rect:
         serializedVersion: 2
         x: 144
@@ -258,14 +279,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9948ca4e56720546823ba04e7ed9355
-      internalID: 977209752
+      spriteID: 8166c7edef9aa834890b9fcd58bf94b6
+      internalID: 699679259
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_8
+      name: -Caelum moveset 2.0.piskel.0_9
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 144
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dca8505efd207714fa1fecbc945b225a
+      internalID: 1410508308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: -Caelum moveset 2.0.piskel.0_10
       rect:
         serializedVersion: 2
         x: 0
@@ -279,14 +321,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b73aacf102c0f454089051503b357bed
-      internalID: -2007022396
+      spriteID: 2f67d345c4eaf854f8d9a4864928c1d3
+      internalID: 1469505241
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_9
+      name: -Caelum moveset 2.0.piskel.0_11
       rect:
         serializedVersion: 2
         x: 48
@@ -300,14 +342,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89e7463b830ea3e48a9a0df85b979888
-      internalID: -315795011
+      spriteID: 35a42e83641aad6418a9019ea451ea65
+      internalID: -1856037306
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_10
+      name: -Caelum moveset 2.0.piskel.0_12
       rect:
         serializedVersion: 2
         x: 96
@@ -321,14 +363,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1cd93b9b1a2a2eb48bdfee1255aa25bb
-      internalID: 1480285473
+      spriteID: 85ec41b84f5b41240b0e6477390ae44b
+      internalID: 1131123247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_11
+      name: -Caelum moveset 2.0.piskel.0_13
       rect:
         serializedVersion: 2
         x: 144
@@ -342,14 +384,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7da0f2d2af24ec4468f0508624288cb6
-      internalID: 1137039709
+      spriteID: 884ab13b6b3c1a44689be3ec190b20d0
+      internalID: 1532740305
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_12
+      name: -Caelum moveset 2.0.piskel.0_14
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 96
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0db87ae9010ccd4686dbd9c190588b0
+      internalID: 1376485664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: -Caelum moveset 2.0.piskel.0_15
       rect:
         serializedVersion: 2
         x: 0
@@ -363,14 +426,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fd4b75662e241114a826ba8f152481e5
-      internalID: 1900734170
+      spriteID: b3e9d2ae3e1e65e4383407f2f63660c7
+      internalID: 214390092
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_13
+      name: -Caelum moveset 2.0.piskel.0_16
       rect:
         serializedVersion: 2
         x: 48
@@ -384,14 +447,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 699f6f35c841f2c4a93a04a084ddd2fd
-      internalID: 1801013752
+      spriteID: ce39843a386d0234883bead5c6899fd1
+      internalID: 677384147
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_14
+      name: -Caelum moveset 2.0.piskel.0_17
       rect:
         serializedVersion: 2
         x: 96
@@ -405,14 +468,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 35c66b2894bbf6649ba1e643b618ed12
-      internalID: 350533688
+      spriteID: f02ae7df4f2efbb41ae08c86e2638eea
+      internalID: 390071884
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_15
+      name: -Caelum moveset 2.0.piskel.0_18
       rect:
         serializedVersion: 2
         x: 144
@@ -426,14 +489,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 21a195ee285e26e42aed3324746163a8
-      internalID: 1579107237
+      spriteID: 561b7d6f67e05b840a108683b21527bf
+      internalID: 881856228
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_16
+      name: -Caelum moveset 2.0.piskel.0_19
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 779de8be3af6c15439fbb62e89fb34b1
+      internalID: -272833337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: -Caelum moveset 2.0.piskel.0_20
       rect:
         serializedVersion: 2
         x: 0
@@ -447,14 +531,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46b4971f8f1646744b2266ab7155ac39
-      internalID: -351674177
+      spriteID: d4044d1fd9f63e742a09658b5bd441aa
+      internalID: 22929595
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: -Caelum moveset_17
+      name: -Caelum moveset 2.0.piskel.0_21
       rect:
         serializedVersion: 2
         x: 48
@@ -468,50 +552,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 04ee2677c24693c40bcb714129c1e40b
-      internalID: 706917582
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: -Caelum moveset_18
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 194d2c39db422ef418b0f0268a0556da
-      internalID: -1955923515
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: -Caelum moveset_19
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9f97ccebf87cc0342a39149beadcdc93
-      internalID: -1644451410
+      spriteID: 981bf8be48c9499499ba3c7f88b4b24d
+      internalID: -584752292
       vertices: []
       indices: 
       edges: []
@@ -527,26 +569,28 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      -Caelum moveset_0: 1479847094
-      -Caelum moveset_1: 122531955
-      -Caelum moveset_10: 1480285473
-      -Caelum moveset_11: 1137039709
-      -Caelum moveset_12: 1900734170
-      -Caelum moveset_13: 1801013752
-      -Caelum moveset_14: 350533688
-      -Caelum moveset_15: 1579107237
-      -Caelum moveset_16: -351674177
-      -Caelum moveset_17: 706917582
-      -Caelum moveset_18: -1955923515
-      -Caelum moveset_19: -1644451410
-      -Caelum moveset_2: -1937954059
-      -Caelum moveset_3: 1213681853
-      -Caelum moveset_4: 490361704
-      -Caelum moveset_5: -1288327814
-      -Caelum moveset_6: -1963654933
-      -Caelum moveset_7: 977209752
-      -Caelum moveset_8: -2007022396
-      -Caelum moveset_9: -315795011
+      -Caelum moveset 2.0.piskel.0_0: -1310207439
+      -Caelum moveset 2.0.piskel.0_1: -1488408542
+      -Caelum moveset 2.0.piskel.0_10: 1469505241
+      -Caelum moveset 2.0.piskel.0_11: -1856037306
+      -Caelum moveset 2.0.piskel.0_12: 1131123247
+      -Caelum moveset 2.0.piskel.0_13: 1532740305
+      -Caelum moveset 2.0.piskel.0_14: 1376485664
+      -Caelum moveset 2.0.piskel.0_15: 214390092
+      -Caelum moveset 2.0.piskel.0_16: 677384147
+      -Caelum moveset 2.0.piskel.0_17: 390071884
+      -Caelum moveset 2.0.piskel.0_18: 881856228
+      -Caelum moveset 2.0.piskel.0_19: -272833337
+      -Caelum moveset 2.0.piskel.0_2: 1274754076
+      -Caelum moveset 2.0.piskel.0_20: 22929595
+      -Caelum moveset 2.0.piskel.0_21: -584752292
+      -Caelum moveset 2.0.piskel.0_3: -340671385
+      -Caelum moveset 2.0.piskel.0_4: -463105862
+      -Caelum moveset 2.0.piskel.0_5: -651793251
+      -Caelum moveset 2.0.piskel.0_6: -1120165500
+      -Caelum moveset 2.0.piskel.0_7: -1580430043
+      -Caelum moveset 2.0.piskel.0_8: 699679259
+      -Caelum moveset 2.0.piskel.0_9: 1410508308
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
