@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6144b99a38b283a4d8e7d08123a6fced
+guid: 988d44c706ff356418aa91ecc5805008
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ObelokHB (1)_0
+      name: ObelokFragments_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
-        width: 160
-        height: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 073b6b691bac1ad4badec45d7712f069
-      internalID: 1817210265
+      spriteID: 0e58f4ae7fc9efd4ca3537d0e284654e
+      internalID: 1232404085
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ObelokHB (1)_1
+      name: ObelokFragments_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
-        width: 160
-        height: 32
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4aa8e7c0849ac4941a5c63b4e00578d5
-      internalID: 835137255
+      spriteID: 8b7fc27c8ddf3ae4c98884dbb39348eb
+      internalID: 730892119
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ObelokHB (1)_2
+      name: ObelokFragments_2
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 160
-        height: 32
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1caac2222c1771845927ab65b333e7ba
-      internalID: 1139365733
+      spriteID: 6c04c409a0649d84baf49e031c21a5ba
+      internalID: -1870980014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ObelokFragments_3
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37223e3b08fbd5346ba411c39fd28277
+      internalID: 767353152
       vertices: []
       indices: 
       edges: []
@@ -170,9 +191,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ObelokHB (1)_0: 1817210265
-      ObelokHB (1)_1: 835137255
-      ObelokHB (1)_2: 1139365733
+      ObelokFragments_0: 1232404085
+      ObelokFragments_1: 730892119
+      ObelokFragments_2: -1870980014
+      ObelokFragments_3: 767353152
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

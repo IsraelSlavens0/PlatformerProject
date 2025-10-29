@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: edad17735e930ce4084352fe9055d4b7
+guid: 6144b99a38b283a4d8e7d08123a6fced
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ObelokHB_0
+      name: ObelokHB (1)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cfcae65d92199e41a27a9267fb86e89
-      internalID: -1512300062
+      spriteID: 073b6b691bac1ad4badec45d7712f069
+      internalID: 1817210265
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ObelokHB_1
+      name: ObelokHB (1)_1
       rect:
         serializedVersion: 2
         x: 0
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6d789072e0402e478a7adea10b6060a
-      internalID: 1202945091
+      spriteID: 4aa8e7c0849ac4941a5c63b4e00578d5
+      internalID: 835137255
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ObelokHB_2
+      name: ObelokHB (1)_2
       rect:
         serializedVersion: 2
         x: 0
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55b7a1b24b161b549827370c88659aee
-      internalID: 1508593024
+      spriteID: 1caac2222c1771845927ab65b333e7ba
+      internalID: 1139365733
       vertices: []
       indices: 
       edges: []
@@ -170,9 +170,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ObelokHB_0: -1512300062
-      ObelokHB_1: 1202945091
-      ObelokHB_2: 1508593024
+      ObelokHB (1)_0: 1817210265
+      ObelokHB (1)_1: 835137255
+      ObelokHB (1)_2: 1139365733
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
