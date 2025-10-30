@@ -44,6 +44,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
+
         // Health packs
         if (collision.CompareTag("HealthPack"))
         {
@@ -58,11 +59,21 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(hitbox.damage);
         }
+
+       
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (powerups != null && powerups.isInvincible) return;
+
+        // Health packs
+        if (collision.gameObject.tag == "HealthPack")
+        {
+            Heal(1);
+            Destroy(collision.gameObject);
+            return;
+        }
 
         // Normal enemy collision
         if (collision.gameObject.CompareTag("Enemy"))
