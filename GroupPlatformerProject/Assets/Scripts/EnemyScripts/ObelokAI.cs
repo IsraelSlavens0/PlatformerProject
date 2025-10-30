@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
 public class ObelokAI : MonoBehaviour
 {
     public enum BossState { Idle, Awakening, Targeting, Charging, Slamming, Returning }
@@ -24,8 +23,13 @@ public class ObelokAI : MonoBehaviour
     public bool returnHome = true;
     private Vector3 home;
 
+    [Header("Fragment Animators")]
+    public Animator animTL;
+    public Animator animTR;
+    public Animator animBL;
+    public Animator animBR;
+
     private Rigidbody2D rb;
-    private Animator anim;
     private GameObject player;
     private BossState state = BossState.Idle;
     private bool canAttack = true;
@@ -36,11 +40,10 @@ public class ObelokAI : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
-        anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player");
         home = transform.position;
 
-        PlayAnimation("ObelokAsleep");
+        PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
     }
 
     void Update()
@@ -89,7 +92,7 @@ public class ObelokAI : MonoBehaviour
                 {
                     state = BossState.Idle;
                     awakeningPlayed = false;
-                    PlayAnimation("ObelokAsleep");
+                    PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
                 }
                 break;
         }
@@ -100,11 +103,28 @@ public class ObelokAI : MonoBehaviour
         if (!awakeningPlayed)
         {
             awakeningPlayed = true;
-            PlayAnimation("ObelokAwakening");
-            yield return new WaitForSeconds(GetAnimationLength("ObelokAwakening"));
+            PlayAnimationGroup(
+                "ObelokFragmentTLAwakening",
+                "ObelokFragmentTRAwakening",
+                "ObelokFragmentBLAwakening",
+                "ObelokFragmentBRAwakening"
+            );
+
+            yield return new WaitForSeconds(GetLongestAnimationLength(
+                "ObelokFragmentTLAwakening",
+                "ObelokFragmentTRAwakening",
+                "ObelokFragmentBLAwakening",
+                "ObelokFragmentBRAwakening"
+            ));
         }
+
         state = BossState.Targeting;
-        PlayAnimation("ObelokAwake");
+        PlayAnimationGroup(
+            "ObelokFragmentTLAwake",
+            "ObelokFragmentTRAwake",
+            "ObelokFragmentBLAwake",
+            "ObelokFragmentBRAwake"
+        );
     }
 
     IEnumerator SlamAttack()
@@ -134,7 +154,12 @@ public class ObelokAI : MonoBehaviour
         }
 
         state = BossState.Targeting;
-        PlayAnimation("ObelokAwake");
+        PlayAnimationGroup(
+            "ObelokFragmentTLAwake",
+            "ObelokFragmentTRAwake",
+            "ObelokFragmentBLAwake",
+            "ObelokFragmentBRAwake"
+        );
 
         yield return new WaitForSeconds(slamCooldown);
         canAttack = true;
@@ -148,17 +173,35 @@ public class ObelokAI : MonoBehaviour
         return fromPos.y - 5f;
     }
 
-    void PlayAnimation(string name)
+    void PlayAnimationGroup(string animTLName, string animTRName, string animBLName, string animBRName)
     {
-        if (anim == null) return;
-        if (!anim.GetCurrentAnimatorStateInfo(0).IsName(name))
-            anim.Play(name);
+        PlayAnimation(animTL, animTLName);
+        PlayAnimation(animTR, animTRName);
+        PlayAnimation(animBL, animBLName);
+        PlayAnimation(animBR, animBRName);
     }
 
-    float GetAnimationLength(string name)
+    void PlayAnimation(Animator animator, string name)
     {
-        if (anim == null || anim.runtimeAnimatorController == null) return 1f;
-        foreach (var clip in anim.runtimeAnimatorController.animationClips)
+        if (animator == null) return;
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName(name))
+            animator.Play(name);
+    }
+
+    float GetLongestAnimationLength(string tlName, string trName, string blName, string brName)
+    {
+        float maxLen = 1f;
+        maxLen = Mathf.Max(maxLen, GetAnimationLength(animTL, tlName));
+        maxLen = Mathf.Max(maxLen, GetAnimationLength(animTR, trName));
+        maxLen = Mathf.Max(maxLen, GetAnimationLength(animBL, blName));
+        maxLen = Mathf.Max(maxLen, GetAnimationLength(animBR, brName));
+        return maxLen;
+    }
+
+    float GetAnimationLength(Animator animator, string name)
+    {
+        if (animator == null || animator.runtimeAnimatorController == null) return 1f;
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
         {
             if (clip.name == name)
                 return clip.length;
