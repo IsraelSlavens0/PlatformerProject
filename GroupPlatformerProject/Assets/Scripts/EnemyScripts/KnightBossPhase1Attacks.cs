@@ -1,17 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-public class KnightBossAI : MonoBehaviour
+public class KnightBossPhase1Attacks : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    public float chaseSpeed = 5f;
-    public float runAwaySpeed = 4f;
-    public float attackRange = 2f;
-    public float detectionRange = 10f;
-
     [System.Serializable]
     public class Attack
     {
@@ -32,14 +25,13 @@ public class KnightBossAI : MonoBehaviour
     public Attack powerBoostAttack = new Attack { name = "PowerBoost", duration = 0.8f, damage = 0f };
 
     [Header("References")]
-    public KnightBossHitbox lungeHitbox; // Assign in inspector
+    public KnightBossHitbox lungeHitbox;
 
     private Rigidbody2D rb;
     private Collider2D bossCollider;
 
     // State
-    private bool isAttacking = false;
-    private bool isRunningAway = false;
+    [HideInInspector] public bool isAttacking = false;
     private string currentAttack = "";
     private float attackTimer = 0f;
     private bool slamJumping = false;
@@ -48,12 +40,14 @@ public class KnightBossAI : MonoBehaviour
     // Timers
     private float abilityTimer = 0f;
     private float basicAttackTimer = 0f;
-    private float runAwayTimer = 0f;
+
+    private KnightBossMovement movement;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         bossCollider = GetComponent<Collider2D>();
+        movement = GetComponent<KnightBossMovement>();
 
         if (lungeHitbox != null)
             lungeHitbox.bossReference = this;
@@ -64,67 +58,32 @@ public class KnightBossAI : MonoBehaviour
         abilityTimer -= Time.deltaTime;
         basicAttackTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
-        runAwayTimer -= Time.deltaTime;
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj == null) return;
+
         Transform playerTransform = playerObj.transform;
 
         if (isAttacking)
             HandleAttack();
-        else if (isRunningAway)
-            RunAway(playerTransform);
         else
-            HandleChaseAndDecision(playerTransform);
-    }
-
-    private void HandleChaseAndDecision(Transform playerTransform)
-    {
-        Vector2 direction = (playerTransform.position - transform.position);
-        float distance = direction.magnitude;
-
-        if (distance < detectionRange)
-        {
-            if (!isAttacking && !isRunningAway)
-                rb.velocity = new Vector2(direction.normalized.x * chaseSpeed, rb.velocity.y);
-
-            if (distance <= attackRange)
-            {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-
-                int decision = Random.Range(0, 10);
-                if (decision >= 8)
-                    StartRunningAway();
-                else
-                    TryRandomAttack(playerTransform);
-            }
-        }
-        else
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-    }
-
-    private void StartRunningAway()
-    {
-        isRunningAway = true;
-        runAwayTimer = Random.Range(1f, 2f);
-    }
-
-    private void RunAway(Transform playerTransform)
-    {
-        if (runAwayTimer <= 0)
-        {
-            isRunningAway = false;
-            return;
-        }
-
-        Vector2 direction = (transform.position - playerTransform.position).normalized;
-        rb.velocity = new Vector2(direction.x * runAwaySpeed, rb.velocity.y);
+            TryRandomAttack(playerTransform);
     }
 
     private void TryRandomAttack(Transform playerTransform)
     {
+        if (movement.isRunningAway) return;
+
+        Vector2 direction = playerTransform.position - transform.position;
+        if (direction.magnitude > movement.attackRange) return;
+
+        int decision = Random.Range(0, 10);
+        if (decision >= 8)
+        {
+            movement.StartRunningAway();
+            return;
+        }
+
         if (abilityTimer <= 0)
         {
             Attack[] abilities = { lungeAttack, slamAttack, powerBoostAttack, basicAttack };
@@ -151,7 +110,6 @@ public class KnightBossAI : MonoBehaviour
 
         if (attack.name == "Lunge")
         {
-            // Ignore collisions with player while lunging
             Collider2D playerCollider = playerTransform.GetComponent<Collider2D>();
             if (playerCollider != null)
                 Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
@@ -198,7 +156,6 @@ public class KnightBossAI : MonoBehaviour
 
     private void FinishAttack()
     {
-        // Re-enable collision with player after lunge
         if (currentAttack == "Lunge")
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -219,9 +176,4 @@ public class KnightBossAI : MonoBehaviour
     public bool IsPowerBoosted() => powerBoostActive;
     public void ConsumePowerBoost() => powerBoostActive = false;
     public string GetCurrentAttackName() => currentAttack;
-
-    public static implicit operator KnightBossAI(KnightBossPhase1Attacks v)
-    {
-        throw new System.NotImplementedException();
-    }
 }

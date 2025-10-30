@@ -4,13 +4,14 @@ using UnityEngine;
 public class KnightBossHitbox : MonoBehaviour
 {
     [Header("Boss Reference")]
-    public KnightBossAI boss;
-
-    [Header("Damage Settings")]
-    public float damage = 20f;
-    public float activeTime = 0.5f; // How long hitbox stays active
+    // Can reference either AI or Phase1Attacks
+    public MonoBehaviour bossReference;
 
     private Collider2D col;
+
+    // Current attack info
+    public float damage = 10f;
+    private float activeTime = 0.5f;
 
     private void Awake()
     {
@@ -22,8 +23,28 @@ public class KnightBossHitbox : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Activate()
+    /// <summary>
+    /// Activate the hitbox using an attack from either AI or Phase1Attacks.
+    /// </summary>
+    public void Activate(object attack)
     {
+        // Determine type of attack dynamically
+        if (attack is KnightBossAI.Attack aiAttack)
+        {
+            damage = aiAttack.damage;
+            activeTime = aiAttack.duration;
+        }
+        else if (attack is KnightBossPhase1Attacks.Attack phaseAttack)
+        {
+            damage = phaseAttack.damage;
+            activeTime = phaseAttack.duration;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid attack type passed to hitbox.");
+            return;
+        }
+
         gameObject.SetActive(true);
         StartCoroutine(DeactivateAfterTime());
     }
@@ -43,11 +64,11 @@ public class KnightBossHitbox : MonoBehaviour
         {
             float finalDamage = damage;
 
-            // Apply power boost if active
-            if (boss != null && boss.IsPowerBoosted())
+            // Apply power boost if active (works for Phase1Attacks only)
+            if (bossReference is KnightBossPhase1Attacks phaseBoss && phaseBoss.IsPowerBoosted())
             {
                 finalDamage *= 1.6f;
-                boss.ConsumePowerBoost();
+                phaseBoss.ConsumePowerBoost();
             }
 
             playerHealth.TakeDamage(finalDamage);
