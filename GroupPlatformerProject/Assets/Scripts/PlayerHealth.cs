@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -7,85 +6,80 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health Settings")]
-    public float health = 10;
+    public float health = 10f;
     public float maxHealth;
     public Image healthBar;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
-        {
-            health --;
-            healthBar.fillAmount = health / maxHealth;
-            if (health < -0)
-            {
-                //if health is too low reload the level
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
-        if (collision.gameObject.tag == "EnemyBullet")
-        {
-            health--;
-            healthBar.fillAmount = health / maxHealth;
-            if (health <= 0)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
-        }
-        KnightBossHitbox lunge = collision.GetComponent<KnightBossHitbox>();
-        if (lunge != null && !GetComponent<Powerups>().isInvincible)
-        {
-            KnightBossAI boss = lunge.boss;
-            if (boss != null)
-            {
-                float damage = boss.lungeAttack.damage;
-                if (boss.IsPowerBoosted())
-                {
-                    damage *= 1.6f;
-                    boss.ConsumePowerBoost();
-                }
-                TakeDamage(damage);
-            }
-        }
+    private Powerups powerups;
 
-        // Take damage from enemy bullets
-        if (collision.tag == "EnemyBullet")
-        {
-            TakeDamage(1);
-        }
-    }
     private void Start()
     {
         maxHealth = health;
-        healthBar.fillAmount = health / maxHealth;
+        powerups = GetComponent<Powerups>();
+        UpdateHealthBar();
     }
 
     private void Update()
     {
-        // Clamp health
         if (health > maxHealth) health = maxHealth;
-        healthBar.fillAmount = health / maxHealth;
+        UpdateHealthBar();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (powerups != null && powerups.isInvincible) return;
 
-        // Check for LungeHitbox from KnightBoss
+        // Handle KnightBoss hitbox damage
+        KnightBossHitbox bossHitbox = collision.GetComponent<KnightBossHitbox>();
+        if (bossHitbox != null)
+        {
+            TakeDamage(bossHitbox.damage);
+            return;
+        }
+
+        // Normal enemy collision
+        if (collision.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
+            return;
+        }
+
+        // Enemy bullets
+        if (collision.CompareTag("EnemyBullet"))
+        {
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+            return;
+        }
+
+        // Health packs
+        if (collision.CompareTag("HealthPack"))
+        {
+            Heal(1);
+            Destroy(collision.gameObject);
+            return;
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Take damage from normal enemies
-        if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
+        if (powerups != null && powerups.isInvincible) return;
+
+        // Normal enemy collision
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(1);
+            return;
         }
 
-        // Take damage from KnightBoss collisions
+        // KnightBoss collision (non-hitbox attacks)
         KnightBossAI boss = collision.gameObject.GetComponent<KnightBossAI>();
-        if (boss != null && !GetComponent<Powerups>().isInvincible)
+        if (boss != null)
         {
             float damage = 0f;
-            string attackName = boss.GetCurrentAttackName();
+            string attack = boss.GetCurrentAttackName();
 
-            switch (attackName)
+            switch (attack)
             {
                 case "Basic":
                     damage = boss.basicAttack.damage;
@@ -93,9 +87,6 @@ public class PlayerHealth : MonoBehaviour
                 case "Slam":
                     damage = boss.slamAttack.damage;
                     break;
-                case "PowerBoost":
-                    // PowerBoost itself doesn't deal damage, handled in next attack
-                    return;
             }
 
             if (boss.IsPowerBoosted())
@@ -104,28 +95,44 @@ public class PlayerHealth : MonoBehaviour
                 boss.ConsumePowerBoost();
             }
 
-            TakeDamage(damage);
+            if (damage > 0)
+                TakeDamage(damage);
         }
 
-        // Health pack logic
-        if (collision.gameObject.tag == "HealthPack")
+        // Health packs
+        if (collision.gameObject.CompareTag("HealthPack"))
         {
-            health++;
-            if (health > maxHealth) health = maxHealth;
-            healthBar.fillAmount = health / maxHealth;
+            Heal(1);
             Destroy(collision.gameObject);
         }
     }
 
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(float amount)
     {
-        health -= damageAmount;
-        healthBar.fillAmount = health / maxHealth;
+        if (amount <= 0) return;
+
+        health -= amount;
+        if (health < 0) health = 0;
+
+        Debug.Log($"Player took {amount} damage. Remaining health: {health}");
+        UpdateHealthBar();
 
         if (health <= 0)
         {
-            // Reload scene instantly
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+
+    private void Heal(float amount)
+    {
+        health += amount;
+        if (health > maxHealth) health = maxHealth;
+        UpdateHealthBar();
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (healthBar != null)
+            healthBar.fillAmount = health / maxHealth;
     }
 }

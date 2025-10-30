@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -31,7 +30,7 @@ public class KnightBossAI : MonoBehaviour
     public Attack powerBoostAttack = new Attack { name = "PowerBoost", duration = 0.8f, damage = 0f };
 
     [Header("References")]
-    public KnightBossHitbox lungeHitbox; // assign child hitbox in inspector
+    public KnightBossHitbox lungeHitbox; // Assign in inspector
 
     private Rigidbody2D rb;
     private Collider2D bossCollider;
@@ -85,9 +84,7 @@ public class KnightBossAI : MonoBehaviour
         if (distance < detectionRange)
         {
             if (!isAttacking && !isRunningAway)
-            {
                 rb.velocity = new Vector2(direction.normalized.x * chaseSpeed, rb.velocity.y);
-            }
 
             if (distance <= attackRange)
             {
@@ -110,7 +107,6 @@ public class KnightBossAI : MonoBehaviour
     {
         isRunningAway = true;
         runAwayTimer = Random.Range(1f, 2f);
-        Debug.Log("Knight is running away!");
     }
 
     private void RunAway(Transform playerTransform)
@@ -149,12 +145,11 @@ public class KnightBossAI : MonoBehaviour
         currentAttack = attack.name;
         attackTimer = attack.duration;
 
-        Debug.Log($"Knight uses {attack.name}!");
-
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
         if (attack.name == "Lunge")
         {
+            // Ignore collisions with player while lunging
             Collider2D playerCollider = playerTransform.GetComponent<Collider2D>();
             if (playerCollider != null)
                 Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
@@ -189,13 +184,10 @@ public class KnightBossAI : MonoBehaviour
         {
             if (rb.velocity.y <= 0)
             {
-                // Propel down only at peak
                 rb.velocity = new Vector2(rb.velocity.x, -20f);
                 slamJumping = false;
             }
         }
-
-        attackTimer -= Time.deltaTime;
 
         if (attackTimer <= 0)
             FinishAttack();
@@ -203,6 +195,7 @@ public class KnightBossAI : MonoBehaviour
 
     private void FinishAttack()
     {
+        // Re-enable collision with player after lunge
         if (currentAttack == "Lunge")
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -223,13 +216,4 @@ public class KnightBossAI : MonoBehaviour
     public bool IsPowerBoosted() => powerBoostActive;
     public void ConsumePowerBoost() => powerBoostActive = false;
     public string GetCurrentAttackName() => currentAttack;
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-    }
 }
