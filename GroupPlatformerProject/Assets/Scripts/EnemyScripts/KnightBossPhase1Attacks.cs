@@ -106,6 +106,9 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         currentAttack = attack.name;
         attackTimer = attack.duration;
 
+        // DEBUG LOG: show which attack is starting
+        Debug.Log($"Knight Boss is using attack: {currentAttack}");
+
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
         if (attack.name == "Lunge")
@@ -121,7 +124,6 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             {
                 lungeHitbox.damage = attack.damage;
                 lungeHitbox.Activate(lungeAttack);
-
             }
         }
         else if (attack.name == "Slam")
@@ -138,6 +140,7 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             rb.velocity = new Vector2(attack.horizontalForce * dir.x, rb.velocity.y);
         }
     }
+
 
     private void HandleAttack()
     {
