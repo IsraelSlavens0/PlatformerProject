@@ -11,9 +11,6 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth;
     public Image healthBar;
 
-    //if we collide with something tagged as enemy, take damage
-    //if health gets too low, we die (reload the level)
-    //if we collide with something tagged as health pack, increase health
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy" && !GetComponent<Powerups>().isInvincible)
@@ -35,34 +32,6 @@ public class PlayerHealth : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-
-
-    private void Start()
-    {
-        maxHealth = health;
-        healthBar.fillAmount = health / maxHealth;
-    }
-
-    private void Update()
-    {
-        // Clamp health
-        if (health > maxHealth) health = maxHealth;
-        healthBar.fillAmount = health / maxHealth;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Take damage from enemy bullets
-        if (collision.tag == "EnemyBullet")
-        {
-            TakeDamage(1);
-        }
-
-        // Check for LungeHitbox from KnightBoss
         KnightBossHitbox lunge = collision.GetComponent<KnightBossHitbox>();
         if (lunge != null && !GetComponent<Powerups>().isInvincible)
         {
@@ -78,7 +47,28 @@ public class PlayerHealth : MonoBehaviour
                 TakeDamage(damage);
             }
         }
+
+        // Take damage from enemy bullets
+        if (collision.tag == "EnemyBullet")
+        {
+            TakeDamage(1);
+        }
     }
+    private void Start()
+    {
+        maxHealth = health;
+        healthBar.fillAmount = health / maxHealth;
+    }
+
+    private void Update()
+    {
+        // Clamp health
+        if (health > maxHealth) health = maxHealth;
+        healthBar.fillAmount = health / maxHealth;
+    }
+
+
+        // Check for LungeHitbox from KnightBoss
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
