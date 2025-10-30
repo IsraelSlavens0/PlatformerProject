@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KnightBossHitbox : MonoBehaviour
@@ -8,8 +7,8 @@ public class KnightBossHitbox : MonoBehaviour
     public KnightBossAI boss;
 
     [Header("Damage Settings")]
-    public float damage = 20f; // Must be public
-    public float activeTime = 0.5f; // How long the hitbox is active
+    public float damage = 20f;
+    public float activeTime = 0.5f; // How long hitbox stays active
 
     private Collider2D col;
 
@@ -18,6 +17,7 @@ public class KnightBossHitbox : MonoBehaviour
         col = GetComponent<Collider2D>();
         if (col == null)
             col = gameObject.AddComponent<BoxCollider2D>();
+
         col.isTrigger = true;
         gameObject.SetActive(false);
     }
@@ -36,22 +36,21 @@ public class KnightBossHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (!collision.CompareTag("Player")) return;
+
+        PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
+        if (playerHealth != null)
         {
-            PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
+            float finalDamage = damage;
+
+            // Apply power boost if active
+            if (boss != null && boss.IsPowerBoosted())
             {
-                float finalDamage = damage;
-
-                // Apply power boost if the boss has it
-                if (boss != null && boss.IsPowerBoosted())
-                {
-                    finalDamage *= 1.6f;
-                    boss.ConsumePowerBoost();
-                }
-
-                playerHealth.TakeDamage(finalDamage);
+                finalDamage *= 1.6f;
+                boss.ConsumePowerBoost();
             }
+
+            playerHealth.TakeDamage(finalDamage);
         }
     }
 }
