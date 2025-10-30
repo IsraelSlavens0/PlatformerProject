@@ -29,14 +29,6 @@ public class PlayerHealth : MonoBehaviour
     {
         if (powerups != null && powerups.isInvincible) return;
 
-        // Handle KnightBoss hitbox damage
-        KnightBossHitbox bossHitbox = collision.GetComponent<KnightBossHitbox>();
-        if (bossHitbox != null)
-        {
-            TakeDamage(bossHitbox.damage);
-            return;
-        }
-
         // Normal enemy collision
         if (collision.CompareTag("Enemy"))
         {
