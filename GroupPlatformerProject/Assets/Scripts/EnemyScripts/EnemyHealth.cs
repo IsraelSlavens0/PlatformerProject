@@ -8,10 +8,18 @@ public class EnemyHealth : MonoBehaviour
 
     private ThiefAI thiefAI;
 
-    //Added: public prefab to drop when enemy dies
-    public GameObject dropPrefab;
+    // PUBLIC DROP SETTINGS - edit these in the Inspector
+    [Header("Drop Settings")]
+    [Tooltip("Array of prefabs that can be dropped when the enemy dies")]
+    public GameObject[] dropPrefabs;
 
-    //Added: optional drop position offset
+    [Tooltip("Minimum number of objects to drop (inclusive)")]
+    public int minDropCount = 1;
+
+    [Tooltip("Maximum number of objects to drop (inclusive)")]
+    public int maxDropCount = 3;
+
+    [Tooltip("Offset applied to each dropped object relative to the enemy position")]
     public Vector3 dropOffset = Vector3.zero;
 
     void Start()
@@ -19,15 +27,10 @@ public class EnemyHealth : MonoBehaviour
         thiefAI = GetComponent<ThiefAI>();
     }
 
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // When hit by a player bullet
-        if (collision.gameObject.tag == "PlayerBullet")
+        if (collision.gameObject.CompareTag("PlayerBullet"))
         {
             Destroy(collision.gameObject);
             TakeDamage(1);
@@ -51,10 +54,23 @@ public class EnemyHealth : MonoBehaviour
             thiefAI.DropStolenCoins();
         }
 
-        //Added: drop prefab if assigned
-        if (dropPrefab != null)
+        // DROP LOGIC
+        if (dropPrefabs != null && dropPrefabs.Length > 0)
         {
-            Instantiate(dropPrefab, transform.position + dropOffset, Quaternion.identity);
+            // Clamp the range so we never get negative or inverted values
+            int dropCount = Random.Range(
+                Mathf.Max(0, minDropCount),
+                Mathf.Max(1, maxDropCount + 1)   // +1 because Range max is exclusive
+            );
+
+            for (int i = 0; i < dropCount; i++)
+            {
+                // Pick a random prefab from the array
+                GameObject prefab = dropPrefabs[Random.Range(0, dropPrefabs.Length)];
+
+                // Spawn it with the optional offset
+                Instantiate(prefab, transform.position + dropOffset, Quaternion.identity);
+            }
         }
 
         Destroy(gameObject);

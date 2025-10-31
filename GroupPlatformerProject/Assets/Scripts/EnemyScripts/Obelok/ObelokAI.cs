@@ -4,7 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ObelokAI : MonoBehaviour
 {
-    public enum BossState { Idle, Awakening, Targeting, Charging, Slamming, Returning }
+    public enum BossState { Idle, Awakening, Targeting, Charging, Slamming, Returning, Splitting, Reforming, KO }
+    public enum BossPhase { Phase1, Phase2 }
 
     [Header("Aggro Settings")]
     public float chaseTriggerDistance = 10f;
@@ -29,12 +30,25 @@ public class ObelokAI : MonoBehaviour
     public Animator animBL;
     public Animator animBR;
 
+    [Header("Fragment References")]
+    public GameObject fragmentTL;
+    public GameObject fragmentTR;
+    public GameObject fragmentBL;
+    public GameObject fragmentBR;
+
+    [Header("Phase 2 Settings")]
+    public float reformTime = 3f;
+    public float KODuration = 10f;
+    public float KOHeight = 1f; // Position Y where Obelok falls and is KO'd
+
     private Rigidbody2D rb;
     private GameObject player;
     private BossState state = BossState.Idle;
+    public BossPhase phase = BossPhase.Phase1;
     private bool canAttack = true;
     private Vector3 targetHoverPos;
     private bool awakeningPlayed = false;
+    private bool isKO = false;
 
     void Start()
     {
@@ -44,6 +58,7 @@ public class ObelokAI : MonoBehaviour
         home = transform.position;
 
         PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
+        SetFragmentsActive(false);
     }
 
     void Update()
@@ -63,7 +78,6 @@ public class ObelokAI : MonoBehaviour
                 break;
 
             case BossState.Awakening:
-                // handled in coroutine
                 break;
 
             case BossState.Targeting:
@@ -83,7 +97,6 @@ public class ObelokAI : MonoBehaviour
                 break;
 
             case BossState.Slamming:
-                // handled in coroutine
                 break;
 
             case BossState.Returning:
@@ -95,6 +108,23 @@ public class ObelokAI : MonoBehaviour
                     PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
                 }
                 break;
+
+            case BossState.Splitting:
+                SplitIntoFragments();
+                break;
+
+            case BossState.Reforming:
+                break;
+
+            case BossState.KO:
+                // Countdown KO timer
+                break;
+        }
+
+        // Check if all fragments subdued to reform
+        if (phase == BossPhase.Phase2 && AllFragmentsSubdued() && state != BossState.Reforming && !isKO)
+        {
+            StartCoroutine(ReformFragments());
         }
     }
 
@@ -118,6 +148,7 @@ public class ObelokAI : MonoBehaviour
             ));
         }
 
+        phase = BossPhase.Phase1;
         state = BossState.Targeting;
         PlayAnimationGroup(
             "ObelokFragmentTLAwake",
@@ -165,6 +196,64 @@ public class ObelokAI : MonoBehaviour
         canAttack = true;
     }
 
+    void SplitIntoFragments()
+    {
+        phase = BossPhase.Phase2;
+        SetFragmentsActive(true);
+        gameObject.SetActive(false); // Hide main body while fragments act
+    }
+
+    IEnumerator ReformFragments()
+    {
+        state = BossState.Reforming;
+        SetFragmentsActive(false);
+
+        // Reset fragment health
+        fragmentTL.GetComponent<ObelokFragmentHealth>().Revive();
+        fragmentTR.GetComponent<ObelokFragmentHealth>().Revive();
+        fragmentBL.GetComponent<ObelokFragmentHealth>().Revive();
+        fragmentBR.GetComponent<ObelokFragmentHealth>().Revive();
+
+        // Show main boss above ground and fall
+        gameObject.SetActive(true);
+        Vector3 startPos = transform.position + Vector3.up * 5f; // Fall from above
+        Vector3 endPos = new Vector3(transform.position.x, KOHeight, transform.position.z);
+        float fallSpeed = 10f;
+
+        while (Vector3.Distance(transform.position, endPos) > 0.05f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, endPos, fallSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Start KO state
+        state = BossState.KO;
+        isKO = true;
+
+        // Wait KO duration
+        yield return new WaitForSeconds(KODuration);
+
+        // Resume phase 2
+        state = BossState.Targeting;
+        isKO = false;
+    }
+
+    bool AllFragmentsSubdued()
+    {
+        return fragmentTL.GetComponent<ObelokFragmentHealth>().isSubdued &&
+               fragmentTR.GetComponent<ObelokFragmentHealth>().isSubdued &&
+               fragmentBL.GetComponent<ObelokFragmentHealth>().isSubdued &&
+               fragmentBR.GetComponent<ObelokFragmentHealth>().isSubdued;
+    }
+
+    void SetFragmentsActive(bool active)
+    {
+        if (fragmentTL != null) fragmentTL.SetActive(active);
+        if (fragmentTR != null) fragmentTR.SetActive(active);
+        if (fragmentBL != null) fragmentBL.SetActive(active);
+        if (fragmentBR != null) fragmentBR.SetActive(active);
+    }
+
     float FindGroundBelow(Vector3 fromPos)
     {
         RaycastHit2D hit = Physics2D.Raycast(fromPos, Vector2.down, 100f, groundLayer);
@@ -207,13 +296,5 @@ public class ObelokAI : MonoBehaviour
                 return clip.length;
         }
         return 1f;
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, chaseTriggerDistance);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, loseAggroDistance);
     }
 }
