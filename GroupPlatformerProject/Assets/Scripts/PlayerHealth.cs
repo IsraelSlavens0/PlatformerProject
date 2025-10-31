@@ -68,21 +68,6 @@ public class PlayerHealth : MonoBehaviour
         if (powerups != null && powerups.isInvincible) return;
 
         // Health packs
-        if (collision.gameObject.tag == "HealthPack")
-        {
-            Heal(1);
-            Destroy(collision.gameObject);
-            return;
-        }
-
-        // Normal enemy collision
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            TakeDamage(1);
-            return;
-        }
-
-        // Health packs
         if (collision.gameObject.CompareTag("HealthPack"))
         {
             Heal(1);
@@ -90,56 +75,54 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        // Check for KnightBossAI
-        KnightBossAI bossAI = collision.gameObject.GetComponent<KnightBossAI>();
-        if (bossAI != null)
+        // Normal enemies
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            HandleBossDamage(
-                bossAI.GetCurrentAttackName(),
-                bossAI.basicAttack.damage,
-                bossAI.slamAttack.damage,
-                bossAI.IsPowerBoosted(),
-                bossAI.ConsumePowerBoost
-            );
+            TakeDamage(1);
             return;
         }
 
-        // Check for KnightBossPhase1Attacks
+       
         KnightBossPhase1Attacks bossPhase1 = collision.gameObject.GetComponent<KnightBossPhase1Attacks>();
         if (bossPhase1 != null)
         {
-            HandleBossDamage(
-                bossPhase1.GetCurrentAttackName(),
-                bossPhase1.basicAttack.damage,
-                bossPhase1.slamAttack.damage,
-                bossPhase1.IsPowerBoosted(),
-                bossPhase1.ConsumePowerBoost
-            );
+            HandleBossPhase1Damage(bossPhase1);
+            return;
         }
     }
 
-    private void HandleBossDamage(string currentAttack, float basicDamage, float slamDamage, bool isBoosted, System.Action consumeBoost)
+    private void HandleBossPhase1Damage(KnightBossPhase1Attacks bossPhase1)
     {
+        string currentAttack = bossPhase1.GetCurrentAttackName();
         float damage = 0f;
 
         switch (currentAttack)
         {
             case "Basic":
-                damage = basicDamage;
+                damage = bossPhase1.basicAttack.damage;
+                break;
+            case "Lunge":
+                damage = bossPhase1.lungeAttack.damage;
                 break;
             case "Slam":
-                damage = slamDamage;
+                damage = bossPhase1.slamAttack.damage;
                 break;
+            case "PowerBoost":
+                return;
         }
 
-        if (isBoosted)
+        // Apply Power Boost modifier
+        if (bossPhase1.IsPowerBoosted())
         {
             damage *= 1.6f;
-            consumeBoost?.Invoke();
+            bossPhase1.ConsumePowerBoost();
         }
 
         if (damage > 0)
+        {
             TakeDamage(damage);
+            Debug.Log($"Player took {damage} damage from KnightBoss {currentAttack}");
+        }
     }
 
     public void TakeDamage(float amount)

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,13 +12,14 @@ public class KnightBossMovement : MonoBehaviour
     public float detectionRange = 10f;
 
     private Rigidbody2D rb;
-
+    KnightBossPhase1Attacks p1Attacks;
     [HideInInspector] public bool isRunningAway = false;
     private float runAwayTimer = 0f;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        p1Attacks = GetComponent<KnightBossPhase1Attacks>();
     }
 
     private void Update()
@@ -31,20 +32,32 @@ public class KnightBossMovement : MonoBehaviour
         if (isRunningAway)
             RunAway(playerTransform);
         else
-            ChasePlayer(playerTransform);
+            HandleChaseAndDecision(playerTransform);
 
         if (runAwayTimer > 0)
             runAwayTimer -= Time.deltaTime;
     }
 
-    private void ChasePlayer(Transform playerTransform)
+    private void HandleChaseAndDecision(Transform playerTransform)
     {
-        Vector2 direction = playerTransform.position - transform.position;
+        Vector2 direction = (playerTransform.position - transform.position);
         float distance = direction.magnitude;
 
         if (distance < detectionRange)
         {
-            rb.velocity = new Vector2(direction.normalized.x * chaseSpeed, rb.velocity.y);
+            if (!p1Attacks.isAttacking && !isRunningAway)
+                rb.velocity = new Vector2(direction.normalized.x * chaseSpeed, rb.velocity.y);
+
+            if (distance <= attackRange)
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+
+                int decision = Random.Range(0, 10);
+                if (decision >= 8)
+                    StartRunningAway();
+                else
+                    p1Attacks.TryRandomAttack(playerTransform);
+            }
         }
         else
         {
@@ -52,7 +65,7 @@ public class KnightBossMovement : MonoBehaviour
         }
     }
 
-    public void StartRunningAway()
+    private void StartRunningAway()
     {
         isRunningAway = true;
         runAwayTimer = Random.Range(1f, 2f);
@@ -68,10 +81,5 @@ public class KnightBossMovement : MonoBehaviour
 
         Vector2 direction = (transform.position - playerTransform.position).normalized;
         rb.velocity = new Vector2(direction.x * runAwaySpeed, rb.velocity.y);
-    }
-
-    public void StopMovement()
-    {
-        rb.velocity = new Vector2(0, rb.velocity.y);
     }
 }
