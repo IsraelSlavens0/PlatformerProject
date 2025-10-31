@@ -159,7 +159,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6116945167072176358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 5
-  dropPrefab: {fileID: 2968031596276610434, guid: b477b096fda890149baf5375e561619e, type: 3}
+  dropPrefabs:
+  - {fileID: 2968031596276610434, guid: b477b096fda890149baf5375e561619e, type: 3}
+  minDropCount: 8
+  maxDropCount: 8
   dropOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7246517299003543951
 MonoBehaviour:
