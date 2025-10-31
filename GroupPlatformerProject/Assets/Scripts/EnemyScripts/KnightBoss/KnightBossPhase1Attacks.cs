@@ -103,23 +103,23 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             // Temporarily ignore collision with player
             StartCoroutine(TemporaryIgnorePlayerCollision(0.15f));
 
-            Debug.Log($"⚔️ Knight Boss lunging toward player!");
+            Debug.Log($"Knight Boss lunging toward player!");
         }
         else if (attack.name == "Slam")
         {
             slamJumping = true;
             rb.velocity = new Vector2(attack.horizontalForce * dir.x, attack.verticalForce);
-            Debug.Log("💥 Knight Boss performing Slam!");
+            Debug.Log("Knight Boss performing Slam!");
         }
         else if (attack.name == "PowerBoost")
         {
             powerBoostActive = true;
-            Debug.Log("🔥 Knight Boss activating PowerBoost!");
+        Debug.Log("Knight Boss activating PowerBoost!");
         }
         else if (attack.name == "Basic")
         {
             rb.velocity = new Vector2(attack.horizontalForce * dir.x, rb.velocity.y);
-            Debug.Log("🗡️ Knight Boss performing Basic Attack!");
+            Debug.Log("Knight Boss performing Basic Attack!");
         }
     }
 

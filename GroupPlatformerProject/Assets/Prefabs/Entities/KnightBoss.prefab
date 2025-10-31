@@ -186,6 +186,8 @@ GameObject:
   - component: {fileID: 7633808285801146138}
   - component: {fileID: 3315849769350548877}
   - component: {fileID: 7083706293273194163}
+  - component: {fileID: 1297400364880600456}
+  - component: {fileID: 6197023008955784789}
   m_Layer: 0
   m_Name: KnightBoss
   m_TagString: BossI
@@ -274,7 +276,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
-  dropPrefab: {fileID: 8883093640648098055, guid: dbe2e1e5e09e6c84f9d860a4502e08d8, type: 3}
+  dropPrefabs: []
+  minDropCount: 1
+  maxDropCount: 3
   dropOffset: {x: 0, y: 0, z: 0}
 --- !u!50 &3315849769350548877
 Rigidbody2D:
@@ -348,3 +352,60 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1297400364880600456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514659653533089205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2594a802dc5cbb54aacd24c4f6af1045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseSpeed: 5
+  runAwaySpeed: 4
+  attackRange: 2
+  detectionRange: 10
+  isRunningAway: 0
+--- !u!114 &6197023008955784789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514659653533089205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a2a9de5a8958142993ab6d370e0186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityCooldown: 5
+  basicAttackCooldown: 2
+  basicAttack:
+    name: Basic
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 0
+  lungeAttack:
+    name: Lunge
+    duration: 1
+    horizontalForce: 15
+    verticalForce: 0
+    damage: 1
+  slamAttack:
+    name: Slam
+    duration: 1.5
+    horizontalForce: 5
+    verticalForce: 12
+    damage: 3
+  powerBoostAttack:
+    name: PowerBoost
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 0
+  lungeHitbox: {fileID: 5385063178737526275}
+  isAttacking: 0
