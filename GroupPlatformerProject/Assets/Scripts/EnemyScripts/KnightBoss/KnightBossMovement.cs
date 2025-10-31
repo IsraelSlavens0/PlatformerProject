@@ -13,7 +13,6 @@ public class KnightBossMovement : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    // State
     [HideInInspector] public bool isRunningAway = false;
     private float runAwayTimer = 0f;
 

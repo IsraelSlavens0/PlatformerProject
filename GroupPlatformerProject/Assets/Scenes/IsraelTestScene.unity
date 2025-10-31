@@ -479,6 +479,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492674565}
   m_CullTransparentMesh: 1
+--- !u!1 &695445272 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5514659653533089205, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+  m_PrefabInstance: {fileID: 1655376758192384341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &695445280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695445272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4518a95e3dc004d91f3be418b41d2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseSpeed: 5
+  runAwaySpeed: 4
+  attackRange: 2
+  detectionRange: 10
+  abilityCooldown: 5
+  basicAttackCooldown: 2
+  basicAttack:
+    name: Basic
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 0
+  lungeAttack:
+    name: Lunge
+    duration: 1
+    horizontalForce: 15
+    verticalForce: 0
+    damage: 1
+  slamAttack:
+    name: Slam
+    duration: 1.5
+    horizontalForce: 5
+    verticalForce: 12
+    damage: 1
+  powerBoostAttack:
+    name: PowerBoost
+    duration: 0.8
+    horizontalForce: 5
+    verticalForce: 0
+    damage: 0
+  lungeHitbox: {fileID: 978451191}
 --- !u!1 &820588537
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +760,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856546586}
   m_CullTransparentMesh: 1
+--- !u!114 &978451191 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5385063178737526275, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+  m_PrefabInstance: {fileID: 1655376758192384341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3475209d831324a935e6a3914d75d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1135422897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,10 +1308,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3192310964982758833, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+    - {fileID: 5524229526510116467, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5514659653533089205, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 695445280}
   m_SourcePrefab: {fileID: 100100000, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
 --- !u!1001 &2202129290891905777
 PrefabInstance:
