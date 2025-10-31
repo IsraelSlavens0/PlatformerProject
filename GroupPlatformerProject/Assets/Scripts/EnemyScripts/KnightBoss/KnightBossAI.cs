@@ -147,6 +147,8 @@ public class KnightBossAI : MonoBehaviour
         currentAttack = attack.name;
         attackTimer = attack.duration;
 
+        Debug.Log($"Knight Boss is using attack: {currentAttack}");
+
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
         if (attack.name == "Lunge")
