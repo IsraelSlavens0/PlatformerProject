@@ -364,11 +364,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2594a802dc5cbb54aacd24c4f6af1045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseSpeed: 5
-  runAwaySpeed: 4
-  attackRange: 2
-  detectionRange: 10
-  isRunningAway: 0
+  baseMoveSpeed: 5
+  randomChangeIntervalMin: 2
+  randomChangeIntervalMax: 3
+  attackChance: 0.5
+  dashDistance: 1
+  dashCooldown: 3
+  dashDuration: 0.2
 --- !u!114 &6197023008955784789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,15 +394,15 @@ MonoBehaviour:
   lungeAttack:
     name: Lunge
     duration: 1
-    horizontalForce: 15
+    horizontalForce: 10
     verticalForce: 0
-    damage: 1
+    damage: 0
   slamAttack:
     name: Slam
     duration: 1.5
     horizontalForce: 5
     verticalForce: 12
-    damage: 3
+    damage: 1
   powerBoostAttack:
     name: PowerBoost
     duration: 0.8
@@ -409,3 +411,6 @@ MonoBehaviour:
     damage: 0
   lungeHitbox: {fileID: 5385063178737526275}
   isAttacking: 0
+  lungeCooldown: 5
+  slamCooldown: 7
+  powerBoostCooldown: 8

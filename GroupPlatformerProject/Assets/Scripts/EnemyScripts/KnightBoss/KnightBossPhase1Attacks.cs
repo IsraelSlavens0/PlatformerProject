@@ -39,8 +39,18 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     private bool powerBoostActive = false;
 
     private Vector2 lungeDirection;
+
+    public float lungeCooldown = 5f;
+    public float slamCooldown = 6f;
+    public float powerBoostCooldown = 8f;
+
     private float abilityTimer = 0f;
     private float basicAttackTimer = 0f;
+    private float lungeTimer = 0f;
+    private float slamTimer = 0f;
+    private float powerBoostTimer = 0f;
+
+
 
     private void Start()
     {
@@ -60,29 +70,32 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     {
         abilityTimer -= Time.deltaTime;
         basicAttackTimer -= Time.deltaTime;
+        lungeTimer -= Time.deltaTime;
+        slamTimer -= Time.deltaTime;
+        powerBoostTimer -= Time.deltaTime;
         attackTimer -= Time.deltaTime;
 
         if (isAttacking)
             HandleAttack();
     }
 
+
     public void TryRandomAttack(Transform playerTransform)
     {
         if (isAttacking) return;
 
-        if (abilityTimer <= 0)
-        {
-            Attack[] abilities = { lungeAttack, slamAttack, powerBoostAttack, basicAttack };
-            int roll = Random.Range(0, abilities.Length);
-            StartAttack(abilities[roll], playerTransform);
-            abilityTimer = abilityCooldown;
-            basicAttackTimer = basicAttackCooldown;
-        }
-        else if (basicAttackTimer <= 0)
-        {
-            StartAttack(basicAttack, playerTransform);
-            basicAttackTimer = basicAttackCooldown;
-        }
+        List<Attack> availableAbilities = new List<Attack>();
+
+        if (lungeTimer <= 0) availableAbilities.Add(lungeAttack);
+        if (slamTimer <= 0) availableAbilities.Add(slamAttack);
+        if (powerBoostTimer <= 0) availableAbilities.Add(powerBoostAttack);
+        if (basicAttackTimer <= 0) availableAbilities.Add(basicAttack);
+
+        if (availableAbilities.Count == 0) return;
+
+        int roll = Random.Range(0, availableAbilities.Count);
+        StartAttack(availableAbilities[roll], playerTransform);
+
     }
 
     public void StartAttack(Attack attack, Transform playerTransform)
@@ -92,6 +105,17 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         isAttacking = true;
         currentAttack = attack.name;
         attackTimer = attack.duration;
+        // Assign cooldown for this attack
+        // Assign cooldown for this attack
+        switch (attack.name)
+        {
+            case "Basic": basicAttackTimer = basicAttackCooldown; break;
+            case "Lunge": lungeTimer = lungeCooldown; break;
+            case "Slam": slamTimer = slamCooldown; break;
+            case "PowerBoost": powerBoostTimer = powerBoostCooldown; break;
+        }
+
+
 
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
