@@ -175,8 +175,8 @@ MonoBehaviour:
   health: 5
   dropPrefabs:
   - {fileID: 2968031596276610434, guid: b477b096fda890149baf5375e561619e, type: 3}
-  minDropCount: 8
-  maxDropCount: 8
+  minDropCount: 1
+  maxDropCount: 4
   dropOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &7246517299003543951
 MonoBehaviour:

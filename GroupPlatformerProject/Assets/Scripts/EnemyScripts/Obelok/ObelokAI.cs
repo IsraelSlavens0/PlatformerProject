@@ -117,14 +117,18 @@ public class ObelokAI : MonoBehaviour
                 break;
 
             case BossState.KO:
-                // Countdown KO timer
+                // KO timer logic could go here
                 break;
         }
 
-        // Check if all fragments subdued to reform
-        if (phase == BossPhase.Phase2 && AllFragmentsSubdued() && state != BossState.Reforming && !isKO)
+        // Phase 2 reform check placeholder (you can hook your own logic here)
+        if (phase == BossPhase.Phase2 && state != BossState.Reforming && !isKO)
         {
-            StartCoroutine(ReformFragments());
+            // Example condition (replace with your own)
+            if (AllFragmentsInactive())
+            {
+                StartCoroutine(ReformFragments());
+            }
         }
     }
 
@@ -208,12 +212,6 @@ public class ObelokAI : MonoBehaviour
         state = BossState.Reforming;
         SetFragmentsActive(false);
 
-        // Reset fragment health
-        fragmentTL.GetComponent<ObelokFragmentHealth>().Revive();
-        fragmentTR.GetComponent<ObelokFragmentHealth>().Revive();
-        fragmentBL.GetComponent<ObelokFragmentHealth>().Revive();
-        fragmentBR.GetComponent<ObelokFragmentHealth>().Revive();
-
         // Show main boss above ground and fall
         gameObject.SetActive(true);
         Vector3 startPos = transform.position + Vector3.up * 5f; // Fall from above
@@ -238,12 +236,13 @@ public class ObelokAI : MonoBehaviour
         isKO = false;
     }
 
-    bool AllFragmentsSubdued()
+    // Replaced old health check with a placeholder function
+    bool AllFragmentsInactive()
     {
-        return fragmentTL.GetComponent<ObelokFragmentHealth>().isSubdued &&
-               fragmentTR.GetComponent<ObelokFragmentHealth>().isSubdued &&
-               fragmentBL.GetComponent<ObelokFragmentHealth>().isSubdued &&
-               fragmentBR.GetComponent<ObelokFragmentHealth>().isSubdued;
+        return (fragmentTL != null && !fragmentTL.activeInHierarchy) &&
+               (fragmentTR != null && !fragmentTR.activeInHierarchy) &&
+               (fragmentBL != null && !fragmentBL.activeInHierarchy) &&
+               (fragmentBR != null && !fragmentBR.activeInHierarchy);
     }
 
     void SetFragmentsActive(bool active)
