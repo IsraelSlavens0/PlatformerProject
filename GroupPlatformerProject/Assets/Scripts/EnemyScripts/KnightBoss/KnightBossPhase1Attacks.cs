@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class KnightBossPhase1Attacks : MonoBehaviour
@@ -28,8 +29,9 @@ public class KnightBossPhase1Attacks : MonoBehaviour
 
     private Rigidbody2D rb;
     private Collider2D bossCollider;
+    private KnightBossMovement movement;
+    private Transform player;
 
-    // State
     [HideInInspector] public bool isAttacking = false;
     private string currentAttack = "";
     private float attackTimer = 0f;
@@ -37,18 +39,18 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     private bool powerBoostActive = false;
 
     private Vector2 lungeDirection;
-
-    // Timers
     private float abilityTimer = 0f;
     private float basicAttackTimer = 0f;
-
-    private KnightBossMovement movement;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         bossCollider = GetComponent<Collider2D>();
         movement = GetComponent<KnightBossMovement>();
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            player = playerObj.transform;
 
         if (lungeHitbox != null)
             lungeHitbox.bossReference = this;
@@ -66,12 +68,13 @@ public class KnightBossPhase1Attacks : MonoBehaviour
 
     public void TryRandomAttack(Transform playerTransform)
     {
+        if (isAttacking) return;
+
         if (abilityTimer <= 0)
         {
             Attack[] abilities = { lungeAttack, slamAttack, powerBoostAttack, basicAttack };
             int roll = Random.Range(0, abilities.Length);
             StartAttack(abilities[roll], playerTransform);
-
             abilityTimer = abilityCooldown;
             basicAttackTimer = basicAttackCooldown;
         }
@@ -82,65 +85,133 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         }
     }
 
-    private void StartAttack(Attack attack, Transform playerTransform)
+    public void StartAttack(Attack attack, Transform playerTransform)
     {
+        if (isAttacking) return;
+
         isAttacking = true;
         currentAttack = attack.name;
         attackTimer = attack.duration;
 
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
+        // Disable normal movement during attacks
+        if (movement != null)
+            movement.enabled = false;
+
         if (attack.name == "Lunge")
         {
-            rb.velocity = Vector2.zero;
-
-            // Lock the direction toward the player at start
-            lungeDirection = dir;
-
-            // Apply horizontal impulse toward the player
-            rb.AddForce(new Vector2(lungeAttack.horizontalForce * lungeDirection.x, 0), ForceMode2D.Impulse);
-
-            // Temporarily ignore collision with player
-            StartCoroutine(TemporaryIgnorePlayerCollision(0.15f));
-
-            Debug.Log($"Knight Boss lunging toward player!");
+            StartCoroutine(DoLunge(dir));
         }
         else if (attack.name == "Slam")
         {
-            slamJumping = true;
-            rb.velocity = new Vector2(attack.horizontalForce * dir.x, attack.verticalForce);
-            Debug.Log("Knight Boss performing Slam!");
+            StartCoroutine(DoSlam(playerTransform));
         }
         else if (attack.name == "PowerBoost")
         {
             powerBoostActive = true;
-        Debug.Log("Knight Boss activating PowerBoost!");
+            Debug.Log("Knight Boss activating PowerBoost!");
+            FinishAttack();
         }
         else if (attack.name == "Basic")
         {
             rb.velocity = new Vector2(attack.horizontalForce * dir.x, rb.velocity.y);
             Debug.Log("Knight Boss performing Basic Attack!");
+            StartCoroutine(EndAfterDuration(attack.duration));
         }
+    }
+
+
+    private IEnumerator DoLunge(Vector2 dir)
+    {
+        Debug.Log("Knight Boss lunging toward player!");
+        rb.velocity = Vector2.zero;
+
+        // Temporarily disable main collider so the knight can pass through the player
+        bossCollider.enabled = false;
+
+        // Turn lunge hitbox on
+        if (lungeHitbox != null)
+        {
+            lungeHitbox.gameObject.SetActive(true);
+            lungeHitbox.Activate(lungeAttack);
+        }
+
+        // Variables for direct detection
+        float elapsed = 0f;
+        bool hasHitPlayer = false;
+
+        // Start lunge motion
+        while (elapsed < lungeAttack.duration)
+        {
+            rb.velocity = dir * lungeAttack.horizontalForce;
+            elapsed += Time.deltaTime;
+
+          
+            Collider2D hit = Physics2D.OverlapCircle(transform.position, 1.2f, LayerMask.GetMask("Default"));
+            if (hit != null && hit.CompareTag("Player") && !hasHitPlayer)
+            {
+                PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
+                if (playerHealth != null)
+                {
+                    float finalDamage = lungeAttack.damage;
+                    if (powerBoostActive)
+                    {
+                        finalDamage *= 1.6f;
+                        powerBoostActive = false;
+                    }
+
+                    playerHealth.TakeDamage(finalDamage);
+                    Debug.Log($"💥 Lunge directly hit player for {finalDamage} damage!");
+                    hasHitPlayer = true;
+                }
+            }
+ 
+            yield return null;
+        }
+
+        // Stop motion
+        rb.velocity = Vector2.zero;
+
+        // Restore collider
+        bossCollider.enabled = true;
+
+        // Disable hitbox
+        if (lungeHitbox != null)
+            lungeHitbox.gameObject.SetActive(false);
+
+        FinishAttack();
+    }
+
+    private IEnumerator DoSlam(Transform playerTransform)
+    {
+        Debug.Log("Knight Boss performing Slam!");
+        slamJumping = true;
+
+        rb.velocity = new Vector2(0, slamAttack.verticalForce);
+        yield return new WaitUntil(() => rb.velocity.y <= 0);
+
+        Vector2 diveDir = (playerTransform.position - transform.position).normalized;
+        rb.velocity = diveDir * (slamAttack.verticalForce + 8f);
+
+        if (lungeHitbox != null)
+            lungeHitbox.Activate(slamAttack);
+
+        yield return new WaitForSeconds(0.4f);
+
+        slamJumping = false;
+        FinishAttack();
+    }
+
+    private IEnumerator EndAfterDuration(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        FinishAttack();
     }
 
     private void HandleAttack()
     {
-        if (currentAttack == "Slam" && slamJumping)
-        {
-            if (rb.velocity.y <= 0)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, -20f);
-                slamJumping = false;
-            }
-        }
-
-        // Maintain lunge velocity if still lunging
-        if (currentAttack == "Lunge")
-        {
-            rb.velocity = new Vector2(lungeDirection.x * lungeAttack.horizontalForce, rb.velocity.y);
-        }
-
-        if (attackTimer <= 0)
+        if (attackTimer <= 0 && !slamJumping)
             FinishAttack();
     }
 
@@ -150,21 +221,13 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         isAttacking = false;
         slamJumping = false;
         currentAttack = "";
-    }
 
-    private IEnumerator TemporaryIgnorePlayerCollision(float duration)
-    {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            Collider2D playerCollider = playerObj.GetComponent<Collider2D>();
-            if (playerCollider != null)
-            {
-                Physics2D.IgnoreCollision(bossCollider, playerCollider, true);
-                yield return new WaitForSeconds(duration);
-                Physics2D.IgnoreCollision(bossCollider, playerCollider, false);
-            }
-        }
+        // Re-enable boss collider just in case
+        if (bossCollider != null)
+            bossCollider.enabled = true;
+
+        if (movement != null)
+            movement.enabled = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -175,13 +238,10 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         if (playerHealth == null) return;
 
         float dmg = 0f;
-
         if (currentAttack == "Slam")
             dmg = slamAttack.damage;
         else if (currentAttack == "Lunge")
             dmg = lungeAttack.damage;
-        else
-            return;
 
         if (powerBoostActive)
         {
@@ -189,8 +249,11 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             powerBoostActive = false;
         }
 
-        playerHealth.TakeDamage(dmg);
-        Debug.Log($"💥 {currentAttack} hit player for {dmg} damage!");
+        if (dmg > 0)
+        {
+            playerHealth.TakeDamage(dmg);
+            Debug.Log($"💥 {currentAttack} hit player for {dmg} damage!");
+        }
 
         FinishAttack();
     }

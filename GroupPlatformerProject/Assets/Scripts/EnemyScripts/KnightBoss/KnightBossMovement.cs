@@ -10,6 +10,8 @@ public class KnightBossMovement : MonoBehaviour
     public float runAwaySpeed = 4f;
     public float attackRange = 2f;
     public float detectionRange = 10f;
+    public bool IsDisabledForAttack => !enabled;
+
 
     private Rigidbody2D rb;
     KnightBossPhase1Attacks p1Attacks;

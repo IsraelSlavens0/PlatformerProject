@@ -1,5 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class KnightBossHitbox : MonoBehaviour
 {
@@ -23,9 +25,7 @@ public class KnightBossHitbox : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// Activate the hitbox using an attack from either AI or Phase1Attacks.
-    /// </summary>
+
     public void Activate(object attack)
     {
         // Determine type of attack dynamically
@@ -58,20 +58,19 @@ public class KnightBossHitbox : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
+        Debug.Log($"Lunge hit player with {damage} damage");
 
         PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
             float finalDamage = damage;
-
-            // Apply power boost if active (works for Phase1Attacks only)
             if (bossReference is KnightBossPhase1Attacks phaseBoss && phaseBoss.IsPowerBoosted())
             {
                 finalDamage *= 1.6f;
                 phaseBoss.ConsumePowerBoost();
             }
-
             playerHealth.TakeDamage(finalDamage);
         }
     }
+
 }
