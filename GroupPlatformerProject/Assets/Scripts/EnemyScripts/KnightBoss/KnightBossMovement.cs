@@ -1,94 +1,135 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class KnightBossMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float baseMoveSpeed = 3f;
-    public float randomChangeIntervalMin = 1f;
-    public float randomChangeIntervalMax = 3f;
-    public float attackChance = 0.05f; // Chance per update to attack player
+    public float baseChaseSpeed = 5f;
+    public float baseRunAwaySpeed = 4f;
+    public float detectionRange = 10f;
+    public float attackRange = 2f;
 
     [Header("Dash Settings")]
     public float dashDistance = 1f;
     public float dashCooldown = 3f;
     public float dashDuration = 0.2f;
 
+    [Header("Phase Settings")]
+    public bool isPhase2 = false; // Set true when Phase 2 starts
+
     private Rigidbody2D rb;
     private KnightBossPhase1Attacks p1Attacks;
-    private Transform player;
+    private KnightBossPhase2Attacks p2Attacks;
 
-    private Vector2 randomDirection = Vector2.zero;
-    private float directionTimer = 0f;
+    private bool isRunningAway = false;
+    private float runAwayTimer = 0f;
+    private float idleTimer = 0f;
     private float dashTimer = 0f;
+    private Vector2 randomOffset = Vector2.zero;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         p1Attacks = GetComponent<KnightBossPhase1Attacks>();
-
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            player = playerObj.transform;
-
-        PickNewDirection();
+        p2Attacks = GetComponent<KnightBossPhase2Attacks>();
     }
 
     private void Update()
     {
-        if (p1Attacks != null && p1Attacks.isAttacking)
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj == null) return;
+
+        Transform playerTransform = playerObj.transform;
+
+        // Timers
+        if (idleTimer > 0)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y); // Stop moving during attacks
+            idleTimer -= Time.deltaTime;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
 
-        directionTimer -= Time.deltaTime;
-        if (directionTimer <= 0f)
-            PickNewDirection();
-
-        if (dashTimer > 0f)
+        if (dashTimer > 0)
             dashTimer -= Time.deltaTime;
-        else if (Random.Range(0f, 1f) < 0.05f) // 5% chance per frame to dash
-        {
-            StartCoroutine(MicroDash());
-            dashTimer = dashCooldown;
-        }
 
-        // Randomly try to attack the player
-        if (player != null && Random.Range(0f, 1f) < attackChance)
+        if (isPhase2)
+            Phase2Movement(playerTransform);
+        else
+            Phase1Movement(playerTransform);
+
+        if (runAwayTimer > 0)
+            runAwayTimer -= Time.deltaTime;
+    }
+
+    private void Phase1Movement(Transform playerTransform)
+    {
+        // Original random movement and attack logic from Phase 1
+        Vector2 direction = (playerTransform.position - transform.position);
+        float distance = direction.magnitude;
+
+        // Random speed variation
+        float chaseSpeed = baseChaseSpeed * Random.Range(0.8f, 1.2f);
+
+        // Occasionally add random sideways movement
+        if (Random.Range(0f, 1f) < 0.01f)
+            randomOffset = new Vector2(Random.Range(-1f, 1f), 0);
+
+        Vector2 moveDir = direction.normalized + randomOffset;
+        moveDir.Normalize();
+
+        if (p1Attacks != null && !p1Attacks.isAttacking && !isRunningAway)
+            rb.velocity = new Vector2(moveDir.x * chaseSpeed, rb.velocity.y);
+
+        // Attack decisions
+        if (distance <= attackRange && p1Attacks != null && !p1Attacks.isAttacking)
         {
-            p1Attacks.TryRandomAttack(player);
+            int decision = Random.Range(0, 10);
+            if (decision >= 8)
+                StartRunningAway();
+            else
+                p1Attacks.TryRandomAttack(playerTransform);
         }
     }
 
-    private void FixedUpdate()
+    private void Phase2Movement(Transform playerTransform)
     {
-        if (p1Attacks != null && p1Attacks.isAttacking)
-            return; // Don't move during attacks
+        // Phase 2 moves more aggressively, maybe random dash attacks
+        float moveSpeed = baseChaseSpeed * 1.2f * Random.Range(0.9f, 1.1f);
 
-        rb.velocity = new Vector2(randomDirection.x * baseMoveSpeed, rb.velocity.y);
-    }
+        // Completely random horizontal movement within detection range
+        float randomX = Random.Range(-1f, 1f);
+        rb.velocity = new Vector2(randomX * moveSpeed, rb.velocity.y);
 
-    private void PickNewDirection()
-    {
-        // Completely random horizontal movement: left, right, or still
-        randomDirection = new Vector2(Random.Range(-1f, 1f), 0).normalized;
-        directionTimer = Random.Range(randomChangeIntervalMin, randomChangeIntervalMax);
-    }
-
-    private IEnumerator MicroDash()
-    {
-        float elapsed = 0f;
-        Vector2 dashDir = new Vector2(Random.Range(-1f, 1f), 0).normalized;
-        float dashSpeed = baseMoveSpeed * 3f; // Dash speed multiplier
-
-        while (elapsed < dashDuration)
+        // Randomly trigger Phase2 abilities
+        if (p2Attacks != null && !p2Attacks.isAttacking && Random.Range(0f, 1f) < 0.02f)
         {
-            rb.velocity = new Vector2(dashDir.x * dashSpeed, rb.velocity.y);
-            elapsed += Time.deltaTime;
-            yield return null;
+            p2Attacks.TryRandomAttack(playerTransform);
         }
+    }
+
+    private void StartRunningAway()
+    {
+        isRunningAway = true;
+        runAwayTimer = Random.Range(1f, 2f);
+    }
+
+    private void RunAway(Transform playerTransform)
+    {
+        if (runAwayTimer <= 0)
+        {
+            isRunningAway = false;
+            return;
+        }
+
+        float runSpeed = baseRunAwaySpeed * Random.Range(0.8f, 1.2f);
+        Vector2 direction = (transform.position - playerTransform.position).normalized;
+
+        // Add slight random strafing
+        direction.x += Random.Range(-0.3f, 0.3f);
+        direction.Normalize();
+
+        rb.velocity = new Vector2(direction.x * runSpeed, rb.velocity.y);
     }
 }
