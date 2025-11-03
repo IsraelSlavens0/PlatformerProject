@@ -4,8 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class ObelokAI : MonoBehaviour
 {
-    public enum BossState { Idle, Awakening, Targeting, Charging, Slamming, Returning, Splitting, Reforming, KO }
-    public enum BossPhase { Phase1, Phase2 }
+    public enum BossState { Idle, Awakening, Targeting, Charging, Slamming, Returning }
 
     [Header("Aggro Settings")]
     public float chaseTriggerDistance = 10f;
@@ -30,25 +29,12 @@ public class ObelokAI : MonoBehaviour
     public Animator animBL;
     public Animator animBR;
 
-    [Header("Fragment References")]
-    public GameObject fragmentTL;
-    public GameObject fragmentTR;
-    public GameObject fragmentBL;
-    public GameObject fragmentBR;
-
-    [Header("Phase 2 Settings")]
-    public float reformTime = 3f;
-    public float KODuration = 10f;
-    public float KOHeight = 1f; // Position Y where Obelok falls and is KO'd
-
     private Rigidbody2D rb;
     private GameObject player;
     private BossState state = BossState.Idle;
-    public BossPhase phase = BossPhase.Phase1;
     private bool canAttack = true;
     private Vector3 targetHoverPos;
     private bool awakeningPlayed = false;
-    private bool isKO = false;
 
     void Start()
     {
@@ -58,7 +44,6 @@ public class ObelokAI : MonoBehaviour
         home = transform.position;
 
         PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
-        SetFragmentsActive(false);
     }
 
     void Update()
@@ -108,27 +93,6 @@ public class ObelokAI : MonoBehaviour
                     PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
                 }
                 break;
-
-            case BossState.Splitting:
-                SplitIntoFragments();
-                break;
-
-            case BossState.Reforming:
-                break;
-
-            case BossState.KO:
-                // KO timer logic could go here
-                break;
-        }
-
-        // Phase 2 reform check placeholder (you can hook your own logic here)
-        if (phase == BossPhase.Phase2 && state != BossState.Reforming && !isKO)
-        {
-            // Example condition (replace with your own)
-            if (AllFragmentsInactive())
-            {
-                StartCoroutine(ReformFragments());
-            }
         }
     }
 
@@ -152,7 +116,6 @@ public class ObelokAI : MonoBehaviour
             ));
         }
 
-        phase = BossPhase.Phase1;
         state = BossState.Targeting;
         PlayAnimationGroup(
             "ObelokFragmentTLAwake",
@@ -198,59 +161,6 @@ public class ObelokAI : MonoBehaviour
 
         yield return new WaitForSeconds(slamCooldown);
         canAttack = true;
-    }
-
-    void SplitIntoFragments()
-    {
-        phase = BossPhase.Phase2;
-        SetFragmentsActive(true);
-        gameObject.SetActive(false); // Hide main body while fragments act
-    }
-
-    IEnumerator ReformFragments()
-    {
-        state = BossState.Reforming;
-        SetFragmentsActive(false);
-
-        // Show main boss above ground and fall
-        gameObject.SetActive(true);
-        Vector3 startPos = transform.position + Vector3.up * 5f; // Fall from above
-        Vector3 endPos = new Vector3(transform.position.x, KOHeight, transform.position.z);
-        float fallSpeed = 10f;
-
-        while (Vector3.Distance(transform.position, endPos) > 0.05f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, endPos, fallSpeed * Time.deltaTime);
-            yield return null;
-        }
-
-        // Start KO state
-        state = BossState.KO;
-        isKO = true;
-
-        // Wait KO duration
-        yield return new WaitForSeconds(KODuration);
-
-        // Resume phase 2
-        state = BossState.Targeting;
-        isKO = false;
-    }
-
-    // Replaced old health check with a placeholder function
-    bool AllFragmentsInactive()
-    {
-        return (fragmentTL != null && !fragmentTL.activeInHierarchy) &&
-               (fragmentTR != null && !fragmentTR.activeInHierarchy) &&
-               (fragmentBL != null && !fragmentBL.activeInHierarchy) &&
-               (fragmentBR != null && !fragmentBR.activeInHierarchy);
-    }
-
-    void SetFragmentsActive(bool active)
-    {
-        if (fragmentTL != null) fragmentTL.SetActive(active);
-        if (fragmentTR != null) fragmentTR.SetActive(active);
-        if (fragmentBL != null) fragmentBL.SetActive(active);
-        if (fragmentBR != null) fragmentBR.SetActive(active);
     }
 
     float FindGroundBelow(Vector3 fromPos)
