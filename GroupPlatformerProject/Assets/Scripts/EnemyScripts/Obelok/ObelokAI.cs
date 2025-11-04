@@ -29,6 +29,12 @@ public class ObelokAI : MonoBehaviour
     public Animator animBL;
     public Animator animBR;
 
+    [Header("Phase Settings")]
+    public ObelokHealth obelokHealth; // Reference to health script
+    public GameObject fragmentParent; // Empty parent holding fragments
+    public MonoBehaviour[] fragmentAIs; // Fragment AI scripts (TL, TR, BL, BR)
+    private bool phaseTwoActivated = false;
+
     private Rigidbody2D rb;
     private GameObject player;
     private BossState state = BossState.Idle;
@@ -43,12 +49,25 @@ public class ObelokAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         home = transform.position;
 
+        // Disable fragment AIs initially so they only activate in phase two
+        foreach (var ai in fragmentAIs)
+        {
+            if (ai != null)
+                ai.enabled = false;
+        }
+
         PlayAnimationGroup("ObelokFragmentTLAsleep", "ObelokFragmentTRAsleep", "ObelokFragmentBLAsleep", "ObelokFragmentBRAsleep");
     }
 
     void Update()
     {
         if (player == null) return;
+
+        // Check for phase two activation
+        if (!phaseTwoActivated && obelokHealth != null && obelokHealth.health <= 60f)
+        {
+            ActivatePhaseTwo();
+        }
 
         float distance = Vector2.Distance(transform.position, player.transform.position);
 
@@ -94,6 +113,27 @@ public class ObelokAI : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    void ActivatePhaseTwo()
+    {
+        phaseTwoActivated = true;
+
+        // Detach fragments from parent so they can move freely
+        if (fragmentParent != null)
+        {
+            fragmentParent.transform.DetachChildren();
+            Destroy(fragmentParent); // optional
+        }
+
+        // Enable fragment AI scripts now that threshold is reached
+        foreach (var ai in fragmentAIs)
+        {
+            if (ai != null)
+                ai.enabled = true;
+        }
+
+        Debug.Log("Obelok Phase Two Activated!");
     }
 
     IEnumerator PlayAwakening()
@@ -206,20 +246,18 @@ public class ObelokAI : MonoBehaviour
         }
         return 1f;
     }
+
     void OnDrawGizmosSelected()
     {
-        // Draw chase and lose aggro distances
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, chaseTriggerDistance);
 
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, loseAggroDistance);
 
-        // Draw hover height
         Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.up * hoverHeight);
 
-        // Draw ground slam position (if playing)
 #if UNITY_EDITOR
         if (Application.isPlaying)
         {
@@ -231,5 +269,4 @@ public class ObelokAI : MonoBehaviour
         }
 #endif
     }
-
 }
