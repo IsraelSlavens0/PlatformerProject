@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ public class SlamSkill : MonoBehaviour
     public int slamDamage = 30;
     public float slamRadius = 2.0f;
     public float slamManaCost = 40f;
-    public float slamPushForce = 20f;  // new: downward push force
+    public float slamPushForce = 20f;  // downward push force
 
     private PlayerController playerController;
     private Rigidbody2D rb;
@@ -63,13 +63,20 @@ public class SlamSkill : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(slamDamage);
+                continue; // avoid double-processing the same collider
+            }
+
+            KnightHealth KnightBoss = hit.GetComponent<KnightHealth>();
+            if (KnightBoss != null)
+            {
+                KnightBoss.TakeDamage(slamDamage);
+                Debug.Log($"SlamSkill dealt {slamDamage} damage to {KnightBoss.name}");
             }
         }
 
         // Apply downward push to the player
         if (rb != null)
         {
-            // Set the downward velocity instantly (overwrites current y velocity)
             rb.velocity = new Vector2(rb.velocity.x, -slamPushForce);
         }
 
@@ -77,4 +84,10 @@ public class SlamSkill : MonoBehaviour
         // Optional: add visual effects, sounds, etc.
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Vector2 slamCenter = (Vector2)transform.position + Vector2.down * 1f;
+        Gizmos.DrawWireSphere(slamCenter, slamRadius);
+    }
 }

@@ -6,18 +6,11 @@ public class KnightHealth : MonoBehaviour
 {
     [Header("Health Settings")]
     public int maxHealth = 100;
-    public int currentHealth;
+    public int health = 100;
 
-    [Header("Phase Settings")]
-    [Tooltip("Reference to the Phase 1 attack script")]
-    public MonoBehaviour phase1Script;
-
-    [Tooltip("Reference to the Phase 2 attack script")]
-    public MonoBehaviour phase2Script;
-
-    [Tooltip("Health percentage to trigger Phase 2 (0-1)")]
-    [Range(0f, 1f)]
-    public float phase2Threshold = 0.5f;
+    [Header("Phase 2 Trigger")]
+    [Tooltip("Reference to the Knight Phase 2 Trigger component.")]
+    public KnightPhase2Trigger phase2Trigger;
 
     private bool phase2Triggered = false;
 
@@ -29,46 +22,36 @@ public class KnightHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth;
+        health = maxHealth;
 
-        // Ensure Phase 2 starts disabled
-        if (phase2Script != null)
-            phase2Script.enabled = false;
-
-        if (phase1Script != null)
-            phase1Script.enabled = true;
+        // Make sure Phase 2 starts disabled through the trigger
+        if (phase2Trigger != null)
+            phase2Trigger.InitializePhaseState();
     }
 
     public void TakeDamage(int damageAmount)
     {
-        currentHealth -= damageAmount;
-        currentHealth = Mathf.Max(currentHealth, 0);
-
-        // Trigger Phase 2 if threshold reached
-        if (!phase2Triggered && currentHealth <= Mathf.CeilToInt(maxHealth * phase2Threshold))
-        {
-            TriggerPhase2();
-        }
-
-        if (currentHealth <= 0)
+        health -= damageAmount;
+        if (health <= 0)
         {
             Die();
         }
+
+        // Check if we should trigger phase 2
+        if (!phase2Triggered && phase2Trigger != null && phase2Trigger.ShouldTriggerPhase2(health, maxHealth))
+        {
+            phase2Triggered = true;
+            phase2Trigger.TriggerPhase2();
+        }
     }
 
-    private void TriggerPhase2()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        phase2Triggered = true;
-
-        // Disable Phase 1
-        if (phase1Script != null)
-            phase1Script.enabled = false;
-
-        // Enable Phase 2
-        if (phase2Script != null)
-            phase2Script.enabled = true;
-
-        Debug.Log("Knight Boss Phase 2 triggered!");
+        if (collision.gameObject.CompareTag("PlayerBullet"))
+        {
+            Destroy(collision.gameObject);
+            TakeDamage(1);
+        }
     }
 
     private void Die()
@@ -88,7 +71,7 @@ public class KnightHealth : MonoBehaviour
         Debug.Log("Knight Boss defeated!");
     }
 
-    public int GetCurrentHealth() => currentHealth;
-    public float GetHealthPercent() => currentHealth / (float)maxHealth;
+    public int GetCurrentHealth() => health;
+    public float GetHealthPercent() => health / (float)maxHealth;
     public bool IsPhase2() => phase2Triggered;
 }

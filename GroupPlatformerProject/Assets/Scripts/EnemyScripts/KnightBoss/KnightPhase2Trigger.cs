@@ -8,38 +8,54 @@ public class KnightPhase2Trigger : MonoBehaviour
     public KnightBossPhase1Attacks phase1Attacks;
     public KnightBossPhase2Attacks phase2Attacks;
 
-    [Header("Health Settings")]
-    public int phase2HealthThreshold = 50; // Example: trigger at half HP
-    public EnemyHealth enemyHealth;
+    [Header("Phase Settings")]
+    [Tooltip("Health percentage (0-1) at which Phase 2 should start.")]
+    [Range(0f, 1f)]
+    public float phase2Threshold = 0.5f;
 
     private bool phase2Triggered = false;
 
-    private void Update()
+    private void Start()
     {
-        if (phase2Triggered) return;
-
-        if (enemyHealth != null && enemyHealth.health <= phase2HealthThreshold)
-        {
-            TriggerPhase2();
-        }
+        InitializePhaseState();
     }
 
-    private void TriggerPhase2()
+    // Called from KnightHealth.Start() and Start() here
+    public void InitializePhaseState()
     {
+        // Ensure Phase 2 is disabled and Phase 1 is enabled
+        if (phase2Attacks != null)
+            phase2Attacks.enabled = false;
+
+        if (phase1Attacks != null)
+            phase1Attacks.enabled = true;
+
+        phase2Triggered = false;
+    }
+
+    // Called from KnightHealth when health drops below threshold
+    public bool ShouldTriggerPhase2(int currentHealth, int maxHealth)
+    {
+        return !phase2Triggered && currentHealth <= Mathf.CeilToInt(maxHealth * phase2Threshold);
+    }
+
+    public void TriggerPhase2()
+    {
+        if (phase2Triggered) return;
         phase2Triggered = true;
 
-        // Disable Phase 1 attacks
+        // Disable Phase 1
         if (phase1Attacks != null)
         {
             phase1Attacks.enabled = false;
-            Debug.Log("Phase 1 attacks disabled.");
+            Debug.Log("Knight Phase 1 attacks disabled.");
         }
 
-        // Enable Phase 2 attacks
+        // Enable Phase 2
         if (phase2Attacks != null)
         {
             phase2Attacks.enabled = true;
-            Debug.Log("Phase 2 attacks enabled.");
+            Debug.Log("Knight Phase 2 attacks enabled!");
         }
     }
 }

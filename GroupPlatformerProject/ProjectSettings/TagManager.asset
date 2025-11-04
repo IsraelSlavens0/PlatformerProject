@@ -12,6 +12,8 @@ TagManager:
   - HealthPack
   - Wall
   - EnemyBullet
+  - BossI
+  - KnightBoss
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Ground
   - 
   - 
   - 

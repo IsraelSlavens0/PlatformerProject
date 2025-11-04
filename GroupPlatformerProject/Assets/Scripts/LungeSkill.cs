@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ public class LungeSkill : MonoBehaviour
     public float lungeCooldown = 4f;
 
     [Header("Jump Settings")]
-    public float jumpForce = 8f;  // Adjust jump height here
+    public float jumpForce = 8f;
 
     [Header("References")]
     public GameObject lungeHitbox;  // Assign in Inspector
@@ -55,7 +55,6 @@ public class LungeSkill : MonoBehaviour
         {
             playerController.SpendMana(lungeManaCost);
             playerController.UpdateManaUI();
-
             StartLunge();
         }
         else
@@ -101,13 +100,22 @@ public class LungeSkill : MonoBehaviour
         }
     }
 
-    // Called by the hitbox trigger to apply damage
-    public void ApplyLungeDamage(EnemyHealth enemy)
+    public void ApplyLungeDamage(Collider2D target)
     {
+        // Damage normal enemies
+        EnemyHealth enemy = target.GetComponent<EnemyHealth>();
         if (enemy != null)
         {
             enemy.TakeDamage((int)lungeDamage);
             Debug.Log($"LungeSkill applied {lungeDamage} damage to {enemy.name}");
+            return;
+        }
+
+        KnightHealth KnightBoss = target.GetComponent<KnightHealth>();
+        if (KnightBoss != null)
+        {
+            KnightBoss.TakeDamage((int)lungeDamage);
+            Debug.Log($"LungeSkill applied {lungeDamage} damage to {KnightBoss.name}");
         }
     }
 }

@@ -1,4 +1,5 @@
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -9,203 +10,224 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     {
         public string name = "Attack";
         public float duration = 1f;
-        public float horizontalForce = 5f;
-        public float verticalForce = 0f;
         public float damage = 10f;
-        public float range = 3f; // Range of the attack
-        public float knockback = 0f; // For heavy hits
+        public float range = 3f;
+        public float knockback = 0f;
+        public float cooldown = 5f;
+        public GameObject hitbox; // reference to hitbox GameObject
     }
 
-    [Header("Polearm Attacks")]
-    public Attack poleSmash = new Attack { name = "PoleSmash", duration = 1f, damage = 25f, range = 2.5f, knockback = 3f };
-    public Attack poleThrust = new Attack { name = "PoleThrust", duration = 0.8f, damage = 20f, range = 3.5f, knockback = 1f };
-    public Attack flamingSlam = new Attack { name = "FlamingSlam", duration = 1.2f, damage = 15f, range = 3f, knockback = 1f };
+    [Header("Attacks")]
+    public Attack flamingSlam = new Attack { name = "FlamingSlam", duration = 1.2f, damage = 25f, range = 3f, cooldown = 6f };
+    public Attack infernalTorrent = new Attack { name = "InfernalTorrent", duration = 2.8f, damage = 8f, range = 2.5f, cooldown = 7f };
+    public Attack groundBreaker = new Attack { name = "GroundBreaker", duration = 1.3f, damage = 22f, range = 3f, cooldown = 8f };
+    public Attack moltenEruption = new Attack { name = "MoltenEruption", duration = 1.5f, damage = 20f, range = 3f, cooldown = 9f };
 
-    [Header("Projectile Settings")]
-    public GameObject projectilePrefab;
-    public Transform projectileSpawnPoint;
-    private bool projectileFired = false;
+    [Header("Firebolt (Opener)")]
+    public GameObject fireboltPrefab;
+    public Transform fireboltSpawnPoint;
+    private bool firedBolt = false;
 
-    [Header("Cooldowns")]
-    public float abilityCooldown = 5f;
-    public float basicAttackCooldown = 2f;
+    [Header("Cooldown Timers")]
+    private float slamTimer;
+    private float torrentTimer;
+    private float groundTimer;
+    private float eruptionTimer;
 
-    private float abilityTimer = 0f;
-    private float basicAttackTimer = 0f;
-
+    private KnightBossMovement move;
     private Rigidbody2D rb;
-    private Collider2D bossCollider;
-    private KnightBossMovement movement;
     private Transform player;
-    public bool isAttacking = false;
+
+    [HideInInspector] public bool isAttacking;
     private string currentAttack = "";
-    private float attackTimer = 0f;
+    private float attackTimer;
+
+    private float gizmoRadius = 0f;
+    private Color gizmoColor = Color.clear;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        bossCollider = GetComponent<Collider2D>();
-        movement = GetComponent<KnightBossMovement>();
+        move = GetComponent<KnightBossMovement>();
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             player = playerObj.transform;
 
-        // Fire one-time projectile if assigned
-        if (!projectileFired && projectilePrefab != null && projectileSpawnPoint != null)
+        // Disable all hitboxes at start
+        DisableAllHitboxes();
+
+        // Fire once at start
+        if (!firedBolt && fireboltPrefab && fireboltSpawnPoint && player)
         {
-            Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
-            projectileFired = true;
-            Debug.Log("Phase 2: Fired one-time projectile!");
+            Vector2 dir = (player.position - fireboltSpawnPoint.position).normalized;
+            GameObject bolt = Instantiate(fireboltPrefab, fireboltSpawnPoint.position, Quaternion.identity);
+            Rigidbody2D rbBolt = bolt.GetComponent<Rigidbody2D>();
+            if (rbBolt != null) rbBolt.velocity = dir * 10f;
+            firedBolt = true;
         }
     }
 
     private void Update()
     {
-        abilityTimer -= Time.deltaTime;
-        basicAttackTimer -= Time.deltaTime;
-        attackTimer -= Time.deltaTime;
-
         if (isAttacking)
-            HandleAttack();
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0) FinishAttack();
+            return;
+        }
 
-        if (!isAttacking)
-            TryRandomAttack(player);
+        slamTimer -= Time.deltaTime;
+        torrentTimer -= Time.deltaTime;
+        groundTimer -= Time.deltaTime;
+        eruptionTimer -= Time.deltaTime;
     }
 
     public void TryRandomAttack(Transform playerTransform)
     {
         if (isAttacking || playerTransform == null) return;
 
-        if (abilityTimer <= 0)
-        {
-            Attack[] abilities = { poleSmash, poleThrust, flamingSlam };
-            int roll = Random.Range(0, abilities.Length);
-            StartAttack(abilities[roll], playerTransform);
-            abilityTimer = abilityCooldown;
-            basicAttackTimer = basicAttackCooldown;
-        }
-        else if (basicAttackTimer <= 0)
-        {
-            StartAttack(poleThrust, playerTransform); // Basic fallback
-            basicAttackTimer = basicAttackCooldown;
-        }
+        List<Attack> available = new List<Attack>();
+        if (slamTimer <= 0) available.Add(flamingSlam);
+        if (torrentTimer <= 0) available.Add(infernalTorrent);
+        if (groundTimer <= 0) available.Add(groundBreaker);
+        if (eruptionTimer <= 0) available.Add(moltenEruption);
+
+        if (available.Count == 0) return;
+
+        Attack chosen = available[Random.Range(0, available.Count)];
+        StartAttack(chosen);
     }
 
-    public void StartAttack(Attack attack, Transform playerTransform)
+    private void StartAttack(Attack atk)
     {
         if (isAttacking) return;
 
         isAttacking = true;
-        currentAttack = attack.name;
-        attackTimer = attack.duration;
+        currentAttack = atk.name;
+        attackTimer = atk.duration;
 
-        Vector2 dir = (playerTransform.position - transform.position).normalized;
+        gizmoRadius = atk.range;
+        gizmoColor = Color.red;
 
-        if (movement != null)
-            movement.enabled = false;
+        if (move != null)
+            move.enabled = false;
 
-        // Move slightly forward for the attack
-        rb.velocity = new Vector2(dir.x * attack.horizontalForce, rb.velocity.y);
+        switch (atk.name)
+        {
+            case "FlamingSlam": StartCoroutine(FlamingSlamRoutine(atk)); slamTimer = atk.cooldown; break;
+            case "InfernalTorrent": StartCoroutine(InfernalTorrentRoutine(atk)); torrentTimer = atk.cooldown; break;
+            case "GroundBreaker": StartCoroutine(GroundBreakerRoutine(atk)); groundTimer = atk.cooldown; break;
+            case "MoltenEruption": StartCoroutine(MoltenEruptionRoutine(atk)); eruptionTimer = atk.cooldown; break;
+        }
 
-        if (attack.name == "PoleSmash")
-            StartCoroutine(PoleSmashRoutine(dir, attack));
-        else if (attack.name == "FlamingSlam")
-            StartCoroutine(FlamingSlamRoutine(attack));
-        else
-            StartCoroutine(EndAfterDuration(attack.duration));
-
-        Debug.Log($"Phase 2: Performing {attack.name} (Damage: {attack.damage}, Range: {attack.range}, Knockback: {attack.knockback})");
+        if (atk.hitbox != null)
+            atk.hitbox.SetActive(true);
     }
 
-    private IEnumerator PoleSmashRoutine(Vector2 dir, Attack attack)
+    private void DisableAllHitboxes()
     {
-        bool hitPlayer = false;
+        if (flamingSlam.hitbox != null) flamingSlam.hitbox.SetActive(false);
+        if (infernalTorrent.hitbox != null) infernalTorrent.hitbox.SetActive(false);
+        if (groundBreaker.hitbox != null) groundBreaker.hitbox.SetActive(false);
+        if (moltenEruption.hitbox != null) moltenEruption.hitbox.SetActive(false);
+    }
+
+    // ------------------- Attack Routines -------------------
+
+    private IEnumerator FlamingSlamRoutine(Attack atk)
+    {
+        Debug.Log("Flaming Slam!");
+        yield return new WaitForSeconds(atk.duration * 0.5f);
+        moveTowardsPlayer(0); // no horizontal, vertical simulated via hitbox
+        ApplyBurnAndDamage(atk);
+        yield return new WaitForSeconds(atk.duration * 0.5f);
+        FinishAttack();
+    }
+
+    private IEnumerator InfernalTorrentRoutine(Attack atk)
+    {
+        Debug.Log("Infernal Torrent!");
         float elapsed = 0f;
-
-        while (elapsed < attack.duration)
+        while (elapsed < atk.duration)
         {
-            rb.velocity = new Vector2(0, -attack.verticalForce); // smash downward
-            elapsed += Time.deltaTime;
+            moveTowardsPlayer(2.5f); // slow approach while spinning fire
+            ApplyBurnAndDamage(atk);
+            yield return new WaitForSeconds(0.5f);
+            elapsed += 0.5f;
+        }
+        FinishAttack();
+    }
 
-            Collider2D hit = Physics2D.OverlapCircle(transform.position, attack.range, LayerMask.GetMask("Player"));
-            if (hit != null && !hitPlayer)
+    private IEnumerator GroundBreakerRoutine(Attack atk)
+    {
+        Debug.Log("GroundBreaker!");
+        moveTowardsPlayer(0);
+        yield return new WaitForSeconds(0.3f);
+        ApplyBurnAndDamage(atk);
+        yield return new WaitForSeconds(atk.duration - 0.3f);
+        FinishAttack();
+    }
+
+    private IEnumerator MoltenEruptionRoutine(Attack atk)
+    {
+        Debug.Log("Molten Eruption!");
+        yield return new WaitForSeconds(atk.duration * 0.5f);
+        ApplyBurnAndDamage(atk);
+        yield return new WaitForSeconds(atk.duration * 0.5f);
+        FinishAttack();
+    }
+
+    // ------------------- Shared Logic -------------------
+
+    private void moveTowardsPlayer(float speed)
+    {
+        if (move == null || player == null) return;
+        Vector2 dir = (player.position - transform.position).normalized;
+        rb.velocity = new Vector2(dir.x * speed, rb.velocity.y);
+    }
+
+    private void ApplyBurnAndDamage(Attack atk)
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, atk.range);
+        foreach (var h in hits)
+        {
+            if (h.CompareTag("Player"))
             {
-                PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
+                PlayerHealth ph = h.GetComponent<PlayerHealth>();
+                if (ph != null)
                 {
-                    playerHealth.TakeDamage(attack.damage);
-                    hitPlayer = true;
-                    Debug.Log($"PoleSmash hit player for {attack.damage} damage!");
+                    ph.TakeDamage(atk.damage);
+                    var burn = h.GetComponent<BurnDebuff>();
+                    if (burn == null)
+                        burn = h.gameObject.AddComponent<BurnDebuff>();
+                    burn.ApplyBurn(3f, 3f);
                 }
             }
-
-            yield return null;
         }
-
-        // If missed, small AOE damage
-        if (!hitPlayer)
-        {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, attack.range);
-            foreach (Collider2D col in hits)
-            {
-                if (col.CompareTag("Player"))
-                {
-                    PlayerHealth ph = col.GetComponent<PlayerHealth>();
-                    if (ph != null)
-                    {
-                        ph.TakeDamage(attack.damage * 0.5f); // half damage for AOE
-                        Debug.Log("PoleSmash missed direct hit but dealt AOE damage!");
-                    }
-                }
-            }
-        }
-
-        rb.velocity = Vector2.zero;
-        FinishAttack();
-    }
-
-    private IEnumerator FlamingSlamRoutine(Attack attack)
-    {
-        // Slam animation movement
-        rb.velocity = new Vector2(0, -attack.verticalForce);
-
-        yield return new WaitForSeconds(attack.duration);
-
-        // Code-only AOE (no prefab)
-        float aoeRadius = attack.range; // Use attack range
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, aoeRadius, LayerMask.GetMask("Player"));
-        foreach (Collider2D hit in hits)
-        {
-            PlayerHealth playerHealth = hit.GetComponent<PlayerHealth>();
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(attack.damage);
-                Debug.Log($"Flaming Slam hit player for {attack.damage} damage!");
-            }
-        }
-
-        FinishAttack();
-    }
-
-    private IEnumerator EndAfterDuration(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        FinishAttack();
-    }
-
-    private void HandleAttack()
-    {
-        if (attackTimer <= 0)
-            FinishAttack();
     }
 
     private void FinishAttack()
     {
-        rb.velocity = new Vector2(0, rb.velocity.y);
+        Debug.Log($" {currentAttack} finished.");
+        DisableAllHitboxes();
+        rb.velocity = Vector2.zero;
+        gizmoColor = Color.clear;
         isAttacking = false;
         currentAttack = "";
-        if (movement != null)
-            movement.enabled = true;
+
+        if (move != null)
+            move.enabled = true;
+    }
+
+    // ------------------- Gizmos -------------------
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying && gizmoColor != Color.clear)
+        {
+            Gizmos.color = gizmoColor;
+            Gizmos.DrawWireSphere(transform.position, gizmoRadius);
+        }
     }
 }

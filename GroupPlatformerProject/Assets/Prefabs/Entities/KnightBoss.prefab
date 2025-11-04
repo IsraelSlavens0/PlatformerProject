@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7122833616778670792}
   - component: {fileID: 7055898281293923168}
   - component: {fileID: 5385063178737526275}
+  - component: {fileID: 4604524995947711043}
   m_Layer: 0
   m_Name: KnightBossHitbox
   m_TagString: BossI
@@ -171,8 +172,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa3475209d831324a935e6a3914d75d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossReference: {fileID: 0}
+  bossReference: {fileID: 1297400364880600456}
   damage: 1
+--- !u!114 &4604524995947711043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4483109149926825863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0496bdca028cae84987df37beebd039d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5514659653533089205
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,14 +198,14 @@ GameObject:
   - component: {fileID: 1464103325304058909}
   - component: {fileID: 3315849769350548877}
   - component: {fileID: 7083706293273194163}
-  - component: {fileID: 1297400364880600456}
   - component: {fileID: 6197023008955784789}
   - component: {fileID: 5971663305291189201}
   - component: {fileID: 359543304972967180}
+  - component: {fileID: 1297400364880600456}
   - component: {fileID: 3519603113465688811}
   m_Layer: 0
   m_Name: KnightBoss
-  m_TagString: BossI
+  m_TagString: KnightBoss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -337,26 +350,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1297400364880600456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5514659653533089205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2594a802dc5cbb54aacd24c4f6af1045, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseChaseSpeed: 5
-  baseRunAwaySpeed: 4
-  detectionRange: 10
-  attackRange: 2
-  dashDistance: 1
-  dashCooldown: 3
-  dashDuration: 0.2
-  isPhase2: 0
 --- !u!114 &6197023008955784789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +389,10 @@ MonoBehaviour:
     verticalForce: 0
     damage: 0
   lungeHitbox: {fileID: 5385063178737526275}
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckDistance: 0.5
   isAttacking: 0
   lungeCooldown: 5
   slamCooldown: 7
@@ -407,39 +404,45 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5514659653533089205}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6853ad529a4224647bb292f59e40147c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poleSmash:
-    name: PoleSmash
-    duration: 1
-    horizontalForce: 5
-    verticalForce: 0
-    damage: 25
-    range: 2.5
-    knockback: 3
-  poleThrust:
-    name: PoleThrust
-    duration: 0.8
-    horizontalForce: 5
-    verticalForce: 0
-    damage: 20
-    range: 3.5
-    knockback: 1
   flamingSlam:
     name: FlamingSlam
     duration: 1.2
-    horizontalForce: 5
-    verticalForce: 0
-    damage: 15
+    damage: 1
     range: 3
     knockback: 1
-  projectilePrefab: {fileID: 1566343362701797182, guid: bd3a296cc94020f4daf256ea87d24336, type: 3}
-  projectileSpawnPoint: {fileID: 8358899320788413809}
-  abilityCooldown: 5
-  basicAttackCooldown: 2
+    cooldown: 6
+    hitbox: {fileID: 4483109149926825863}
+  infernalTorrent:
+    name: InfernalTorrent
+    duration: 2.8
+    damage: 8
+    range: 2.5
+    knockback: 0
+    cooldown: 7
+    hitbox: {fileID: 4483109149926825863}
+  groundBreaker:
+    name: GroundBreaker
+    duration: 1.3
+    damage: 22
+    range: 3
+    knockback: 0
+    cooldown: 8
+    hitbox: {fileID: 4483109149926825863}
+  moltenEruption:
+    name: MoltenEruption
+    duration: 1.5
+    damage: 20
+    range: 3
+    knockback: 0
+    cooldown: 9
+    hitbox: {fileID: 4483109149926825863}
+  fireboltPrefab: {fileID: 1566343362701797182, guid: bd3a296cc94020f4daf256ea87d24336, type: 3}
+  fireboltSpawnPoint: {fileID: 8358899320788413809}
   isAttacking: 0
 --- !u!114 &359543304972967180
 MonoBehaviour:
@@ -455,8 +458,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phase1Attacks: {fileID: 6197023008955784789}
   phase2Attacks: {fileID: 5971663305291189201}
-  phase2HealthThreshold: 50
-  enemyHealth: {fileID: 0}
+  phase2Threshold: 0.5
+--- !u!114 &1297400364880600456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5514659653533089205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2594a802dc5cbb54aacd24c4f6af1045, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseChaseSpeed: 5
+  baseRunAwaySpeed: 4
+  detectionRange: 10
+  attackRange: 2
+  dashDistance: 1
+  dashCooldown: 3
+  dashDuration: 0.2
+  isPhase2: 0
 --- !u!114 &3519603113465688811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,10 +492,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth: 100
-  phase1Script: {fileID: 1297400364880600456}
-  phase2Script: {fileID: 1297400364880600456}
-  phase2Threshold: 0.5
+  health: 100
+  phase2Trigger: {fileID: 359543304972967180}
   dropPrefabs: []
   minDropCount: 1
   maxDropCount: 3

@@ -17,10 +17,22 @@ public class LungeHitboxTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (playerLungeSkill == null) return;
+
+
         EnemyHealth enemy = collision.GetComponent<EnemyHealth>();
-        if (enemy != null && playerLungeSkill != null)
+        if (enemy != null)
         {
-            playerLungeSkill.ApplyLungeDamage(enemy);
+            playerLungeSkill.ApplyLungeDamage(collision);
+            return;
+        }
+
+
+        KnightHealth knight = collision.GetComponent<KnightHealth>();
+        if (knight != null)
+        {
+            playerLungeSkill.ApplyLungeDamage(collision);
+            return;
         }
     }
 }

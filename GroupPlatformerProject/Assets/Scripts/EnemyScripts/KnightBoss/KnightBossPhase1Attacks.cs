@@ -27,6 +27,10 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     [Header("References")]
     public KnightBossHitbox lungeHitbox;
 
+    [Header("Environment Checks")]
+    public LayerMask groundLayerMask;  // ✅ assign “Ground” layer here
+    public float groundCheckDistance = 0.5f;
+
     private Rigidbody2D rb;
     private Collider2D bossCollider;
     private KnightBossMovement movement;
@@ -49,8 +53,6 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     private float lungeTimer = 0f;
     private float slamTimer = 0f;
     private float powerBoostTimer = 0f;
-
-
 
     private void Start()
     {
@@ -79,7 +81,6 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             HandleAttack();
     }
 
-
     public void TryRandomAttack(Transform playerTransform)
     {
         if (isAttacking) return;
@@ -95,7 +96,6 @@ public class KnightBossPhase1Attacks : MonoBehaviour
 
         int roll = Random.Range(0, availableAbilities.Count);
         StartAttack(availableAbilities[roll], playerTransform);
-
     }
 
     public void StartAttack(Attack attack, Transform playerTransform)
@@ -105,8 +105,7 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         isAttacking = true;
         currentAttack = attack.name;
         attackTimer = attack.duration;
-        // Assign cooldown for this attack
-        // Assign cooldown for this attack
+
         switch (attack.name)
         {
             case "Basic": basicAttackTimer = basicAttackCooldown; break;
@@ -115,22 +114,15 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             case "PowerBoost": powerBoostTimer = powerBoostCooldown; break;
         }
 
-
-
         Vector2 dir = (playerTransform.position - transform.position).normalized;
 
-        // Disable normal movement during attacks
         if (movement != null)
             movement.enabled = false;
 
         if (attack.name == "Lunge")
-        {
             StartCoroutine(DoLunge(dir));
-        }
         else if (attack.name == "Slam")
-        {
             StartCoroutine(DoSlam(playerTransform));
-        }
         else if (attack.name == "PowerBoost")
         {
             powerBoostActive = true;
@@ -145,33 +137,44 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         }
     }
 
-
     private IEnumerator DoLunge(Vector2 dir)
     {
         Debug.Log("Knight Boss lunging toward player!");
         rb.velocity = Vector2.zero;
 
-        // Temporarily disable main collider so the knight can pass through the player
+        // Disable collider temporarily (to pass through player, not ground)
         bossCollider.enabled = false;
 
-        // Turn lunge hitbox on
+        // Activate lunge hitbox
         if (lungeHitbox != null)
         {
             lungeHitbox.gameObject.SetActive(true);
             lungeHitbox.Activate(lungeAttack);
         }
 
-        // Variables for direct detection
         float elapsed = 0f;
         bool hasHitPlayer = false;
 
-        // Start lunge motion
         while (elapsed < lungeAttack.duration)
         {
+            // Apply forward force
             rb.velocity = dir * lungeAttack.horizontalForce;
-            elapsed += Time.deltaTime;
 
-          
+            // ✅ Ground check to prevent sinking through floor
+            RaycastHit2D groundHit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayerMask);
+            if (groundHit.collider != null)
+            {
+                // We've reached the ground — re-enable collider to keep boss above it
+                bossCollider.enabled = true;
+
+                // Snap slightly above the ground and stop downward motion
+                Vector3 pos = transform.position;
+                pos.y = groundHit.point.y + 0.1f;
+                transform.position = pos;
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, 0f));
+            }
+
+            // Damage check for player
             Collider2D hit = Physics2D.OverlapCircle(transform.position, 1.2f, LayerMask.GetMask("Default"));
             if (hit != null && hit.CompareTag("Player") && !hasHitPlayer)
             {
@@ -190,17 +193,14 @@ public class KnightBossPhase1Attacks : MonoBehaviour
                     hasHitPlayer = true;
                 }
             }
- 
+
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Stop motion
         rb.velocity = Vector2.zero;
-
-        // Restore collider
         bossCollider.enabled = true;
 
-        // Disable hitbox
         if (lungeHitbox != null)
             lungeHitbox.gameObject.SetActive(false);
 
@@ -246,7 +246,6 @@ public class KnightBossPhase1Attacks : MonoBehaviour
         slamJumping = false;
         currentAttack = "";
 
-        // Re-enable boss collider just in case
         if (bossCollider != null)
             bossCollider.enabled = true;
 

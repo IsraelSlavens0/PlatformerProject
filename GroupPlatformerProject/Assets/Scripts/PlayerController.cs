@@ -170,6 +170,11 @@ public class PlayerController : MonoBehaviour
             {
                 enemy.TakeDamage(meleeDamage);
             }
+            KnightHealth KnightBoss = hit.GetComponent<KnightHealth>();
+            if (KnightBoss != null)
+            {
+                KnightBoss.TakeDamage(meleeDamage);
+            }
         }
     }
 

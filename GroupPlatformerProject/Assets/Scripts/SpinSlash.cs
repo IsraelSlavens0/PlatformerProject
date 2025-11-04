@@ -100,6 +100,19 @@ public class SpinSlash : MonoBehaviour
                 }
                 // If directionToEnemy == 0, enemy is exactly aligned on X axis, ignore
             }
+            if (collider.CompareTag("KnightBoss"))
+            {
+                float directionToEnemy = collider.transform.position.x - transform.position.x;
+
+                if (directionToEnemy > 0)
+                {
+                    DealDamage(collider);
+                }
+                else if (directionToEnemy < 0)
+                {
+                    DealDamage(collider);
+                }
+            }
         }
     }
 
@@ -109,6 +122,16 @@ public class SpinSlash : MonoBehaviour
         if (enemyHealth != null)
         {
             enemyHealth.TakeDamage(damage);
+            Debug.Log($"Dealt {damage} damage to {enemyCollider.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"EnemyHealth component missing on {enemyCollider.name}");
+        }
+        KnightHealth KnightHealth = enemyCollider.GetComponent<KnightHealth>();
+        if (KnightHealth != null)
+        {
+            KnightHealth.TakeDamage(damage);
             Debug.Log($"Dealt {damage} damage to {enemyCollider.name}");
         }
         else
