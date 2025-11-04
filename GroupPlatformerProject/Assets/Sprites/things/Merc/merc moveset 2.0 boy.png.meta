@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cff6875bbbd907644924cd7c6b6fa968
+guid: bf197051cdbc973498e755f2eb3b153f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 19
+  spritePixelsToUnits: 22
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: merc moveset (boy_0
+      name: merc moveset 2.0 boy_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b7b713457d9e5b4997e620951b9ed31
-      internalID: -480619913
+      spriteID: b65697af7c666f94bb037d8453ec2ac4
+      internalID: -1850808926
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_1
+      name: merc moveset 2.0 boy_1
       rect:
         serializedVersion: 2
         x: 48
@@ -132,14 +132,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d0d44ce8bd783342a5f9a7212382868
-      internalID: 1516713527
+      spriteID: 14c0e1a2ee31a3146a048f49f1e5e954
+      internalID: 1346550770
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_2
+      name: merc moveset 2.0 boy_2
       rect:
         serializedVersion: 2
         x: 96
@@ -153,14 +153,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8a717be19a3aa34fa4dd968d5269460
-      internalID: 518986454
+      spriteID: 839bb4b4571646e4da183016b4ec660a
+      internalID: -885212449
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_3
+      name: merc moveset 2.0 boy_3
       rect:
         serializedVersion: 2
         x: 0
@@ -174,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e7925bcd84a94e409ec95259e85beaa
-      internalID: -518407368
+      spriteID: 8664df64aad423046bee08e9739eba01
+      internalID: 1080005483
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_4
+      name: merc moveset 2.0 boy_4
       rect:
         serializedVersion: 2
         x: 48
@@ -195,14 +195,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7f1813bcc73e0364c96bfe4ffaae7625
-      internalID: 1263388164
+      spriteID: 291f971370b8789498539c0ac82671ab
+      internalID: -1194255348
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_5
+      name: merc moveset 2.0 boy_5
       rect:
         serializedVersion: 2
         x: 96
@@ -216,14 +216,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 949dc634095480d49a3ff1fc6c78f12e
-      internalID: -147744914
+      spriteID: e6f11a392eed87f47aba999c0ca87683
+      internalID: 691850791
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: merc moveset (boy_6
+      name: merc moveset 2.0 boy_6
       rect:
         serializedVersion: 2
         x: 0
@@ -237,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 694d36d859c2d824eac16eb2997ab732
-      internalID: -958724812
+      spriteID: 3a375c16d006ec94aa95839befeee193
+      internalID: -1071664586
       vertices: []
       indices: 
       edges: []
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      merc moveset (boy_0: -480619913
-      merc moveset (boy_1: 1516713527
-      merc moveset (boy_2: 518986454
-      merc moveset (boy_3: -518407368
-      merc moveset (boy_4: 1263388164
-      merc moveset (boy_5: -147744914
-      merc moveset (boy_6: -958724812
+      merc moveset 2.0 boy_0: -1850808926
+      merc moveset 2.0 boy_1: 1346550770
+      merc moveset 2.0 boy_2: -885212449
+      merc moveset 2.0 boy_3: 1080005483
+      merc moveset 2.0 boy_4: -1194255348
+      merc moveset 2.0 boy_5: 691850791
+      merc moveset 2.0 boy_6: -1071664586
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
