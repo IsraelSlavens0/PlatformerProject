@@ -206,4 +206,30 @@ public class ObelokAI : MonoBehaviour
         }
         return 1f;
     }
+    void OnDrawGizmosSelected()
+    {
+        // Draw chase and lose aggro distances
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, chaseTriggerDistance);
+
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position, loseAggroDistance);
+
+        // Draw hover height
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.up * hoverHeight);
+
+        // Draw ground slam position (if playing)
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+        {
+            float groundY = FindGroundBelow(transform.position);
+            Vector3 slamTarget = new Vector3(transform.position.x, groundY + groundOffset, transform.position.z);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, slamTarget);
+            Gizmos.DrawSphere(slamTarget, 0.3f);
+        }
+#endif
+    }
+
 }
