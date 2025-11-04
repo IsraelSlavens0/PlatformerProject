@@ -1197,6 +1197,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2093291545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3519603113465688811, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+  m_PrefabInstance: {fileID: 1655376758192384341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ddef291826fa7c4b9dd387bcc9de16c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1655376758192384341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1205,9 +1216,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 359543304972967180, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: knightHealth
+      value: 
+      objectReference: {fileID: 2093291545}
+    - target: {fileID: 3519603113465688811, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: phase2Threshold
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5385063178737526275, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: bossReference
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5514659653533089205, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
       propertyPath: m_Name
       value: KnightBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971663305291189201, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8358899320788413809, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
       propertyPath: m_LocalPosition.x
