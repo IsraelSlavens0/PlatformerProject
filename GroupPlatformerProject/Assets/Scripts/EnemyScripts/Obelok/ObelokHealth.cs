@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ObelokHealth : MonoBehaviour
 {
     [Header("Health Settings")]
-    public float health = 30f;
+    public float health = 90f;
     private float maxHealth;
 
     [Header("UI Elements")]
