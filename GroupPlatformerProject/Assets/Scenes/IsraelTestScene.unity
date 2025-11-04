@@ -201,6 +201,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Obelok
       objectReference: {fileID: 0}
+    - target: {fileID: 918054201523394894, guid: 2561a578bf948124f968abe48124c691, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4660887505445100986, guid: 2561a578bf948124f968abe48124c691, type: 3}
       propertyPath: m_LocalPosition.x
       value: -31.54
