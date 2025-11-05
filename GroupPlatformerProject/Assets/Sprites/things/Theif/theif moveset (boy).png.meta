@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 22
+  spritePixelsToUnits: 25
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a1458c5793c54d4a8434d82f58d0abc
-      internalID: 1844681498
+      spriteID: 121b1a7d194df5d4387a49d1e83c8cb6
+      internalID: 1676649677
       vertices: []
       indices: 
       edges: []
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cc04fff4bc610941b4b300dae16e360
-      internalID: 918042199
+      spriteID: d43f00f04e14f5c46bbed20e19ebca7b
+      internalID: -1669328766
       vertices: []
       indices: 
       edges: []
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af466d98d4872ae4ca03218139994b19
-      internalID: 1126254144
+      spriteID: d00f33387c244f34ea2065011e1e742c
+      internalID: -535636039
       vertices: []
       indices: 
       edges: []
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca7317d9d1d8771448f1d2cd6a0d9f03
-      internalID: -1625389773
+      spriteID: fa373ce372e042343a38d7f0d690e1a3
+      internalID: 1742659078
       vertices: []
       indices: 
       edges: []
@@ -195,8 +195,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4014045e9a46284cb81c78204a7c486
-      internalID: -345607797
+      spriteID: 5be7daa42414fc44681b4d3e9706e407
+      internalID: -854970396
       vertices: []
       indices: 
       edges: []
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 307b4a4f9692c4e4fafbe548108564a7
-      internalID: 1368138372
+      spriteID: 31957787841183d4c9cd5249a3304601
+      internalID: -571236391
       vertices: []
       indices: 
       edges: []
@@ -237,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2f0ea12f63249b24290a3bf455d2d2bc
-      internalID: 49330195
+      spriteID: d24d2e31ceb947c48816d92d7b9783ac
+      internalID: -1650050334
       vertices: []
       indices: 
       edges: []
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      theif moveset (boy)_0: 1844681498
-      theif moveset (boy)_1: 918042199
-      theif moveset (boy)_2: 1126254144
-      theif moveset (boy)_3: -1625389773
-      theif moveset (boy)_4: -345607797
-      theif moveset (boy)_5: 1368138372
-      theif moveset (boy)_6: 49330195
+      theif moveset (boy)_0: 1676649677
+      theif moveset (boy)_1: -1669328766
+      theif moveset (boy)_2: -535636039
+      theif moveset (boy)_3: 1742659078
+      theif moveset (boy)_4: -854970396
+      theif moveset (boy)_5: -571236391
+      theif moveset (boy)_6: -1650050334
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

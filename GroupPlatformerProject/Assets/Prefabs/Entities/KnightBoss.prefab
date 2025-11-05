@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75eee68a6d3ae4e9bc28a151e654c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 0
   burnDuration: 5
   burnTickDamage: 1
   activeTime: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75eee68a6d3ae4e9bc28a151e654c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 17
+  damage: 0
   burnDuration: 3
   burnTickDamage: 1
   activeTime: 0
@@ -313,7 +313,6 @@ GameObject:
   - component: {fileID: 7122833616778670792}
   - component: {fileID: 7055898281293923168}
   - component: {fileID: 5385063178737526275}
-  - component: {fileID: 4604524995947711043}
   m_Layer: 0
   m_Name: KnightBossHitbox
   m_TagString: BossI
@@ -474,18 +473,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossReference: {fileID: 1297400364880600456}
   damage: 1
---- !u!114 &4604524995947711043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4483109149926825863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0496bdca028cae84987df37beebd039d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5514659653533089205
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75eee68a6d3ae4e9bc28a151e654c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 0
   burnDuration: 3
   burnTickDamage: 2
   activeTime: 0
@@ -1095,7 +1082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75eee68a6d3ae4e9bc28a151e654c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 22
+  damage: 0
   burnDuration: 0
   burnTickDamage: 0
   activeTime: 0
