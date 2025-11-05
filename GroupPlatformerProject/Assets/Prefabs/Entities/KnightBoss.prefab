@@ -771,7 +771,7 @@ MonoBehaviour:
   phase1Attacks: {fileID: 6197023008955784789}
   phase2Attacks: {fileID: 5971663305291189201}
   knightMovement: {fileID: 1297400364880600456}
-  phase2Threshold: 1
+  phase2Threshold: 0.5
 --- !u!114 &1297400364880600456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784,8 +784,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2594a802dc5cbb54aacd24c4f6af1045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseChaseSpeed: 5
-  baseRunAwaySpeed: 4
+  baseChaseSpeed: 4
+  baseRunAwaySpeed: 6
   detectionRange: 10
   attackRange: 2
   dashDistance: 1
