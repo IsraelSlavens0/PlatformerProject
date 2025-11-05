@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 [RequireComponent(typeof(Collider2D))]
 public class KnightAttackHitbox : MonoBehaviour
@@ -27,7 +29,6 @@ public class KnightAttackHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // ✅ Only affect the player when hit by this hitbox
         if (!CompareTag("KnightHitbox"))
             return;
 

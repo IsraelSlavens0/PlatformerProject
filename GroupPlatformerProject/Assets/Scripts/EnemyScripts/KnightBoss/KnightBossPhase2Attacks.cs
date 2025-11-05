@@ -45,8 +45,6 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     private string currentAttack = "";
     private float attackTimer;
 
-    private float gizmoRadius = 0f;
-    private Color gizmoColor = Color.clear;
 
     private void Start()
     {
@@ -121,9 +119,6 @@ public class KnightBossPhase2Attacks : MonoBehaviour
 
         Debug.Log($"Knight Phase 2 starting attack: {atk.name}");
 
-
-        gizmoRadius = atk.range;
-        gizmoColor = Color.red;
 
         if (move != null)
             move.enabled = false;
@@ -233,7 +228,6 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         Debug.Log($"{currentAttack} finished.");
         DisableAllHitboxes();
         rb.velocity = Vector2.zero;
-        gizmoColor = Color.clear;
         isAttacking = false;
         currentAttack = "";
 
