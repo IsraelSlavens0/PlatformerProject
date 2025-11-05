@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,7 @@ public class KnightPhase2Trigger : MonoBehaviour
     [Header("Phase Scripts")]
     public KnightBossPhase1Attacks phase1Attacks;
     public KnightBossPhase2Attacks phase2Attacks;
+    public KnightBossMovement knightMovement; // ✅ Add this
 
     [Header("Phase Settings")]
     [Tooltip("Health percentage (0-1) at which Phase 2 should start.")]
@@ -18,17 +19,22 @@ public class KnightPhase2Trigger : MonoBehaviour
     private void Start()
     {
         InitializePhaseState();
+        if (knightMovement == null)
+            knightMovement = GetComponent<KnightBossMovement>();
+
     }
 
     // Called from KnightHealth.Start() and Start() here
     public void InitializePhaseState()
     {
-        // Ensure Phase 2 is disabled and Phase 1 is enabled
         if (phase2Attacks != null)
             phase2Attacks.enabled = false;
 
         if (phase1Attacks != null)
             phase1Attacks.enabled = true;
+
+        if (knightMovement != null)
+            knightMovement.isPhase2 = false;
 
         phase2Triggered = false;
     }
@@ -56,6 +62,12 @@ public class KnightPhase2Trigger : MonoBehaviour
         {
             phase2Attacks.enabled = true;
             Debug.Log("Knight Phase 2 attacks enabled!");
+        }
+      
+        if (knightMovement != null)
+        {
+            knightMovement.isPhase2 = true;
+            Debug.Log("Knight movement switched to Phase 2 behavior!");
         }
     }
 }

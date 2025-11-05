@@ -22,6 +22,9 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     public Attack infernalTorrent = new Attack { name = "InfernalTorrent", duration = 2.8f, damage = 8f, range = 2.5f, cooldown = 7f };
     public Attack groundBreaker = new Attack { name = "GroundBreaker", duration = 1.3f, damage = 22f, range = 3f, cooldown = 8f };
     public Attack moltenEruption = new Attack { name = "MoltenEruption", duration = 1.5f, damage = 20f, range = 3f, cooldown = 9f };
+    
+    [Header("Fallback Attack")] 
+    public Attack basicAttack = new Attack { name = "BasicAttack", duration = 1f, damage = 5f, range = 1.5f, cooldown = 1f};
 
     [Header("Firebolt (Opener)")]
     public GameObject fireboltPrefab;
@@ -93,11 +96,20 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         if (groundTimer <= 0) available.Add(groundBreaker);
         if (eruptionTimer <= 0) available.Add(moltenEruption);
 
-        if (available.Count == 0) return;
+        Attack chosen;
+        if (available.Count > 0)
+        {
+            chosen = available[Random.Range(0, available.Count)];
+        }
+        else
+        {
+            // Fallback if all on cooldown
+            chosen = basicAttack;
+        }
 
-        Attack chosen = available[Random.Range(0, available.Count)];
         StartAttack(chosen);
     }
+
 
     private void StartAttack(Attack atk)
     {
@@ -107,11 +119,25 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         currentAttack = atk.name;
         attackTimer = atk.duration;
 
+        Debug.Log($"Knight Phase 2 starting attack: {atk.name}");
+
+
         gizmoRadius = atk.range;
         gizmoColor = Color.red;
 
         if (move != null)
             move.enabled = false;
+
+        // Attach hitbox damage dynamically
+        if (atk.hitbox != null)
+        {
+            KnightBossHitbox hitboxComponent = atk.hitbox.GetComponent<KnightBossHitbox>();
+            if (hitboxComponent == null)
+                hitboxComponent = atk.hitbox.AddComponent<KnightBossHitbox>();
+
+            hitboxComponent.damage = atk.damage;
+            atk.hitbox.SetActive(true);
+        }
 
         switch (atk.name)
         {
@@ -120,9 +146,6 @@ public class KnightBossPhase2Attacks : MonoBehaviour
             case "GroundBreaker": StartCoroutine(GroundBreakerRoutine(atk)); groundTimer = atk.cooldown; break;
             case "MoltenEruption": StartCoroutine(MoltenEruptionRoutine(atk)); eruptionTimer = atk.cooldown; break;
         }
-
-        if (atk.hitbox != null)
-            atk.hitbox.SetActive(true);
     }
 
     private void DisableAllHitboxes()
@@ -139,8 +162,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     {
         Debug.Log("Flaming Slam!");
         yield return new WaitForSeconds(atk.duration * 0.5f);
-        moveTowardsPlayer(0); // no horizontal, vertical simulated via hitbox
-        ApplyBurnAndDamage(atk);
+        moveTowardsPlayer(0);
         yield return new WaitForSeconds(atk.duration * 0.5f);
         FinishAttack();
     }
@@ -151,8 +173,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < atk.duration)
         {
-            moveTowardsPlayer(2.5f); // slow approach while spinning fire
-            ApplyBurnAndDamage(atk);
+            moveTowardsPlayer(2.5f);
             yield return new WaitForSeconds(0.5f);
             elapsed += 0.5f;
         }
@@ -163,20 +184,40 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     {
         Debug.Log("GroundBreaker!");
         moveTowardsPlayer(0);
-        yield return new WaitForSeconds(0.3f);
-        ApplyBurnAndDamage(atk);
-        yield return new WaitForSeconds(atk.duration - 0.3f);
+        yield return new WaitForSeconds(atk.duration);
         FinishAttack();
     }
 
     private IEnumerator MoltenEruptionRoutine(Attack atk)
     {
         Debug.Log("Molten Eruption!");
-        yield return new WaitForSeconds(atk.duration * 0.5f);
-        ApplyBurnAndDamage(atk);
-        yield return new WaitForSeconds(atk.duration * 0.5f);
+        yield return new WaitForSeconds(atk.duration);
         FinishAttack();
     }
+    private IEnumerator BasicAttackRoutine(Attack atk)
+    {
+        Debug.Log("Basic Attack!");
+        moveTowardsPlayer(1f); // slow approach
+
+        // Only deal direct damage, no burn
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, atk.range);
+        foreach (var h in hits)
+        {
+            if (h.CompareTag("KnightHitbox"))
+            {
+                PlayerHealth ph = h.GetComponent<PlayerHealth>();
+                if (ph != null)
+                {
+                    ph.TakeDamage(atk.damage);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(atk.duration);
+        FinishAttack();
+    }
+
+
 
     // ------------------- Shared Logic -------------------
 
@@ -187,29 +228,9 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         rb.velocity = new Vector2(dir.x * speed, rb.velocity.y);
     }
 
-    private void ApplyBurnAndDamage(Attack atk)
-    {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, atk.range);
-        foreach (var h in hits)
-        {
-            if (h.CompareTag("Player"))
-            {
-                PlayerHealth ph = h.GetComponent<PlayerHealth>();
-                if (ph != null)
-                {
-                    ph.TakeDamage(atk.damage);
-                    var burn = h.GetComponent<BurnDebuff>();
-                    if (burn == null)
-                        burn = h.gameObject.AddComponent<BurnDebuff>();
-                    burn.ApplyBurn(3f, 3f);
-                }
-            }
-        }
-    }
-
     private void FinishAttack()
     {
-        Debug.Log($" {currentAttack} finished.");
+        Debug.Log($"{currentAttack} finished.");
         DisableAllHitboxes();
         rb.velocity = Vector2.zero;
         gizmoColor = Color.clear;
@@ -220,14 +241,19 @@ public class KnightBossPhase2Attacks : MonoBehaviour
             move.enabled = true;
     }
 
-    // ------------------- Gizmos -------------------
 
-    private void OnDrawGizmos()
+    // Helper method for active attack lookup
+    private Attack GetAttackByName(string attackName)
     {
-        if (Application.isPlaying && gizmoColor != Color.clear)
+        switch (attackName)
         {
-            Gizmos.color = gizmoColor;
-            Gizmos.DrawWireSphere(transform.position, gizmoRadius);
+            case "FlamingSlam": return flamingSlam;
+            case "InfernalTorrent": return infernalTorrent;
+            case "GroundBreaker": return groundBreaker;
+            case "MoltenEruption": return moltenEruption;
+            case "BasicAttack": return basicAttack;
+            default: return null;
         }
     }
+
 }

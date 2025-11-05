@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -24,9 +24,11 @@ public class KnightBossMovement : MonoBehaviour
     private KnightBossPhase2Attacks p2Attacks;
 
     private bool isRunningAway = false;
+    private bool isDashing = false;
     private float runAwayTimer = 0f;
     private float idleTimer = 0f;
     private float dashTimer = 0f;
+    private Vector2 dashDirection;
     private Vector2 randomOffset = Vector2.zero;
 
     private void Start()
@@ -95,18 +97,50 @@ public class KnightBossMovement : MonoBehaviour
 
     private void Phase2Movement(Transform playerTransform)
     {
-        // Phase 2 moves more aggressively, maybe random dash attacks
-        float moveSpeed = baseChaseSpeed * 1.2f * Random.Range(0.9f, 1.1f);
+        Vector2 direction = (playerTransform.position - transform.position);
+        float distance = direction.magnitude;
 
-        // Completely random horizontal movement within detection range
-        float randomX = Random.Range(-1f, 1f);
-        rb.velocity = new Vector2(randomX * moveSpeed, rb.velocity.y);
+        // === Dash behavior ===
+        if (!isDashing && dashTimer <= 0f && Random.Range(0f, 1f) < 0.02f)
+        {
+            StartCoroutine(DashTowardsPlayer(direction));
+            return;
+        }
 
-        // Randomly trigger Phase2 abilities
-        if (p2Attacks != null && !p2Attacks.isAttacking && Random.Range(0f, 1f) < 0.02f)
+        // === Normal chase ===
+        float chaseSpeed = baseChaseSpeed * 1.5f; // Faster in phase 2
+        direction.Normalize();
+
+        // Add slight strafing for unpredictability
+        direction.x += Random.Range(-0.2f, 0.2f);
+        direction.Normalize();
+
+        rb.velocity = new Vector2(direction.x * chaseSpeed, rb.velocity.y);
+
+        // Randomly trigger Phase 2 abilities
+        if (p2Attacks != null && !p2Attacks.isAttacking && Random.Range(0f, 1f) < 0.03f)
         {
             p2Attacks.TryRandomAttack(playerTransform);
         }
+    }
+
+    private IEnumerator DashTowardsPlayer(Vector2 direction)
+    {
+        isDashing = true;
+        dashTimer = dashCooldown;
+
+        Vector2 dashDir = direction.normalized;
+        float dashSpeed = (dashDistance / dashDuration);
+
+        float timer = 0f;
+        while (timer < dashDuration)
+        {
+            rb.velocity = dashDir * dashSpeed;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        isDashing = false;
     }
 
     private void StartRunningAway()
