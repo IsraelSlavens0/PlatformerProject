@@ -118,6 +118,7 @@ public class SpinSlash : MonoBehaviour
 
     void DealDamage(Collider2D enemyCollider)
     {
+        //just copy and paste the same bit but change the health script name
         EnemyHealth enemyHealth = enemyCollider.GetComponent<EnemyHealth>();
         if (enemyHealth != null)
         {

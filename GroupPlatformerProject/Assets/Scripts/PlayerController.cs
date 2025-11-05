@@ -163,6 +163,8 @@ public class PlayerController : MonoBehaviour
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(hitboxCenter, new Vector2(meleeHitboxWidth, meleeHitboxHeight), angle);
 
+
+        //just copy and paste the same bit but change the health script name
         foreach (Collider2D hit in hits)
         {
             EnemyHealth enemy = hit.GetComponent<EnemyHealth>();
