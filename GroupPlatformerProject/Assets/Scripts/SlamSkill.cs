@@ -57,6 +57,7 @@ public class SlamSkill : MonoBehaviour
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(slamCenter, slamRadius);
 
+        //just copy and paste the same bit but change the health script name
         foreach (Collider2D hit in hits)
         {
             EnemyHealth enemy = hit.GetComponent<EnemyHealth>();

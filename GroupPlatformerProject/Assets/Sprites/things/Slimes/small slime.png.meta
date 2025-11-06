@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c23ba10a8b3dbce46959ec2a98332dcd
+guid: 2791f20217e8bfe49b795e7f283825c7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 22
+  spritePixelsToUnits: 18
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: theif moveset (boy) (red_0
+      name: small slime_0
       rect:
         serializedVersion: 2
         x: 0
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 733f9f3bd0edfc6409cb039755713832
-      internalID: 1113630675
+      spriteID: dce68a450a0f61e45afd936094bca4fc
+      internalID: 926699801
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_1
+      name: small slime_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6e03bc09073759543857dd89870a55d0
-      internalID: -1982087175
+      spriteID: 788c14100f664e447aad73be52c15d8f
+      internalID: 1979415757
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_2
+      name: small slime_2
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7f188a64aa2d7194599fc528a13289e3
-      internalID: 656459714
+      spriteID: 0731c4ef66e384b48b4bff8c21acd229
+      internalID: -357435076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_3
+      name: small slime_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
-        width: 48
-        height: 48
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5fefeb84b5aa8014198f9897c7714406
-      internalID: -1567051157
+      spriteID: fa68ae5d98591fe4b9bbe72e58499409
+      internalID: -608353248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_4
+      name: small slime_4
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
-        width: 48
-        height: 48
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c67bc7ff79b6cec428ba11806cd225a9
-      internalID: -1601475505
+      spriteID: ce748cd7dd608d54e951291abe6620a4
+      internalID: 1621624700
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_5
+      name: small slime_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 48
-        width: 48
-        height: 48
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,20 +216,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e7caaa3e69f5c4b458008f2732be1697
-      internalID: 1870264210
+      spriteID: 3e33340cd6d3d4644adc9aa7abfe63d0
+      internalID: -1517253196
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (boy) (red_6
+      name: small slime_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f063ce7a3b808fa46845aa67bbda73fc
+      internalID: 1879446149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small slime_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c74b4a5f00498124c999bf750ea7e8fa
+      internalID: -1031301728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small slime_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4e4b0ff7f8a53146a10cc6efde27c91
+      internalID: -1289334796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small slime_9
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,8 +300,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46b194dbbb59d2343887147932bf479a
-      internalID: 1492280899
+      spriteID: 3a865f0a026bae049bfe0730f5826018
+      internalID: 177943749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small slime_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c155c6b8973c2a24aadb90e0491a3677
+      internalID: 1640124651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: small slime_11
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3072cd5d5a8598f48820ac873f85589f
+      internalID: 1531803289
       vertices: []
       indices: 
       edges: []
@@ -254,13 +359,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      theif moveset (boy) (red_0: 1113630675
-      theif moveset (boy) (red_1: -1982087175
-      theif moveset (boy) (red_2: 656459714
-      theif moveset (boy) (red_3: -1567051157
-      theif moveset (boy) (red_4: -1601475505
-      theif moveset (boy) (red_5: 1870264210
-      theif moveset (boy) (red_6: 1492280899
+      small slime_0: 926699801
+      small slime_1: 1979415757
+      small slime_10: 1640124651
+      small slime_11: 1531803289
+      small slime_2: -357435076
+      small slime_3: -608353248
+      small slime_4: 1621624700
+      small slime_5: -1517253196
+      small slime_6: 1879446149
+      small slime_7: -1031301728
+      small slime_8: -1289334796
+      small slime_9: 177943749
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

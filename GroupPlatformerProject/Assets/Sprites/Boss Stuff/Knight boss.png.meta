@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 667acb43aece1b340bd35ed93ba9a810
+guid: 4813f8648e150414bac9cd44763d02d3
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 27.8
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: goblin moveset (boy_0
+      name: Knight boss_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 48
-        height: 48
+        y: 136
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 942a37038df44ba43a9339bd7142b5c6
-      internalID: 1169102645
+      spriteID: 1041b1938eb13454ea0f0b111c389800
+      internalID: -1571536254
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_1
+      name: Knight boss_1
       rect:
         serializedVersion: 2
-        x: 48
-        y: 96
-        width: 48
-        height: 48
+        x: 68
+        y: 136
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5fea951517dcd9b439c4d1cab495d122
-      internalID: -861840836
+      spriteID: fceb04337ba258c488f05e316ae0b7e3
+      internalID: 1304380186
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_2
+      name: Knight boss_2
       rect:
         serializedVersion: 2
-        x: 96
-        y: 96
-        width: 48
-        height: 48
+        x: 136
+        y: 136
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d5ac9ddff70aa4d449e85461f00b11a2
-      internalID: -1220792227
+      spriteID: b79b74c29fa08a244b1a881142c49d5e
+      internalID: -267340330
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_3
+      name: Knight boss_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
-        width: 48
-        height: 48
+        y: 68
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 483374b9e13eaed4096af77339ae42c9
-      internalID: 1543180313
+      spriteID: 0872e5974afcb06498a5cb27d7b93011
+      internalID: 1240350788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_4
+      name: Knight boss_4
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
-        width: 48
-        height: 48
+        x: 68
+        y: 68
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c53fa24a804992f489a4e0744c94bf02
-      internalID: -1235767144
+      spriteID: ac9bf187b72885041ad182d9e46c9421
+      internalID: -1811287366
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_5
+      name: Knight boss_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 48
-        width: 48
-        height: 48
+        x: 136
+        y: 68
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,20 +216,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5ba63d59c58f2546b6b089d6b4fa2dc
-      internalID: -476308482
+      spriteID: 259228034b379004381234d9b7450220
+      internalID: 558235450
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: goblin moveset (boy_6
+      name: Knight boss_6
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 68
+        height: 68
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1055070280af3848bdfdc7076db25ce
-      internalID: 729155782
+      spriteID: 9361c30ea1d8da242bd93c4b9f4c4976
+      internalID: 1562357300
       vertices: []
       indices: 
       edges: []
@@ -254,13 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      goblin moveset (boy_0: 1169102645
-      goblin moveset (boy_1: -861840836
-      goblin moveset (boy_2: -1220792227
-      goblin moveset (boy_3: 1543180313
-      goblin moveset (boy_4: -1235767144
-      goblin moveset (boy_5: -476308482
-      goblin moveset (boy_6: 729155782
+      Knight boss_0: -1571536254
+      Knight boss_1: 1304380186
+      Knight boss_2: -267340330
+      Knight boss_3: 1240350788
+      Knight boss_4: -1811287366
+      Knight boss_5: 558235450
+      Knight boss_6: 1562357300
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

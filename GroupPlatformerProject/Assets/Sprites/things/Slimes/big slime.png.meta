@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f27a42c6ff2f87e46bdbdd200a9d205a
+guid: 0bd36f58fc1e65243887f13f3e8d93cb
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 22
+  spritePixelsToUnits: 18
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: theif moveset (RED_0
+      name: big slime_0
       rect:
         serializedVersion: 2
         x: 0
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 241006d02696dfd45822ce5d90478170
-      internalID: -1748802000
+      spriteID: a7d55f167f33f304e8d7f9f40fc803aa
+      internalID: 1819055795
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_1
+      name: big slime_1
       rect:
         serializedVersion: 2
-        x: 48
+        x: 32
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cb7d38e6abbf49345bccfdd06d0c47b0
-      internalID: 395426265
+      spriteID: 3ae4b3485e3e41248980ebae472e903f
+      internalID: 1836882894
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_2
+      name: big slime_2
       rect:
         serializedVersion: 2
-        x: 96
+        x: 64
         y: 96
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 62a93343007272f4c88058396698281a
-      internalID: -2044690508
+      spriteID: 7dc2177b3ab7dde44b7af7bdddd39e74
+      internalID: 1502105905
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_3
+      name: big slime_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
-        width: 48
-        height: 48
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 626273a8a1287d143b787032dea09448
-      internalID: -1445484922
+      spriteID: 2b3543fcf489e6e42a52a9ed52c6a48c
+      internalID: 1653062626
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_4
+      name: big slime_4
       rect:
         serializedVersion: 2
-        x: 48
-        y: 48
-        width: 48
-        height: 48
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9628cf62458f72c41845e78a6e803a83
-      internalID: -532895238
+      spriteID: 89001b6719245d843842c2dee4868319
+      internalID: -622871984
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_5
+      name: big slime_5
       rect:
         serializedVersion: 2
-        x: 96
-        y: 48
-        width: 48
-        height: 48
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,20 +216,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4f0415f352d36354899d8d4cbbdcbcea
-      internalID: -1202094998
+      spriteID: bd8b905fe391050488a1e999e37e89cc
+      internalID: 1505237343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: theif moveset (RED_6
+      name: big slime_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c486c283bbbeda14e81d5e7e86c7631f
+      internalID: -1276972455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: big slime_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99205e1862bcbe54b93679b63fdf29ba
+      internalID: 668677279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: big slime_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e28d595417bac04ab93570723ef8ca9
+      internalID: 65582606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: big slime_9
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 48
-        height: 48
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,8 +300,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53ac39c7eb4e69e4e8f10b13972d753e
-      internalID: 482947856
+      spriteID: 4eda4d4928bd8d74386044294bd751f0
+      internalID: -83917363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: big slime_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8505ccb75a01b1840b3011084427c692
+      internalID: -420686671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: big slime_11
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05c665b5628004f44b2b4b4aaaca18d9
+      internalID: -1877434328
       vertices: []
       indices: 
       edges: []
@@ -254,13 +359,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      theif moveset (RED_0: -1748802000
-      theif moveset (RED_1: 395426265
-      theif moveset (RED_2: -2044690508
-      theif moveset (RED_3: -1445484922
-      theif moveset (RED_4: -532895238
-      theif moveset (RED_5: -1202094998
-      theif moveset (RED_6: 482947856
+      big slime_0: 1819055795
+      big slime_1: 1836882894
+      big slime_10: -420686671
+      big slime_11: -1877434328
+      big slime_2: 1502105905
+      big slime_3: 1653062626
+      big slime_4: -622871984
+      big slime_5: 1505237343
+      big slime_6: -1276972455
+      big slime_7: 668677279
+      big slime_8: 65582606
+      big slime_9: -83917363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

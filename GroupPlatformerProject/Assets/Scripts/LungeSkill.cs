@@ -102,7 +102,7 @@ public class LungeSkill : MonoBehaviour
 
     public void ApplyLungeDamage(Collider2D target)
     {
-        // Damage normal enemies
+        //just copy and paste the same bit but change the health script name
         EnemyHealth enemy = target.GetComponent<EnemyHealth>();
         if (enemy != null)
         {
