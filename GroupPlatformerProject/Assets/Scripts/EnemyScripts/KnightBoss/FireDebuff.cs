@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BurnDebuff : MonoBehaviour
+public class FireDebuff : MonoBehaviour
 {
     private Coroutine burnRoutine;
 

@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 public class KnightBossHitbox : MonoBehaviour
 {
@@ -15,6 +15,9 @@ public class KnightBossHitbox : MonoBehaviour
     public float damage = 10f;
     private float activeTime = 0.5f;
 
+    // ✅ New: optional delegate for Phase 2 or custom behavior
+    public Action<GameObject> OnHit;
+
     private void Awake()
     {
         col = GetComponent<Collider2D>();
@@ -24,7 +27,6 @@ public class KnightBossHitbox : MonoBehaviour
         col.isTrigger = true;
         gameObject.SetActive(false);
     }
-
 
     public void Activate(object attack)
     {
@@ -53,24 +55,35 @@ public class KnightBossHitbox : MonoBehaviour
     {
         yield return new WaitForSeconds(activeTime);
         gameObject.SetActive(false);
+
+        // ✅ Optional: clear OnHit when deactivated to avoid stale delegates
+        OnHit = null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;
-        Debug.Log($"Lunge hit player with {damage} damage");
 
         PlayerHealth playerHealth = collision.GetComponent<PlayerHealth>();
-        if (playerHealth != null)
-        {
-            float finalDamage = damage;
-            if (bossReference is KnightBossPhase1Attacks phaseBoss && phaseBoss.IsPowerBoosted())
-            {
-                finalDamage *= 1.6f;
-                phaseBoss.ConsumePowerBoost();
-            }
-            playerHealth.TakeDamage(finalDamage);
-        }
-    }
+        if (playerHealth == null) return;
 
+        // ✅ If Phase 2 attached a custom handler, use it
+        if (OnHit != null)
+        {
+            OnHit.Invoke(collision.gameObject);
+            return;
+        }
+
+        // Default Phase 1 behavior
+        Debug.Log($"Lunge hit player with {damage} damage");
+
+        float finalDamage = damage;
+        if (bossReference is KnightBossPhase1Attacks phaseBoss && phaseBoss.IsPowerBoosted())
+        {
+            finalDamage *= 1.6f;
+            phaseBoss.ConsumePowerBoost();
+        }
+
+        playerHealth.TakeDamage(finalDamage);
+    }
 }
