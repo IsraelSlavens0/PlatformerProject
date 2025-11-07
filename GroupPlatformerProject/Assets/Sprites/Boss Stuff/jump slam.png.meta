@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4813f8648e150414bac9cd44763d02d3
+guid: c3eac21b82928374eb12c51573102589
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 26
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Knight boss_0
+      name: jump slam_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 136
-        width: 68
-        height: 68
+        y: 228
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,20 +111,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1041b1938eb13454ea0f0b111c389800
-      internalID: -1571536254
+      spriteID: 1a4502d3b11fbc349a76cc53ca299ad2
+      internalID: 1719260551
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_1
+      name: jump slam_1
       rect:
         serializedVersion: 2
-        x: 68
-        y: 136
-        width: 68
-        height: 68
+        x: 76
+        y: 228
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -132,20 +132,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fceb04337ba258c488f05e316ae0b7e3
-      internalID: 1304380186
+      spriteID: 31e0cf428e228174991aa3d59b98eb55
+      internalID: 1937141819
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_2
+      name: jump slam_2
       rect:
         serializedVersion: 2
-        x: 136
-        y: 136
-        width: 68
-        height: 68
+        x: 152
+        y: 228
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,20 +153,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b79b74c29fa08a244b1a881142c49d5e
-      internalID: -267340330
+      spriteID: 5a6ef59d23bf2e9488f748b5991f7072
+      internalID: -1455895638
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_3
+      name: jump slam_3
       rect:
         serializedVersion: 2
         x: 0
-        y: 68
-        width: 68
-        height: 68
+        y: 152
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,20 +174,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0872e5974afcb06498a5cb27d7b93011
-      internalID: 1240350788
+      spriteID: aaf74345766416f46af7605d4965122c
+      internalID: -619822865
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_4
+      name: jump slam_4
       rect:
         serializedVersion: 2
-        x: 68
-        y: 68
-        width: 68
-        height: 68
+        x: 76
+        y: 152
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -195,20 +195,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac9bf187b72885041ad182d9e46c9421
-      internalID: -1811287366
+      spriteID: 5c76126d70e2928489135eb5208f3a1f
+      internalID: -1251752612
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_5
+      name: jump slam_5
       rect:
         serializedVersion: 2
-        x: 136
-        y: 68
-        width: 68
-        height: 68
+        x: 152
+        y: 152
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,20 +216,83 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 259228034b379004381234d9b7450220
-      internalID: 558235450
+      spriteID: b57204c8b66884946b5008f3eebf58cc
+      internalID: -23953212
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Knight boss_6
+      name: jump slam_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 76
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65fa3ae85a95f434684137e96492768c
+      internalID: -1994254941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jump slam_7
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 76
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b1b7eb44c16ce44592e84dbc6c389b7
+      internalID: -846889193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jump slam_8
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 76
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01cefbb5bafc8be42824856101fda195
+      internalID: 501722761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jump slam_9
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 68
-        height: 68
+        width: 76
+        height: 76
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -237,8 +300,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9361c30ea1d8da242bd93c4b9f4c4976
-      internalID: 1562357300
+      spriteID: 1224365de5a8de7458326cf7e435b761
+      internalID: -360494876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: jump slam_10
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 0
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 936b7d0b04af2fa41bb039b4160a0f85
+      internalID: -2145105679
       vertices: []
       indices: 
       edges: []
@@ -254,13 +338,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Knight boss_0: -1571536254
-      Knight boss_1: 1304380186
-      Knight boss_2: -267340330
-      Knight boss_3: 1240350788
-      Knight boss_4: -1811287366
-      Knight boss_5: 558235450
-      Knight boss_6: 1562357300
+      jump slam_0: 1719260551
+      jump slam_1: 1937141819
+      jump slam_10: -2145105679
+      jump slam_2: -1455895638
+      jump slam_3: -619822865
+      jump slam_4: -1251752612
+      jump slam_5: -23953212
+      jump slam_6: -1994254941
+      jump slam_7: -846889193
+      jump slam_8: 501722761
+      jump slam_9: -360494876
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
