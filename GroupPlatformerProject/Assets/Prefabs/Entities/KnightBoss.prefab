@@ -357,19 +357,19 @@ MonoBehaviour:
     duration: 0.8
     horizontalForce: 5
     verticalForce: 0
-    damage: 0
+    damage: 50
   lungeAttack:
     name: Lunge
     duration: 1
     horizontalForce: 10
     verticalForce: 0
-    damage: 0
+    damage: 50
   slamAttack:
     name: Slam
     duration: 1.5
     horizontalForce: 5
     verticalForce: 12
-    damage: 1
+    damage: 50
   powerBoostAttack:
     name: PowerBoost
     duration: 0.8
@@ -402,27 +402,58 @@ MonoBehaviour:
     damage: 1
     range: 3
     duration: 1.2
+    nextUseTime: 0
+    burnDuration: 3
+    burnTickDamage: 5
   infernalTorrent:
     name: InfernalTorrent
     damage: 10
     range: 2.5
     duration: 2.8
+    nextUseTime: 0
+    burnDuration: 3
+    burnTickDamage: 7
   groundBreaker:
     name: GroundBreaker
     damage: 22
     range: 3
     duration: 1.3
+    nextUseTime: 0
   moltenEruption:
     name: MoltenEruption
     damage: 25
     range: 3
     duration: 1.5
+    nextUseTime: 0
+    burnDuration: 5
+    burnTickDamage: 5
+  openingRanged:
+    name: Flaming Bolt
+    damage: 15
+    range: 50
+    duration: 3
+    nextUseTime: 0
+    burnDuration: 0
+    burnTickDamage: 0
+  basicAttack:
+    name: Slash
+    damage: 10
+    range: 3
+    duration: 0
+    nextUseTime: 0
+  flamingSlamCooldown: 18
+  infernalTorrentCooldown: 16
+  groundBreakerCooldown: 18
+  moltenEruptionCooldown: 20
+  projectilePrefab: {fileID: 0}
+  projectileSpawnPoint: {fileID: 8358899320788413809}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
   slamRadius: 2.5
   eruptionRadius: 4
   groundBreakerSize: {x: 3, y: 1.2}
+  basicAttackRange: 2
   isAttacking: 0
 --- !u!114 &359543304972967180
 MonoBehaviour:
@@ -439,7 +470,7 @@ MonoBehaviour:
   phase1Attacks: {fileID: 6197023008955784789}
   phase2Attacks: {fileID: 5971663305291189201}
   knightMovement: {fileID: 1297400364880600456}
-  phase2Threshold: 1
+  phase2Threshold: 0.5
 --- !u!114 &1297400364880600456
 MonoBehaviour:
   m_ObjectHideFlags: 0

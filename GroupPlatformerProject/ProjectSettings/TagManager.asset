@@ -15,6 +15,7 @@ TagManager:
   - BossI
   - KnightBoss
   - KnightHitbox
+  - Obstacle
   layers:
   - Default
   - TransparentFX
