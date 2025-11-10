@@ -445,8 +445,9 @@ MonoBehaviour:
   infernalTorrentCooldown: 16
   groundBreakerCooldown: 18
   moltenEruptionCooldown: 20
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 7980403543528529909, guid: a4c052102bec3c04c829f314432b3366, type: 3}
   projectileSpawnPoint: {fileID: 8358899320788413809}
+  projectileSpeedMultiplier: 0.4
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -470,7 +471,7 @@ MonoBehaviour:
   phase1Attacks: {fileID: 6197023008955784789}
   phase2Attacks: {fileID: 5971663305291189201}
   knightMovement: {fileID: 1297400364880600456}
-  phase2Threshold: 0.5
+  phase2Threshold: 1
 --- !u!114 &1297400364880600456
 MonoBehaviour:
   m_ObjectHideFlags: 0
