@@ -30,7 +30,7 @@ public class ObelokFragmentTR : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        transform.position = new Vector3(transform.position.x, hoverHeight, transform.position.z);
+        
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
