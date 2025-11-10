@@ -18,6 +18,11 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         [Header("🔥 Burn Effect")]
         public float burnDuration;
         public float burnTickDamage;
+
+        [Header("🎞 Animation")]
+        [Tooltip("Trigger name or AnimationClip for this attack")]
+        public string animationTrigger; // 👈 assign the trigger name in Inspector
+        public AnimationClip animationClip; // optional, if you want direct clip playback
     }
 
     [System.Serializable]
@@ -28,14 +33,19 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         public float range;
         public float duration;
         [HideInInspector] public float nextUseTime;
+
+        [Header("🎞 Animation")]
+        [Tooltip("Trigger name or AnimationClip for this physical attack")]
+        public string animationTrigger; // 👈 assign manually per attack
+        public AnimationClip animationClip;
     }
 
     [Header("Phase 2 Attacks")]
     public Attack flamingSlam;
     public Attack infernalTorrent;
-    public PhysicalAttack groundBreaker; // no burn fields
+    public PhysicalAttack groundBreaker;
     public Attack moltenEruption;
-    public Attack openingRanged; // projectile (used once)
+    public Attack openingRanged;
     public PhysicalAttack basicAttack;
 
     [Header("Attack Cooldowns")]
@@ -59,6 +69,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
 
     private Rigidbody2D rb;
     private KnightBossMovement movement;
+    private Animator anim;
     private Transform player;
     private bool hasUsedOpeningRanged = false;
     private List<(Vector3 pos, float size, bool box, float time)> debugHits = new();
@@ -69,9 +80,24 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<KnightBossMovement>();
+        anim = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
     }
 
+    // Helper to play assigned animation
+    private void PlayAttackAnimation(string trigger, AnimationClip clip)
+    {
+        if (anim == null) return;
+
+        if (!string.IsNullOrEmpty(trigger))
+        {
+            anim.SetTrigger(trigger); // play by trigger
+        }
+        else if (clip != null)
+        {
+            anim.Play(clip.name); // play direct clip if specified
+        }
+    }
     // --------------------------------------------------
     // ATTACK CHOOSER
     // --------------------------------------------------
@@ -111,7 +137,6 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         int choice = Random.Range(0, possibleAttacks.Count);
         possibleAttacks[choice].Invoke();
     }
-
     // --------------------------------------------------
     // BASIC ATTACK (Fallback)
     // --------------------------------------------------
@@ -119,11 +144,10 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     {
         Debug.Log("⚔️ Basic melee attack!");
         isAttacking = true;
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip); // 👈 plays assigned animation
 
-        // Quick wind-up
         yield return new WaitForSeconds(0.3f);
 
-        // Short melee strike in front of the boss
         Vector2 dir = player != null ? (player.position - transform.position).normalized : Vector2.right;
         Vector2 hitCenter = (Vector2)transform.position + dir * basicAttackRange * 0.5f;
 
@@ -142,8 +166,9 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         isAttacking = false;
     }
+
     // --------------------------------------------------
-    // FLAMING SLAM (Now behaves like Phase 1 Slam)
+    // FLAMING SLAM
     // --------------------------------------------------
     private IEnumerator FlamingSlamRoutine(Attack atk)
     {
@@ -151,29 +176,23 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         isAttacking = true;
         atk.nextUseTime = Time.time + flamingSlamCooldown;
 
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip);
+
         if (movement != null)
             movement.enabled = false;
 
-        // Jump upward
         rb.velocity = new Vector2(0, atk.range + 10f);
         yield return new WaitUntil(() => rb.velocity.y <= 0);
 
-        // Lock onto player before diving
-        Vector2 diveDir = player != null
-            ? (player.position - transform.position).normalized
-            : Vector2.down;
-
-        // Dive toward player fast
+        Vector2 diveDir = player != null ? (player.position - transform.position).normalized : Vector2.down;
         rb.velocity = diveDir * (atk.range + 8f);
 
-        // Wait for ground or collision
         bool hitGround = false;
         while (!hitGround)
         {
             if (movementGrounded())
                 hitGround = true;
 
-            // Check for player collision during dive
             Collider2D hit = Physics2D.OverlapCircle(transform.position, 1.5f, playerLayer);
             if (hit != null && hit.CompareTag("Player"))
             {
@@ -189,13 +208,11 @@ public class KnightBossPhase2Attacks : MonoBehaviour
                 }
 
                 CreateDebugHit(transform.position, 1.5f, false);
-                break; // stop dive early if we hit player
+                break;
             }
-
             yield return null;
         }
 
-        // Landed or hit — small delay
         rb.velocity = Vector2.zero;
         yield return new WaitForSeconds(0.4f);
 
@@ -213,6 +230,8 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         Debug.Log("🔥 Infernal Torrent!");
         isAttacking = true;
         atk.nextUseTime = Time.time + infernalTorrentCooldown;
+
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip);
 
         float elapsed = 0f;
         while (elapsed < atk.duration)
@@ -232,13 +251,15 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     }
 
     // --------------------------------------------------
-    // GROUND BREAKER — Physical only
+    // GROUND BREAKER
     // --------------------------------------------------
     private IEnumerator GroundBreakerRoutine(PhysicalAttack atk)
     {
         Debug.Log("💥 Ground Breaker!");
         isAttacking = true;
         atk.nextUseTime = Time.time + groundBreakerCooldown;
+
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip);
 
         rb.velocity = new Vector2(0, 8f);
         yield return new WaitUntil(() => rb.velocity.y <= 0 && movementGrounded());
@@ -260,6 +281,8 @@ public class KnightBossPhase2Attacks : MonoBehaviour
         isAttacking = true;
         atk.nextUseTime = Time.time + moltenEruptionCooldown;
 
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip);
+
         yield return new WaitForSeconds(atk.duration * 0.4f);
         DoAOEDamage(transform.position, eruptionRadius, atk);
         CreateDebugHit(transform.position, eruptionRadius, false);
@@ -269,14 +292,16 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     }
 
     // --------------------------------------------------
-    // OPENING RANGED (projectile)
+    // OPENING RANGED
     // --------------------------------------------------
     private IEnumerator OpeningRangedAttack(Attack atk)
     {
         Debug.Log("💨 Opening Ranged Projectile!");
         isAttacking = true;
 
-        yield return new WaitForSeconds(1f); // charge time
+        PlayAttackAnimation(atk.animationTrigger, atk.animationClip);
+
+        yield return new WaitForSeconds(1f);
 
         if (projectilePrefab != null && projectileSpawnPoint != null && player != null)
         {
@@ -284,16 +309,14 @@ public class KnightBossPhase2Attacks : MonoBehaviour
             GameObject proj = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
             Rigidbody2D prb = proj.GetComponent<Rigidbody2D>();
             if (prb != null)
-                prb.velocity = dir * atk.range * projectileSpeedMultiplier; // 👈 apply multiplier
+                prb.velocity = dir * atk.range * projectileSpeedMultiplier;
 
-            // Handle hit/damage here
             StartCoroutine(DestroyProjectileAfterHit(proj, atk));
         }
 
         yield return new WaitForSeconds(0.5f);
         isAttacking = false;
     }
-
 
     private IEnumerator DestroyProjectileAfterHit(GameObject proj, Attack atk)
     {

@@ -9,6 +9,19 @@ public class SlamSkill : MonoBehaviour
     public float slamManaCost = 40f;
     public float slamPushForce = 20f;  // downward push force
 
+    // -------------------------------
+    // NEW: Animation Fields
+    // -------------------------------
+    [Header("Animation Settings")]
+    [Tooltip("Animator component for playing the slam animation.")]
+    public Animator animator;
+
+    [Tooltip("Trigger name for slam animation (optional).")]
+    public string slamTrigger = "Slam";
+
+    [Tooltip("Optional animation clip to play instead of a trigger.")]
+    public AnimationClip slamAnimationClip;
+
     private PlayerController playerController;
     private Rigidbody2D rb;
 
@@ -25,6 +38,10 @@ public class SlamSkill : MonoBehaviour
         {
             Debug.LogError("SlamSkill: Rigidbody2D component not found on the same GameObject!");
         }
+
+        // Auto-assign animator if missing
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -44,6 +61,9 @@ public class SlamSkill : MonoBehaviour
             Slam();
             playerController.SpendMana(slamManaCost);
             playerController.UpdateManaUI();
+
+            // 🎞️ NEW: Play slam animation
+            PlaySlamAnimation();
         }
         else
         {
@@ -83,6 +103,23 @@ public class SlamSkill : MonoBehaviour
 
         Debug.Log("Slam activated!");
         // Optional: add visual effects, sounds, etc.
+    }
+
+    // ---------------------------------------
+    // NEW: Animation Helper
+    // ---------------------------------------
+    void PlaySlamAnimation()
+    {
+        if (animator == null) return;
+
+        if (!string.IsNullOrEmpty(slamTrigger))
+        {
+            animator.SetTrigger(slamTrigger);
+        }
+        else if (slamAnimationClip != null)
+        {
+            animator.Play(slamAnimationClip.name);
+        }
     }
 
     private void OnDrawGizmosSelected()

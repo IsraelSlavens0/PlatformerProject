@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +13,13 @@ public class MageAi : MonoBehaviour
     public float shootDelay = 0.5f;          // Time between shots
     public float shootTriggerDistance = 5f;  // Distance to start shooting
 
+    [Header("Animation Settings")]
+    [Tooltip("Animator component for playing shoot animation.")]
+    public Animator animator;
+
+    [Tooltip("Trigger name for shoot animation.")]
+    public string shootTrigger = "Shoot";
+
     private float timer = 0f;
     private GameObject player;
 
@@ -23,6 +30,10 @@ public class MageAi : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+
+        // Auto-assign animator if missing
+        if (animator == null)
+            animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -36,6 +47,7 @@ public class MageAi : MonoBehaviour
         if (shootDir.magnitude < shootTriggerDistance && timer >= shootDelay)
         {
             Shoot(shootDir);
+            PlayShootAnimation();  // Play animation when shooting
             timer = 0f;
         }
 
@@ -94,5 +106,15 @@ public class MageAi : MonoBehaviour
 
         bullets.Add(bullet);
         bulletTimers.Add(0f);
+    }
+
+    // ---------------------------------------
+    // Animation Helper
+    // ---------------------------------------
+    void PlayShootAnimation()
+    {
+        if (animator == null || string.IsNullOrEmpty(shootTrigger)) return;
+
+        animator.SetTrigger(shootTrigger);
     }
 }

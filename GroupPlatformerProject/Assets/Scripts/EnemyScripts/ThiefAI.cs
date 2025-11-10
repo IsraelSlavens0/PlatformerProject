@@ -13,7 +13,7 @@ public class ThiefAI : MonoBehaviour
     public bool patrol = true;
     public Vector3 patrolDirection = Vector3.right;
     public float patrolDistance = 3f;
-    public float groundCheckDistance = 0.5f; // How far ahead to check for ground
+    public float groundCheckDistance = 0.5f;
 
     [Header("Stealing Settings")]
     public int coinsToSteal = 2;
@@ -22,8 +22,14 @@ public class ThiefAI : MonoBehaviour
     public float stealCooldown = 5f;
 
     [Header("Coin Drop Settings")]
-    public GameObject coinPrefab; // Assign your coin prefab here
+    public GameObject coinPrefab;
     public float coinDropSpread = 0.5f;
+
+    [Header("Animation Settings")]
+    public Animator attackAnimator;   // For damaging player
+    public Animator stealAnimator;    // For stealing coins
+    public string attackTrigger = "Attack";
+    public string stealTrigger = "Steal";
 
     private GameObject player;
     private Rigidbody2D rb;
@@ -34,8 +40,7 @@ public class ThiefAI : MonoBehaviour
     private float lastStealTime = -Mathf.Infinity;
 
     private int stolenCoins = 0;
-
-    private GameObject targetCoin; // Current coin target to pick up
+    private GameObject targetCoin;
 
     void Start()
     {
@@ -44,7 +49,7 @@ public class ThiefAI : MonoBehaviour
         home = transform.position;
 
         rb.freezeRotation = true;
-        rb.gravityScale = 1f; // Enable gravity
+        rb.gravityScale = 1f;
 
         patrolDirection.Normalize();
     }
@@ -66,14 +71,13 @@ public class ThiefAI : MonoBehaviour
         Vector3 toPlayer = player.transform.position - transform.position;
         float distanceToPlayer = toPlayer.magnitude;
 
-        // Steal coins from player if close enough and cooldown done
         if (distanceToPlayer <= stealDistance && Time.time >= lastStealTime + stealCooldown)
         {
             StealFromPlayer();
+            PlayStealAnimation();
             return;
         }
 
-        // Otherwise try to pick up world coins
         FindClosestCoin();
 
         if (targetCoin != null)
@@ -82,7 +86,6 @@ public class ThiefAI : MonoBehaviour
             return;
         }
 
-        // Chase player if close enough but not stealing
         if (distanceToPlayer < chaseTriggerDistance)
         {
             ChasePlayer(toPlayer);
@@ -106,6 +109,7 @@ public class ThiefAI : MonoBehaviour
         Collectables playerCollect = player.GetComponent<Collectables>();
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
 
+        // Steal coins
         if (playerCollect != null && playerCollect.coins > 0)
         {
             int stolenAmount = Mathf.Min(coinsToSteal, playerCollect.coins);
@@ -114,11 +118,13 @@ public class ThiefAI : MonoBehaviour
             Debug.Log($"Thief stole {stolenAmount} coins from player!");
         }
 
+        // Deal damage
         if (playerHealth != null)
         {
             playerHealth.health -= damageToPlayer;
             playerHealth.healthBar.fillAmount = playerHealth.health / playerHealth.maxHealth;
             Debug.Log($"Thief damaged player for {damageToPlayer} health!");
+            PlayAttackAnimation(); // separate attack animation
         }
 
         hasStolen = true;
@@ -126,17 +132,27 @@ public class ThiefAI : MonoBehaviour
         rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
+    void PlayStealAnimation()
+    {
+        if (stealAnimator != null && !string.IsNullOrEmpty(stealTrigger))
+            stealAnimator.SetTrigger(stealTrigger);
+    }
+
+    void PlayAttackAnimation()
+    {
+        if (attackAnimator != null && !string.IsNullOrEmpty(attackTrigger))
+            attackAnimator.SetTrigger(attackTrigger);
+    }
+
     void FindClosestCoin()
     {
         GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
-
         GameObject closest = null;
         float closestDist = Mathf.Infinity;
 
         foreach (GameObject coin in coins)
         {
             float dist = Vector3.Distance(transform.position, coin.transform.position);
-
             if (dist < closestDist && dist <= chaseTriggerDistance)
             {
                 closestDist = dist;
@@ -162,11 +178,11 @@ public class ThiefAI : MonoBehaviour
         {
             PickUpCoin();
             rb.velocity = new Vector2(0, rb.velocity.y);
+            PlayStealAnimation();
             return;
         }
         else
         {
-            // Only move if there's ground ahead
             if (IsGroundAhead(toCoin.normalized.x))
                 rb.velocity = new Vector2(toCoin.normalized.x * chaseSpeed, rb.velocity.y);
             else
@@ -271,17 +287,12 @@ public class ThiefAI : MonoBehaviour
             rb.velocity = new Vector2(0, rb.velocity.y);
     }
 
-    // Check if there's ground ahead
     bool IsGroundAhead(float dir)
     {
         Vector2 origin = (Vector2)transform.position + Vector2.down * 0.1f;
         Vector2 direction = Vector2.right * Mathf.Sign(dir);
 
         RaycastHit2D hit = Physics2D.Raycast(origin + direction * 0.3f, Vector2.down, groundCheckDistance);
-
-        // Uncomment to debug raycast
-        // Debug.DrawRay(origin + direction * 0.3f, Vector2.down * groundCheckDistance, Color.red);
-
         return hit.collider != null;
     }
 

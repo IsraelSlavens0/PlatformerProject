@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +15,24 @@ public class PlayerController : MonoBehaviour
 
     AudioSource audioSource;
     public AudioClip jumpSound;
+
+    // -----------------------
+    // Animator Settings
+    // -----------------------
+    [Header("Animation Settings")]
+    public Animator animator;
+
+    [Tooltip("Trigger name for melee attack animation")]
+    public string meleeAttackTrigger = "MeleeAttack";
+
+    [Tooltip("Optional animation clip for melee attack (used if no trigger)")]
+    public AnimationClip meleeAttackClip;
+
+    [Tooltip("Trigger name for ranged attack animation")]
+    public string rangedAttackTrigger = "RangedAttack";
+
+    [Tooltip("Optional animation clip for ranged attack (used if no trigger)")]
+    public AnimationClip rangedAttackClip;
 
     // -----------------------
     // Melee Attack Settings
@@ -45,7 +63,6 @@ public class PlayerController : MonoBehaviour
     private float nextShootTime = 0f;
     public float shootDelay = 0.5f;
 
-
     [Header("Mana Settings")]
     public float maxMana = 100f;
     public float currentMana;
@@ -63,12 +80,12 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         audioSource = Camera.main.GetComponent<AudioSource>();
+        if (animator == null) animator = GetComponent<Animator>(); // auto-assign if available
 
         currentMana = maxMana;
         if (manaBarFillRect != null)
-        {
             maxManaBarWidth = manaBarFillRect.sizeDelta.x;
-        }
+
         UpdateManaUI();
     }
 
@@ -86,7 +103,6 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
         float moveX = Input.GetAxis("Horizontal");
-
         Vector3 velocity = rb.velocity;
         velocity.x = moveX * moveSpeed;
         rb.velocity = velocity;
@@ -94,9 +110,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && grounded)
         {
             if (audioSource != null && jumpSound != null)
-            {
                 audioSource.PlayOneShot(jumpSound);
-            }
+
             rb.AddForce(new Vector2(0, 100 * jumpSpeed));
         }
     }
@@ -104,17 +119,13 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        {
             grounded = true;
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        {
             grounded = false;
-        }
     }
 
     // -----------------------
@@ -128,7 +139,6 @@ public class PlayerController : MonoBehaviour
 
         if (input != Vector2.zero)
         {
-            // Flip player sprite horizontally only
             if (horizontal != 0)
             {
                 facingRight = horizontal > 0;
@@ -136,12 +146,12 @@ public class PlayerController : MonoBehaviour
                 scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
                 transform.localScale = scale;
             }
-
             meleeMoveDirection = input.normalized;
         }
 
         if (Input.GetMouseButtonDown(1))
         {
+            PlayAttackAnimation(true);
             MeleeAttack();
         }
     }
@@ -154,34 +164,21 @@ public class PlayerController : MonoBehaviour
 
         float halfWidth = meleeHitboxWidth / 2f;
         float clampedOffset = Mathf.Max(meleeForwardOffset, halfWidth);
-
-        // Position the box so front edge is meleeForwardOffset in front of player
         Vector2 hitboxCenter = (Vector2)transform.position + direction * clampedOffset;
-
-        // Calculate rotation angle in degrees for the box (so it faces the direction)
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         Collider2D[] hits = Physics2D.OverlapBoxAll(hitboxCenter, new Vector2(meleeHitboxWidth, meleeHitboxHeight), angle);
 
-
-        //just copy and paste the same bit but change the health script name
         foreach (Collider2D hit in hits)
         {
             EnemyHealth enemy = hit.GetComponent<EnemyHealth>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(meleeDamage);
-            }
-            KnightHealth KnightBoss = hit.GetComponent<KnightHealth>();
-            if (KnightBoss != null)
-            {
-                KnightBoss.TakeDamage(meleeDamage);
-            }
-            ObelokHealth Obelok = hit.GetComponent<ObelokHealth>();
-            if (Obelok != null)
-            {
-                Obelok.TakeDamage(meleeDamage);
-            }
+            if (enemy != null) enemy.TakeDamage(meleeDamage);
+
+            KnightHealth knightBoss = hit.GetComponent<KnightHealth>();
+            if (knightBoss != null) knightBoss.TakeDamage(meleeDamage);
+
+            ObelokHealth obelok = hit.GetComponent<ObelokHealth>();
+            if (obelok != null) obelok.TakeDamage(meleeDamage);
         }
     }
 
@@ -190,16 +187,15 @@ public class PlayerController : MonoBehaviour
     // -----------------------
     void HandleRangedInput()
     {
-        // Only shoot if enough time has passed since last shot
         if (Input.GetButtonDown("Fire1") && Time.time >= nextShootTime)
         {
             if (currentMana >= manaCostPerShot)
             {
+                PlayAttackAnimation(false);
+
                 Shoot();
                 SpendMana(manaCostPerShot);
                 UpdateManaUI();
-
-                // set the next allowed shoot time
                 nextShootTime = Time.time + shootDelay;
             }
             else
@@ -214,23 +210,40 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = -Camera.main.transform.position.z;
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log(mousePos);  // Added from PlayerShoot
         mousePos.z = 0;
 
         GameObject bullet = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-
-        Vector3 mouseDir = mousePos - transform.position;
-        mouseDir.Normalize();
+        Vector3 mouseDir = (mousePos - transform.position).normalized;
 
         Rigidbody2D rbBullet = bullet.GetComponent<Rigidbody2D>();
         if (rbBullet != null)
-        {
             rbBullet.velocity = mouseDir * shootSpeed;
-        }
 
         Destroy(bullet, bulletLifetime);
     }
 
+    // -----------------------
+    // Animation Helper
+    // -----------------------
+    void PlayAttackAnimation(bool isMelee)
+    {
+        if (animator == null) return;
+
+        if (isMelee)
+        {
+            if (!string.IsNullOrEmpty(meleeAttackTrigger))
+                animator.SetTrigger(meleeAttackTrigger);
+            else if (meleeAttackClip != null)
+                animator.Play(meleeAttackClip.name);
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(rangedAttackTrigger))
+                animator.SetTrigger(rangedAttackTrigger);
+            else if (rangedAttackClip != null)
+                animator.Play(rangedAttackClip.name);
+        }
+    }
 
     // -----------------------
     // Mana System
@@ -260,9 +273,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // -----------------------------------------------------------
-    // ADDITION: Infinite Mana if Powerups.isInvincible == true
-    // -----------------------------------------------------------
+    // -----------------------
+    // Infinite Mana (Powerups)
+    // -----------------------
     void LateUpdate()
     {
         Powerups powerupScript = FindObjectOfType<Powerups>();
