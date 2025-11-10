@@ -36,7 +36,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     public PhysicalAttack groundBreaker; // no burn fields
     public Attack moltenEruption;
     public Attack openingRanged; // projectile (used once)
-    public PhysicalAttack basicAttack; // 👈 NEW fallback attack
+    public PhysicalAttack basicAttack;
 
     [Header("Attack Cooldowns")]
     public float flamingSlamCooldown = 5f;
@@ -47,13 +47,15 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     [Header("Projectile Prefab (Opening Ranged)")]
     public GameObject projectilePrefab;
     public Transform projectileSpawnPoint;
+    [Tooltip("Multiplier to adjust the projectile speed in the editor (1 = normal speed)")]
+    public float projectileSpeedMultiplier = 1f;
 
     [Header("Hitbox Settings")]
     public LayerMask playerLayer;
     public float slamRadius = 2.5f;
     public float eruptionRadius = 4f;
     public Vector2 groundBreakerSize = new Vector2(3f, 1.2f);
-    public float basicAttackRange = 2f; // 👈 range for fallback attack
+    public float basicAttackRange = 2f;
 
     private Rigidbody2D rb;
     private KnightBossMovement movement;
@@ -282,7 +284,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
             GameObject proj = Instantiate(projectilePrefab, projectileSpawnPoint.position, Quaternion.identity);
             Rigidbody2D prb = proj.GetComponent<Rigidbody2D>();
             if (prb != null)
-                prb.velocity = dir * atk.range;
+                prb.velocity = dir * atk.range * projectileSpeedMultiplier; // 👈 apply multiplier
 
             // Handle hit/damage here
             StartCoroutine(DestroyProjectileAfterHit(proj, atk));
@@ -378,4 +380,27 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     }
 
     private void Update() => debugHits.RemoveAll(d => Time.time > d.time);
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (debugHits == null) return;
+
+        Gizmos.color = new Color(1f, 0.5f, 0f, 0.4f); // orange tint
+        foreach (var hit in debugHits)
+        {
+            if (hit.box)
+            {
+                // Draw a rectangle for box-type hitboxes
+                Gizmos.DrawWireCube(hit.pos, new Vector3(hit.size, hit.size * 0.4f, 0f));
+            }
+            else
+            {
+                // Draw a circle for radial hitboxes
+                Gizmos.DrawWireSphere(hit.pos, hit.size);
+            }
+        }
+    }
+#endif
+
 }
