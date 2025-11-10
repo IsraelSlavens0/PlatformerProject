@@ -380,4 +380,27 @@ public class KnightBossPhase2Attacks : MonoBehaviour
     }
 
     private void Update() => debugHits.RemoveAll(d => Time.time > d.time);
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (debugHits == null) return;
+
+        Gizmos.color = new Color(1f, 0.5f, 0f, 0.4f); // orange tint
+        foreach (var hit in debugHits)
+        {
+            if (hit.box)
+            {
+                // Draw a rectangle for box-type hitboxes
+                Gizmos.DrawWireCube(hit.pos, new Vector3(hit.size, hit.size * 0.4f, 0f));
+            }
+            else
+            {
+                // Draw a circle for radial hitboxes
+                Gizmos.DrawWireSphere(hit.pos, hit.size);
+            }
+        }
+    }
+#endif
+
 }
