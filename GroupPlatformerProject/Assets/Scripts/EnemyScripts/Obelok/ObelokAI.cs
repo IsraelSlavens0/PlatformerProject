@@ -156,6 +156,11 @@ public class ObelokAI : MonoBehaviour
             ));
         }
 
+        // ENABLE COLLISIONS NOW
+        rb.isKinematic = false;
+        rb.bodyType = RigidbodyType2D.Dynamic; // optional if you want gravity/forces
+        rb.velocity = Vector2.zero;
+
         state = BossState.Targeting;
         PlayAnimationGroup(
             "ObelokFragmentTLAwake",
@@ -164,6 +169,7 @@ public class ObelokAI : MonoBehaviour
             "ObelokFragmentBRAwake"
         );
     }
+
 
     IEnumerator SlamAttack()
     {
