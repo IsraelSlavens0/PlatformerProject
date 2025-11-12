@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeAI : MonoBehaviour
+public class SmallSlimeAI : MonoBehaviour
 {
     GameObject player;
     public float chaseSpeed = 5.0f;
@@ -47,7 +47,7 @@ public class SlimeAI : MonoBehaviour
             if (!isAggro)
             {
                 isAggro = true;
-                animator.Play("SlimeAttack");
+                animator.Play("SmallSlimeAttack");
             }
         }
         else
@@ -88,7 +88,7 @@ public class SlimeAI : MonoBehaviour
             if (isAggro)
             {
                 isAggro = false;
-                animator.Play("SlimeIdle");
+                animator.Play("SmallSlimeIdle");
             }
         }
     }
