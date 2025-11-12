@@ -122,6 +122,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &95665754
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 467464737625238202, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: dropPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 66261060236036143, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 32.971992
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -7.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8576213840764199788, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: m_Name
+      value: Double Slime 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: face15a04b308de4eb5e27298e44038d, type: 3}
 --- !u!224 &232544332 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 266408048951300845, guid: 59601798f4c9c884690a87ec2e767239, type: 3}
@@ -505,6 +566,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24088960887d3154ba268ab13c9fac2f, type: 3}
+--- !u!224 &1918790618 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2240525098679207351, guid: 59601798f4c9c884690a87ec2e767239, type: 3}
+  m_PrefabInstance: {fileID: 5450651799442265322}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2135658853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -513,10 +579,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 848773939492772391, guid: 145dfbd660617b44c99826556c51005f, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 3541871976657501863, guid: 145dfbd660617b44c99826556c51005f, type: 3}
+      propertyPath: slamAnimationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: d536240663cd09c41bc06b334ab62936, type: 2}
+    - target: {fileID: 3569945292794052635, guid: 145dfbd660617b44c99826556c51005f, type: 3}
+      propertyPath: manaBarFillRect
+      value: 
+      objectReference: {fileID: 1918790618}
     - target: {fileID: 4080186367786288824, guid: 145dfbd660617b44c99826556c51005f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 38.27
@@ -1191,3 +1261,4 @@ SceneRoots:
   - {fileID: 822713780}
   - {fileID: 3622273426852457895}
   - {fileID: 2135658853}
+  - {fileID: 95665754}
