@@ -174,8 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 10
-  dropPrefabs:
-  - {fileID: 5643554204877468894, guid: d954f5a2b1e417946be9c16351d8a6e4, type: 3}
+  dropPrefabs: []
   minDropCount: 1
   maxDropCount: 3
   dropOffset: {x: 0, y: 0, z: 0}
