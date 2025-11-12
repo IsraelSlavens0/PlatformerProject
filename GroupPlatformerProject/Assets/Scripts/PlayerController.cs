@@ -22,17 +22,12 @@ public class PlayerController : MonoBehaviour
     [Header("Animation Settings")]
     public Animator animator;
 
-    [Tooltip("Trigger name for melee attack animation")]
-    public string meleeAttackTrigger = "MeleeAttack";
+    [Header("Attack Animation References")]
+    [Tooltip("Trigger or animation clip used for melee attacks")]
+    public AnimationReference meleeAttackAnimation;
 
-    [Tooltip("Optional animation clip for melee attack (used if no trigger)")]
-    public AnimationClip meleeAttackClip;
-
-    [Tooltip("Trigger name for ranged attack animation")]
-    public string rangedAttackTrigger = "RangedAttack";
-
-    [Tooltip("Optional animation clip for ranged attack (used if no trigger)")]
-    public AnimationClip rangedAttackClip;
+    [Tooltip("Trigger or animation clip used for ranged attacks")]
+    public AnimationReference rangedAttackAnimation;
 
     // -----------------------
     // Melee Attack Settings
@@ -229,19 +224,19 @@ public class PlayerController : MonoBehaviour
     {
         if (animator == null) return;
 
-        if (isMelee)
+        AnimationReference animRef = isMelee ? meleeAttackAnimation : rangedAttackAnimation;
+
+        if (!string.IsNullOrEmpty(animRef.triggerName))
         {
-            if (!string.IsNullOrEmpty(meleeAttackTrigger))
-                animator.SetTrigger(meleeAttackTrigger);
-            else if (meleeAttackClip != null)
-                animator.Play(meleeAttackClip.name);
+            animator.SetTrigger(animRef.triggerName);
+        }
+        else if (animRef.clip != null)
+        {
+            animator.Play(animRef.clip.name);
         }
         else
         {
-            if (!string.IsNullOrEmpty(rangedAttackTrigger))
-                animator.SetTrigger(rangedAttackTrigger);
-            else if (rangedAttackClip != null)
-                animator.Play(rangedAttackClip.name);
+            Debug.LogWarning("No animation assigned for " + (isMelee ? "melee" : "ranged") + " attack!");
         }
     }
 
@@ -285,4 +280,17 @@ public class PlayerController : MonoBehaviour
             UpdateManaUI();
         }
     }
+}
+
+// -----------------------
+// Helper Class for Animation References
+// -----------------------
+[System.Serializable]
+public class AnimationReference
+{
+    [Tooltip("Trigger name to activate in the Animator (optional)")]
+    [HideInInspector] public string triggerName;
+
+    [Tooltip("Direct animation clip to play (optional)")]
+    public AnimationClip clip;
 }

@@ -18,14 +18,14 @@ public class LungeSkill : MonoBehaviour
     public GameObject lungeHitbox;  // Assign in Inspector
 
     // -------------------------------
-    // NEW: Animation Fields
+    // Animation Fields
     // -------------------------------
     [Header("Animation Settings")]
     [Tooltip("Animator component for playing the lunge animation.")]
     public Animator animator;
 
     [Tooltip("Trigger name for lunge animation (optional).")]
-    public string lungeTrigger = "Lunge";
+    private string lungeTrigger = "Lunge";
 
     [Tooltip("Optional animation clip to play instead of a trigger.")]
     public AnimationClip lungeAnimationClip;
