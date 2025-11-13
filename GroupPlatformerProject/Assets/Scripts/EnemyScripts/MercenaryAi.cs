@@ -27,7 +27,7 @@ public class MercenaryAI : MonoBehaviour
     public Animator animator;
 
     [Tooltip("Trigger name for attack animation.")]
-    public string attackTrigger = "Attack";
+    private string attackTrigger = "Attack";
 
     private Rigidbody2D rb;
     private Transform player;

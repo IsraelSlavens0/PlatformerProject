@@ -10,14 +10,14 @@ public class SlamSkill : MonoBehaviour
     public float slamPushForce = 20f;  // downward push force
 
     // -------------------------------
-    // NEW: Animation Fields
+    // Animation Fields
     // -------------------------------
     [Header("Animation Settings")]
     [Tooltip("Animator component for playing the slam animation.")]
     public Animator animator;
 
     [Tooltip("Trigger name for slam animation (optional).")]
-    public string slamTrigger = "Slam";
+    private string slamTrigger = "Slam";
 
     [Tooltip("Optional animation clip to play instead of a trigger.")]
     public AnimationClip slamAnimationClip;
@@ -62,7 +62,6 @@ public class SlamSkill : MonoBehaviour
             playerController.SpendMana(slamManaCost);
             playerController.UpdateManaUI();
 
-            // 🎞️ NEW: Play slam animation
             PlaySlamAnimation();
         }
         else
@@ -106,7 +105,7 @@ public class SlamSkill : MonoBehaviour
     }
 
     // ---------------------------------------
-    // NEW: Animation Helper
+    // Animation Helper
     // ---------------------------------------
     void PlaySlamAnimation()
     {

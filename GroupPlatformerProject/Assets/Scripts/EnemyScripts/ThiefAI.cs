@@ -28,8 +28,9 @@ public class ThiefAI : MonoBehaviour
     [Header("Animation Settings")]
     public Animator attackAnimator;   // For damaging player
     public Animator stealAnimator;    // For stealing coins
-    public string attackTrigger = "Attack";
-    public string stealTrigger = "Steal";
+
+    [HideInInspector] public string attackTrigger = "Attack";
+    [HideInInspector] public string stealTrigger = "Steal";
 
     private GameObject player;
     private Rigidbody2D rb;

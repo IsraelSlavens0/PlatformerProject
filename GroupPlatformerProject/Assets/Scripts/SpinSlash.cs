@@ -19,7 +19,7 @@ public class SpinSlash : MonoBehaviour
     public Animator animator;
 
     [Tooltip("Trigger name for spin animation (optional).")]
-    public string spinTrigger = "Spin";
+    private string spinTrigger = "Spin";
 
     [Tooltip("Optional animation clip to play instead of a trigger.")]
     public AnimationClip spinAnimationClip;
@@ -143,7 +143,7 @@ public class SpinSlash : MonoBehaviour
         }
         else if (spinAnimationClip != null)
         {
-            animator.Play(spinAnimationClip.name);
+            //animator.Play(spinAnimationClip.name);
         }
     }
 

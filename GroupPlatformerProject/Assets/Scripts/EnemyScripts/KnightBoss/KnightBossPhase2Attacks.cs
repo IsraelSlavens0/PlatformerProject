@@ -21,7 +21,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
 
         [Header("🎞 Animation")]
         [Tooltip("Trigger name or AnimationClip for this attack")]
-        public string animationTrigger; // 👈 assign the trigger name in Inspector
+       [HideInInspector] public string animationTrigger; // 👈 assign the trigger name in Inspector
         public AnimationClip animationClip; // optional, if you want direct clip playback
     }
 
@@ -36,7 +36,7 @@ public class KnightBossPhase2Attacks : MonoBehaviour
 
         [Header("🎞 Animation")]
         [Tooltip("Trigger name or AnimationClip for this physical attack")]
-        public string animationTrigger; // 👈 assign manually per attack
+        [HideInInspector] public string animationTrigger; // 👈 assign manually per attack
         public AnimationClip animationClip;
     }
 

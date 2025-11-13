@@ -18,7 +18,7 @@ public class MageAi : MonoBehaviour
     public Animator animator;
 
     [Tooltip("Trigger name for shoot animation.")]
-    public string shootTrigger = "Shoot";
+    private string shootTrigger = "Shoot";
 
     private float timer = 0f;
     private GameObject player;
