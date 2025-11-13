@@ -143,7 +143,7 @@ public class SpinSlash : MonoBehaviour
         }
         else if (spinAnimationClip != null)
         {
-            animator.Play(spinAnimationClip.name);
+            //animator.Play(spinAnimationClip.name);
         }
     }
 
