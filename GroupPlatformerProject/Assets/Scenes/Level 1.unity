@@ -2454,6 +2454,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime 1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4814
@@ -34219,6 +34227,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime 1 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4251
@@ -35310,6 +35326,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.159
@@ -35378,6 +35402,14 @@ PrefabInstance:
     - target: {fileID: 66261060236036143, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_Name
       value: Slime 1 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
@@ -37726,6 +37758,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime 1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4529
@@ -37887,6 +37927,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime 1
       objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5803
@@ -38044,6 +38092,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.6406
@@ -81923,6 +81979,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4847831140964168582, guid: face15a04b308de4eb5e27298e44038d, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7484462541999079066, guid: face15a04b308de4eb5e27298e44038d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.382
@@ -82093,6 +82157,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime 1 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5457
@@ -82169,6 +82241,14 @@ PrefabInstance:
     - target: {fileID: 66261060236036143, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_Name
       value: Slime 1 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
@@ -82398,6 +82478,14 @@ PrefabInstance:
     - target: {fileID: 66261060236036143, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_Name
       value: Slime 1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: returnHome
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 930983938341423695, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
+      propertyPath: chaseTriggerDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5428679859778138947, guid: dd21a8bc810eae74dab311479d9e5cb4, type: 3}
       propertyPath: m_LocalScale.x
