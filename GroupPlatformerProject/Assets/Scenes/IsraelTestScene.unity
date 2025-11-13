@@ -579,10 +579,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3541871976657501863, guid: 145dfbd660617b44c99826556c51005f, type: 3}
-      propertyPath: slamAnimationClip
-      value: 
-      objectReference: {fileID: 7400000, guid: d536240663cd09c41bc06b334ab62936, type: 2}
     - target: {fileID: 3569945292794052635, guid: 145dfbd660617b44c99826556c51005f, type: 3}
       propertyPath: manaBarFillRect
       value: 
