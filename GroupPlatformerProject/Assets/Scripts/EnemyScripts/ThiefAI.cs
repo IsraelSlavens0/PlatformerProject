@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ThiefAI : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class ThiefAI : MonoBehaviour
     private bool hasStolen = false;
     private float lastStealTime = -Mathf.Infinity;
 
+    private float distanceToPlayer; // <--- Added for global access
     private int stolenCoins = 0;
     private GameObject targetCoin;
 
@@ -53,6 +55,12 @@ public class ThiefAI : MonoBehaviour
         rb.gravityScale = 1f;
 
         patrolDirection.Normalize();
+
+        // ✅ Only fix: Ignore collision with the player
+        Collider2D thiefCol = GetComponent<Collider2D>();
+        Collider2D playerCol = player.GetComponent<Collider2D>();
+        if (thiefCol != null && playerCol != null)
+            Physics2D.IgnoreCollision(thiefCol, playerCol);
     }
 
     void Update()
@@ -63,14 +71,14 @@ public class ThiefAI : MonoBehaviour
             return;
         }
 
+        Vector3 toPlayer = player.transform.position - transform.position;
+        distanceToPlayer = toPlayer.magnitude; // updated here
+
         if (hasStolen)
         {
             RunAwayFromPlayer();
             return;
         }
-
-        Vector3 toPlayer = player.transform.position - transform.position;
-        float distanceToPlayer = toPlayer.magnitude;
 
         if (distanceToPlayer <= stealDistance && Time.time >= lastStealTime + stealCooldown)
         {
@@ -120,10 +128,16 @@ public class ThiefAI : MonoBehaviour
         }
 
         // Deal damage
-        if (playerHealth != null)
+        if (playerHealth != null && !playerHealth.GetComponent<Powerups>().isInvincible)
         {
             playerHealth.health -= damageToPlayer;
+
+            if (playerHealth.health < 0) playerHealth.health = 0;
             playerHealth.healthBar.fillAmount = playerHealth.health / playerHealth.maxHealth;
+
+            if (playerHealth.health <= 0)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
             Debug.Log($"Thief damaged player for {damageToPlayer} health!");
             PlayAttackAnimation(); // separate attack animation
         }

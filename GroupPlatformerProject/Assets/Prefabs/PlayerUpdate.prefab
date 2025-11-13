@@ -339,7 +339,7 @@ MonoBehaviour:
   moveSpeed: 5
   jumpSpeed: 5
   jumpSound: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 1190262125111193143}
   meleeAttackAnimation:
     triggerName: 
     clip: {fileID: 0}
@@ -483,8 +483,8 @@ MonoBehaviour:
   slamRadius: 2
   slamManaCost: 40
   slamPushForce: 20
-  animator: {fileID: 0}
-  slamAnimationClip: {fileID: 0}
+  animator: {fileID: 1190262125111193143}
+  slamAnimationClip: {fileID: 7400000, guid: d536240663cd09c41bc06b334ab62936, type: 2}
 --- !u!114 &1347525241172267368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,8 +502,8 @@ MonoBehaviour:
   attackRadius: 1.5
   damage: 5
   manaCost: 50
-  animator: {fileID: 0}
-  spinAnimationClip: {fileID: 0}
+  animator: {fileID: 1190262125111193143}
+  spinAnimationClip: {fileID: 7400000, guid: 31e1b60526a32534b802f320c07e0e0c, type: 2}
 --- !u!114 &3949690114153971648
 MonoBehaviour:
   m_ObjectHideFlags: 0
