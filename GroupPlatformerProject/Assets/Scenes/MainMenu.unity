@@ -509,6 +509,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main menu
       objectReference: {fileID: 0}
+    - target: {fileID: 7944557113677855707, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -146.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7969537472739302322, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
       propertyPath: m_SizeDelta.x
       value: 1139
@@ -525,6 +529,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 5397368567604267555, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
     - {fileID: 1497139425850097438, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
+    - {fileID: 749381324252641350, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a83a16733e5634c826142cc01075a3, type: 3}
