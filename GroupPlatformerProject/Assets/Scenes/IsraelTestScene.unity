@@ -852,9 +852,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4184678897596356860, guid: 145dfbd660617b44c99826556c51005f, type: 3}
+      propertyPath: health
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4184678897596356860, guid: 145dfbd660617b44c99826556c51005f, type: 3}
       propertyPath: healthBar
       value: 
       objectReference: {fileID: 444802034}
+    - target: {fileID: 4184678897596356860, guid: 145dfbd660617b44c99826556c51005f, type: 3}
+      propertyPath: maxHealth
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 8758540781437394284, guid: 145dfbd660617b44c99826556c51005f, type: 3}
       propertyPath: m_Name
       value: PlayerUpdate
@@ -876,13 +884,69 @@ PrefabInstance:
       propertyPath: m_Name
       value: KnightBoss
       objectReference: {fileID: 0}
+    - target: {fileID: 5971663305291189201, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: flamingSlamCooldown
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971663305291189201, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: groundBreakerCooldown
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971663305291189201, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: infernalTorrentCooldown
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197023008955784789, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: slamAttack.damage
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197023008955784789, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: basicAttack.damage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197023008955784789, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: lungeAttack.damage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055898281293923168, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Size.x
+      value: 1.4334381
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055898281293923168, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Size.y
+      value: 2.5575514
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055898281293923168, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055898281293923168, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.017335296
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055898281293923168, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.1915021
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083706293273194163, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Size.y
+      value: 2.566647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083706293273194163, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7083706293273194163, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.17668056
+      objectReference: {fileID: 0}
     - target: {fileID: 8358899320788413809, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 42.87
+      value: 53.29
       objectReference: {fileID: 0}
     - target: {fileID: 8358899320788413809, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.69
+      value: -2.47
       objectReference: {fileID: 0}
     - target: {fileID: 8358899320788413809, guid: cc213c0081941f94fa9ca88b6f7a0586, type: 3}
       propertyPath: m_LocalPosition.z
