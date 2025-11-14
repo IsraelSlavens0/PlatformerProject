@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6373147459210953603}
   - component: {fileID: 3016631671979185247}
   - component: {fileID: 980658722565868034}
+  - component: {fileID: 116603804536247619}
   m_Layer: 0
   m_Name: Undead
   m_TagString: Enemy
@@ -197,3 +198,17 @@ MonoBehaviour:
   minDropCount: 1
   maxDropCount: 3
   dropOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &116603804536247619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532151184390055332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cafc76ba79fb234cb2328d148e64964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 4
+  oneTimeDamage: 0
