@@ -16,7 +16,7 @@ public class KnightBossPhase1Attacks : MonoBehaviour
 
         [Header("🎞 Animation")]
         [Tooltip("Animator trigger name to play for this attack")]
-        public string animationTrigger;
+        [HideInInspector] public string animationTrigger;
         [Tooltip("Optional animation clip to play directly (used if no trigger is set)")]
         public AnimationClip animationClip;
     }
@@ -40,7 +40,7 @@ public class KnightBossPhase1Attacks : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D bossCollider;
     private KnightBossMovement movement;
-    private Animator anim; // 👈 animator reference
+    private Animator anim;
     private Transform player;
 
     [HideInInspector] public bool isAttacking = false;
@@ -89,13 +89,10 @@ public class KnightBossPhase1Attacks : MonoBehaviour
             HandleAttack();
     }
 
-    // 🎞 Helper: Play assigned animation (trigger or clip)
     private void PlayAttackAnimation(Attack atk)
     {
         if (anim == null) return;
 
-        if (!string.IsNullOrEmpty(atk.animationTrigger))
-            anim.SetTrigger(atk.animationTrigger);
         else if (atk.animationClip != null)
             anim.Play(atk.animationClip.name);
     }

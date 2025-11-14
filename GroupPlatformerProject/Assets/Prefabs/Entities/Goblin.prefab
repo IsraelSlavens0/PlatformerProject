@@ -105,8 +105,8 @@ MonoBehaviour:
   returnHome: 1
   patrol: 1
   patrolDirection: {x: 1, y: 0, z: 0}
-  patrolDistance: 3
-  groundCheckDistance: 0.5
+  patrolDistance: 1
+  groundCheckDistance: 3
   damage: 10
   attackRange: 3
   enemyLayers:
