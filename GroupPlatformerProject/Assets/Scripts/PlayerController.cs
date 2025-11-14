@@ -171,9 +171,6 @@ public class PlayerController : MonoBehaviour
 
             KnightHealth knightBoss = hit.GetComponent<KnightHealth>();
             if (knightBoss != null) knightBoss.TakeDamage(meleeDamage);
-
-            ObelokHealth obelok = hit.GetComponent<ObelokHealth>();
-            if (obelok != null) obelok.TakeDamage(meleeDamage);
         }
     }
 
