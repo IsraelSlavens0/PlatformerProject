@@ -13,6 +13,9 @@ public class MageAi : MonoBehaviour
     public float shootDelay = 0.5f;          // Time between shots
     public float shootTriggerDistance = 5f;  // Distance to start shooting
 
+    [Header("Combat Settings")]
+    public int damage = 10;   // <<< Editable damage
+
     [Header("Animation Settings")]
     [Tooltip("Animator component for playing shoot animation.")]
     public Animator animator;
@@ -74,11 +77,21 @@ public class MageAi : MonoBehaviour
 
             // Check for collision with player, wall, or obstacle
             Collider2D hit = Physics2D.OverlapCircle(bullet.transform.position, 0.1f);
-            if (hit != null && (hit.CompareTag("Player") || hit.CompareTag("Wall") || hit.CompareTag("Obstacle")))
+            if (hit != null)
             {
-                Destroy(bullet);
-                bullets.RemoveAt(i);
-                bulletTimers.RemoveAt(i);
+                if (hit.CompareTag("Player"))
+                {
+                    // apply damage here
+                    // hit.GetComponent<PlayerHealth>().TakeDamage(damage);
+
+                }
+
+                if (hit.CompareTag("Player") || hit.CompareTag("Wall") || hit.CompareTag("Obstacle"))
+                {
+                    Destroy(bullet);
+                    bullets.RemoveAt(i);
+                    bulletTimers.RemoveAt(i);
+                }
             }
         }
     }
